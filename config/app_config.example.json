@@ -1,0 +1,6 @@
+{
+  "APP_ENV": "development",
+  "LOG_LEVEL": "debug",
+  "ENABLE_DEVELOPER_TOOLS": true,
+  "REMOTE_ENDPOINT_IDENTIFIER": ""
+}
