@@ -141,18 +141,18 @@ flutter build apk --debug
 
 ## Phase 2 — App Shell dan Navigation
 
-- [ ] Implementasikan bootstrap/splash serta penanganan initialization error.
-- [ ] Konfigurasikan typed routes dengan `go_router`.
-- [ ] Buat shell navigasi utama untuk Collection, Journal, dan Settings.
-- [ ] Implementasikan route detail, add, edit, search, scan, dan review.
-- [ ] Tambahkan halaman placeholder untuk seluruh route utama agar alur dapat diuji.
-- [ ] Tangani back navigation, deep link internal, dan unsaved-changes dialog.
-- [ ] Simpan status onboarding dan tampilkan hanya pada first launch.
+- [x] Implementasikan bootstrap/splash serta penanganan initialization error.
+- [x] Konfigurasikan typed routes dengan `go_router`.
+- [x] Buat shell navigasi utama untuk Collection, Journal, dan Settings.
+- [x] Implementasikan route detail, add, edit, search, scan, dan review.
+- [x] Tambahkan halaman placeholder untuk seluruh route utama agar alur dapat diuji.
+- [x] Tangani back navigation, deep link internal, dan unsaved-changes dialog.
+- [x] Simpan status onboarding dan tampilkan hanya pada first launch.
 
 **Definition of Done**
 
-- [ ] Semua layar pada MVP dapat dicapai melalui navigation flow yang benar.
-- [ ] Refresh/rebuild dan tombol Back tidak menghasilkan route rusak atau kehilangan state penting.
+- [x] Semua layar pada MVP dapat dicapai melalui navigation flow yang benar.
+- [x] Refresh/rebuild dan tombol Back tidak menghasilkan route rusak atau kehilangan state penting.
 
 ## Phase 3 — Design System Implementation
 

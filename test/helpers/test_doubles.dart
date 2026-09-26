@@ -1,3 +1,4 @@
+import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
 import 'package:daily_coffee/core/identifiers/app_id_generator.dart';
 import 'package:daily_coffee/core/time/app_clock.dart';
 
@@ -23,5 +24,31 @@ final class SequenceAppIdGenerator implements AppIdGenerator {
     }
 
     return _values[_index++];
+  }
+}
+
+final class FakeAppPreferences implements AppPreferences {
+  FakeAppPreferences({
+    this.hasCompletedOnboarding = true,
+    this.lastRootIndex = 0,
+  });
+
+  @override
+  bool hasCompletedOnboarding;
+
+  @override
+  int lastRootIndex;
+
+  @override
+  Future<void> load() async {}
+
+  @override
+  Future<void> completeOnboarding() async {
+    hasCompletedOnboarding = true;
+  }
+
+  @override
+  Future<void> setLastRootIndex(int index) async {
+    lastRootIndex = index;
   }
 }
