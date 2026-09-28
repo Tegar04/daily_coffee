@@ -1,6 +1,8 @@
 import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
+import 'package:daily_coffee/app/localization/app_localizations.dart';
 import 'package:daily_coffee/app/routing/app_router.dart';
 import 'package:daily_coffee/app/routing/navigation_screens.dart';
+import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 class DailyCoffeeApp extends StatelessWidget {
@@ -17,10 +19,11 @@ class DailyCoffeeApp extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'Daily Coffee',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6F4E37)),
-          useMaterial3: true,
-        ),
+        localizationsDelegates: DailyLocalizations.delegates,
+        supportedLocales: DailyLocalizations.supportedLocales,
+        theme: DailyTheme.light,
+        darkTheme: DailyTheme.dark,
+        themeMode: ThemeMode.system,
         routerConfig: _router,
       ),
     );

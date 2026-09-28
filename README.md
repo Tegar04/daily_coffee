@@ -88,6 +88,29 @@ Jalankan seluruh pemeriksaan lokal:
 Urutannya adalah dependency resolution, code generation, format check, static
 analysis, automated tests, lalu debug APK build.
 
+## Design system (Phase 3)
+
+Tema, komponen, dan aturan pemakaian tersedia di
+[`DESIGN_SYSTEM_IMPLEMENTATION.md`](docs/DESIGN_SYSTEM_IMPLEMENTATION.md).
+Untuk membuka preview interaktif light/dark dan text scaling:
+
+```powershell
+flutter run -t lib/app/preview/design_system_preview.dart
+```
+
+Preview menggunakan data contoh terpisah. Aplikasi utama dijalankan dengan
+`flutter run`.
+
+## Coffee manual (Phase 4)
+
+Tambah, lihat, edit, favorite, dan hapus kopi tersedia melalui koleksi. Form manual
+dapat digunakan offline, dengan validasi dan konfirmasi perubahan/penghapusan.
+Saat ini repository masih **in-memory: data hilang setelah proses aplikasi ditutup
+atau hot restart**. Penyimpanan Drift/SQLite masuk Phase 5.
+
+Panduan struktur, batas validasi, kontrak delete, dan manual QA tersedia di
+[`COFFEE_MANUAL_IMPLEMENTATION.md`](docs/COFFEE_MANUAL_IMPLEMENTATION.md).
+
 ## Konvensi
 
 - File: `snake_case.dart`.

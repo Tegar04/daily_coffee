@@ -7,6 +7,38 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/test_doubles.dart';
 
 void main() {
+  testWidgets('onboarding and root pages fit compact landscape at 200% text', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(600, 360);
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          appPreferencesProvider.overrideWithValue(
+            FakeAppPreferences(hasCompletedOnboarding: false),
+          ),
+        ],
+        child: const DailyCoffeeBootstrap(),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    await tester.ensureVisible(find.text('Mulai mencatat'));
+    await tester.tap(find.text('Mulai mencatat'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    await tester.tap(find.text('Jurnal'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    await tester.tap(find.text('Pengaturan'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('renders Daily Coffee through the root ProviderScope', (
     tester,
   ) async {
@@ -87,7 +119,10 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Isi manual'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.byType(TextField), 'Ethiopia Natural');
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Nama kopi (wajib)'),
+      'Ethiopia Natural',
+    );
     await tester.pump();
 
     await tester.tap(find.byIcon(Icons.arrow_back));

@@ -1,5 +1,6 @@
 import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
+import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -77,136 +78,45 @@ class OnboardingScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          TextButton(
-            onPressed: () => _finish(context),
-            child: const Text('Lewati'),
-          ),
+          DailyTextButton(onPressed: () => _finish(context), label: 'Lewati'),
         ],
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Spacer(),
-              const Icon(Icons.local_cafe, size: 64),
-              const SizedBox(height: 24),
-              Text(
-                'Kenali setiap kopi yang Anda nikmati',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'Simpan koleksi, catat resep seduh, dan periksa hasil pembacaan label sebelum disimpan.',
-              ),
-              const Spacer(),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () => _finish(context),
-                  child: const Text('Mulai mencatat'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class LibraryScreen extends StatelessWidget {
-  const LibraryScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Koleksi'),
-        actions: [
-          IconButton(
-            tooltip: 'Cari kopi',
-            onPressed: () => const SearchRoute().push<void>(context),
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      ),
-      body: _RootPlaceholder(
-        icon: Icons.local_cafe_outlined,
-        title: 'Koleksi kopi masih kosong',
-        actionLabel: 'Buka contoh detail',
-        onAction: () =>
-            const CoffeeDetailRoute(coffeeId: 'contoh-kopi')
-                .push<void>(context),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showAddCoffeeSheet(context),
-        icon: const Icon(Icons.add),
-        label: const Text('Tambah kopi'),
-      ),
-    );
-  }
-}
-
-Future<void> _showAddCoffeeSheet(BuildContext context) {
-  return showModalBottomSheet<void>(
-    context: context,
-    showDragHandle: true,
-    builder: (sheetContext) => SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 16),
+      body: DailyPageBody(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const ListTile(title: Text('Tambah kopi')),
-            ListTile(
-              leading: const Icon(Icons.camera_alt_outlined),
-              title: const Text('Ambil foto'),
-              onTap: () async {
-                Navigator.pop(sheetContext);
-                await const CaptureRoute().push<void>(context);
-              },
+            const SizedBox(height: DailySpacing.xl),
+            const Icon(Icons.local_cafe_rounded, size: DailySpacing.hero),
+            const SizedBox(height: DailySpacing.lg),
+            Text(
+              'Kenali setiap kopi yang Anda nikmati',
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            ListTile(
-              leading: const Icon(Icons.photo_outlined),
-              title: const Text('Pilih dari galeri'),
-              onTap: () async {
-                Navigator.pop(sheetContext);
-                await const CaptureRoute().push<void>(context);
-              },
+            const SizedBox(height: DailySpacing.compact),
+            const Text(
+              'Simpan koleksi, catat resep seduh, dan periksa hasil pembacaan label sebelum disimpan.',
             ),
-            ListTile(
-              leading: const Icon(Icons.edit_outlined),
-              title: const Text('Isi manual'),
-              onTap: () async {
-                Navigator.pop(sheetContext);
-                await const NewCoffeeRoute().push<void>(context);
-              },
+            const SizedBox(height: DailySpacing.xl),
+            SizedBox(
+              width: double.infinity,
+              child: DailyPrimaryButton(
+                onPressed: () => _finish(context),
+                label: 'Mulai mencatat',
+              ),
             ),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
 }
 
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
-
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Cari dan filter')),
-    body: const Padding(
-      padding: EdgeInsets.all(16),
-      child: TextField(
-        autofocus: true,
-        decoration: InputDecoration(
-          prefixIcon: Icon(Icons.search),
-          hintText: 'Cari kopi',
-        ),
-      ),
-    ),
+    appBar: const DailyAppBar(title: 'Cari dan filter'),
+    body: const DailyPageBody(child: DailySearchField(autofocus: true)),
   );
 }
 
@@ -215,7 +125,7 @@ class JournalScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Jurnal')),
+    appBar: const DailyAppBar(title: 'Jurnal'),
     body: _RootPlaceholder(
       icon: Icons.menu_book_outlined,
       title: 'Belum ada catatan seduh',
@@ -237,7 +147,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Pengaturan')),
+    appBar: const DailyAppBar(title: 'Pengaturan'),
     body: ListView(
       children: [
         ListTile(
@@ -292,23 +202,20 @@ class PlaceholderDetailScreen extends StatelessWidget {
           ),
           title: Text(title),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  subtitle ??
-                      'Halaman ini siap untuk implementasi feature berikutnya.',
-                  textAlign: TextAlign.center,
-                ),
-                if (onEdit != null) ...[
-                  const SizedBox(height: 16),
-                  FilledButton(onPressed: onEdit, child: Text(editLabel!)),
-                ],
+        body: DailyPageBody(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                subtitle ??
+                    'Halaman ini siap untuk implementasi feature berikutnya.',
+                textAlign: TextAlign.center,
+              ),
+              if (onEdit != null) ...[
+                const SizedBox(height: DailySpacing.md),
+                DailyPrimaryButton(onPressed: onEdit, label: editLabel!),
               ],
-            ),
+            ],
           ),
         ),
       ),
@@ -330,24 +237,14 @@ class _PlaceholderFormScreenState extends State<PlaceholderFormScreen> {
 
   Future<bool> _confirmDiscard() async {
     if (!_dirty) return true;
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Buang perubahan?'),
-            content: const Text('Perubahan yang belum disimpan akan hilang.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Tetap mengedit'),
-              ),
-              FilledButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Buang'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+    return DailyDialog.confirm(
+      context: context,
+      title: 'Buang perubahan?',
+      message: 'Perubahan yang belum disimpan akan hilang.',
+      cancelLabel: 'Tetap mengedit',
+      confirmLabel: 'Buang',
+      destructive: true,
+    );
   }
 
   @override
@@ -359,26 +256,26 @@ class _PlaceholderFormScreenState extends State<PlaceholderFormScreen> {
         Navigator.of(context).pop();
       },
       child: Scaffold(
-        appBar: AppBar(title: Text(widget.title)),
-        body: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            if (widget.subtitle case final subtitle?) ...[
-              Text(subtitle),
-              const SizedBox(height: 16),
-            ],
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Nama (placeholder)',
+        appBar: DailyAppBar(title: widget.title),
+        body: DailyPageBody(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (widget.subtitle case final subtitle?) ...[
+                Text(subtitle),
+                const SizedBox(height: DailySpacing.md),
+              ],
+              DailyTextField(
+                label: 'Nama (placeholder)',
+                onChanged: (_) => setState(() => _dirty = true),
               ),
-              onChanged: (_) => setState(() => _dirty = true),
-            ),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => setState(() => _dirty = false),
-              child: const Text('Simpan'),
-            ),
-          ],
+              const SizedBox(height: DailySpacing.md),
+              DailyPrimaryButton(
+                onPressed: () => setState(() => _dirty = false),
+                label: 'Simpan',
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -391,21 +288,14 @@ class RouteErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: const Text('Halaman tidak ditemukan')),
-    body: Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Route tidak tersedia: $location'),
-            const SizedBox(height: 16),
-            FilledButton(
-              onPressed: () => const LibraryRoute().go(context),
-              child: const Text('Kembali ke Koleksi'),
-            ),
-          ],
-        ),
+    appBar: const DailyAppBar(title: 'Halaman tidak ditemukan'),
+    body: DailyPageBody(
+      child: DailyEmptyState(
+        title: 'Halaman tidak tersedia',
+        message: 'Kembali ke koleksi untuk melanjutkan.',
+        icon: Icons.search_off_rounded,
+        actionLabel: 'Kembali ke Koleksi',
+        onAction: () => const LibraryRoute().go(context),
       ),
     ),
   );
@@ -424,23 +314,13 @@ class _RootPlaceholder extends StatelessWidget {
   final VoidCallback onAction;
 
   @override
-  Widget build(BuildContext context) => Center(
-    child: Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 56),
-          const SizedBox(height: 16),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.titleLarge,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          OutlinedButton(onPressed: onAction, child: Text(actionLabel)),
-        ],
-      ),
+  Widget build(BuildContext context) => DailyPageBody(
+    child: DailyEmptyState(
+      title: title,
+      message: 'Simpan cerita kopi dan pengalaman seduh Anda di sini.',
+      icon: icon,
+      actionLabel: actionLabel,
+      onAction: onAction,
     ),
   );
 }

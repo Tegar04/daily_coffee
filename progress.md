@@ -156,36 +156,74 @@ flutter build apk --debug
 
 ## Phase 3 — Design System Implementation
 
-- [ ] Ubah token warna, typography, spacing 8pt, radius, elevation, dan motion dari `DESIGN_SYSTEM.md` menjadi theme/token code.
-- [ ] Implementasikan light theme dan fondasi dark theme.
-- [ ] Buat komponen reusable: button, text field, chip, card, app bar, sheet, dialog, empty state, loading, dan error state.
-- [ ] Buat komponen coffee card, journal card, rating input, dan controlled-vocabulary picker.
-- [ ] Pastikan layout responsif untuk compact dan layar Android yang lebih lebar.
-- [ ] Tambahkan preview/widget test untuk komponen utama.
+- [x] Ubah token warna, typography, spacing 8pt, radius, elevation, dan motion dari `DESIGN_SYSTEM.md` menjadi theme/token code.
+- [x] Implementasikan light theme dan fondasi dark theme.
+- [x] Buat komponen reusable: button, text field, chip, card, app bar, sheet, dialog, empty state, loading, dan error state.
+- [x] Buat komponen coffee card, journal card, rating input, dan controlled-vocabulary picker.
+- [x] Pastikan layout responsif untuk compact dan layar Android yang lebih lebar.
+- [x] Tambahkan preview/widget test untuk komponen utama.
 
 **Definition of Done**
 
-- [ ] Komponen utama konsisten dengan `DESIGN_SYSTEM.md` dan dapat dipakai lintas feature.
-- [ ] Tidak ada warna, spacing, dan text style penting yang di-hardcode berulang di feature.
+- [x] Komponen utama konsisten dengan `DESIGN_SYSTEM.md` dan dapat dipakai lintas feature.
+- [x] Tidak ada warna, spacing, dan text style penting yang di-hardcode berulang di feature.
+
+**Verifikasi 28 September 2026:** `tool/quality_check.ps1` lulus: dependency
+resolution, code generation, format, `flutter analyze` tanpa issue, seluruh **37
+test** (termasuk 2 golden light/dark), dan `flutter build apk --debug`.
+`git diff --check` juga lulus. APK: `build/app/outputs/flutter-apk/app-debug.apk`.
+
+**Cakupan:** token dan komponen umum di `core/design_system`; kartu kopi/jurnal
+milik presentation feature; font Inter/Lora beserta lisensi dibundel offline.
+Layar Phase 2 menggunakan tema baru. Preview terpisah dapat dijalankan dengan
+`flutter run -t lib/app/preview/design_system_preview.dart`. Panduan lengkap:
+[`docs/DESIGN_SYSTEM_IMPLEMENTATION.md`](docs/DESIGN_SYSTEM_IMPLEMENTATION.md).
+
+**Penyesuaian:** grid mengikuti minimum width dan text scale; skeleton statis
+serta reduce motion didukung; teks badge memakai textPrimary agar kontras terjaga.
+Quality gate PowerShell kini berhenti saat command gagal. Pilihan tema tersimpan
+masih Phase 11; CRUD/persistence tidak termasuk Phase 3. Tidak ada Android yang
+terhubung saat verifikasi, sehingga TalkBack dan QA perangkat fisik belum dilakukan.
 
 ## Phase 4 — Coffee MVP: Manual Flow
 
-- [ ] Definisikan domain model `Coffee` dengan UUID dan tipe/value object yang diperlukan.
-- [ ] Definisikan model variety, tasting note, dan photo tanpa mencampur data journal.
-- [ ] Buat contract `CoffeeRepository` dan fake/in-memory implementation untuk development awal.
-- [ ] Buat Riverpod query provider untuk collection dan detail.
-- [ ] Buat controller/command untuk add, edit, favorite, dan delete coffee.
-- [ ] Implementasikan Coffee Collection beserta loading, empty, error, dan populated state.
-- [ ] Implementasikan form Add Coffee Manual dengan validasi dan progressive disclosure.
-- [ ] Implementasikan Coffee Detail dan Edit Coffee.
-- [ ] Tambahkan konfirmasi delete serta penanganan coffee yang memiliki journal entry.
-- [ ] Pastikan input manual selalu tersedia tanpa kamera, OCR, maupun network.
+- [x] Definisikan domain model `Coffee` dengan UUID dan tipe/value object yang diperlukan.
+- [x] Definisikan model variety, tasting note, dan photo tanpa mencampur data journal.
+- [x] Buat contract `CoffeeRepository` dan fake/in-memory implementation untuk development awal.
+- [x] Buat Riverpod query provider untuk collection dan detail.
+- [x] Buat controller/command untuk add, edit, favorite, dan delete coffee.
+- [x] Implementasikan Coffee Collection beserta loading, empty, error, dan populated state.
+- [x] Implementasikan form Add Coffee Manual dengan validasi dan progressive disclosure.
+- [x] Implementasikan Coffee Detail dan Edit Coffee.
+- [x] Tambahkan konfirmasi delete serta penanganan coffee yang memiliki journal entry.
+- [x] Pastikan input manual selalu tersedia tanpa kamera, OCR, maupun network.
 
 **Definition of Done**
 
-- [ ] Pengguna dapat membuat, melihat, mengubah, memfavoritkan, dan menghapus coffee melalui UI.
-- [ ] Validasi dan error tampil sebagai pesan yang dapat dipahami, bukan raw exception.
-- [ ] Flow manual lulus unit test controller dan widget test utama menggunakan fake repository.
+- [x] Pengguna dapat membuat, melihat, mengubah, memfavoritkan, dan menghapus coffee melalui UI.
+- [x] Validasi dan error tampil sebagai pesan yang dapat dipahami, bukan raw exception.
+- [x] Flow manual lulus unit test controller dan widget test utama menggunakan fake repository.
+
+**Verifikasi 28 September 2026:** `tool/quality_check.ps1` lulus seluruhnya:
+dependency resolution, code generation, format, `flutter analyze` tanpa issue,
+**56 test** (termasuk 5 golden), dan debug APK. `git diff --check` lulus.
+Snapshot koleksi, detail, dan form juga diperiksa secara visual.
+APK: `build/app/outputs/flutter-apk/app-debug.apk`.
+
+**Cakupan:** manual create → detail → favorite → edit → delete, validasi field,
+custom values dan tag, loading/empty/error/retry, retensi snapshot koleksi ketika
+refresh gagal, unsaved-changes guard, serta layout compact 200% dengan keyboard.
+`isFavorite` ditambahkan ke model sesuai tracker dan terdokumentasi. Delete
+memeriksa ulang impact/revision; jumlah journal terkait diuji dengan fake relational
+links. Implementasi JournalRepository dan cascade database sesungguhnya tetap
+phase berikutnya.
+
+**Batas fase:** repository masih **in-memory**; data hilang ketika proses aplikasi
+ditutup atau hot restart. Drift persistence masuk Phase 5. Foto/OCR, draft recovery,
+search/filter lengkap, dan jurnal masih mengikuti urutan roadmap. Tidak ada Android
+terhubung saat verifikasi; TalkBack dan QA perangkat fisik belum dilakukan.
+Panduan implementasi dan QA:
+[`docs/COFFEE_MANUAL_IMPLEMENTATION.md`](docs/COFFEE_MANUAL_IMPLEMENTATION.md).
 
 ## Phase 5 — Local Persistence: Drift/SQLite
 

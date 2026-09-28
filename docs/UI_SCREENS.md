@@ -721,6 +721,9 @@ Menampilkan identitas kopi sebagai halaman editorial dan menjadi titik masuk ke 
 
 - Back.
 - Optional favorite/bookmark tidak ditambahkan pada MVP tanpa fungsi nyata.
+- Implementasi Phase 4 mengaktifkan favorite sesuai tracker: tombol detail mengubah
+  `isFavorite`, kartu koleksi menampilkan status, dan nilainya bertahan selama sesi
+  adapter in-memory. Persistensi setelah restart menunggu Phase 5.
 - Overflow:
   - `Edit kopi`.
   - `Hapus kopi`.

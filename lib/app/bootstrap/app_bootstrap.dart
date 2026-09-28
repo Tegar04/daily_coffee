@@ -2,6 +2,8 @@ import 'package:daily_coffee/app/app.dart';
 import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
 import 'package:daily_coffee/app/bootstrap/bootstrap_state.dart';
 import 'package:daily_coffee/app/composition/app_providers.dart';
+import 'package:daily_coffee/app/localization/app_localizations.dart';
+import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:daily_coffee/core/errors/app_failure.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,40 +58,19 @@ class BootstrapScreen extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: DailyLocalizations.delegates,
+      supportedLocales: DailyLocalizations.supportedLocales,
+      theme: DailyTheme.light,
+      darkTheme: DailyTheme.dark,
+      themeMode: ThemeMode.system,
       home: Scaffold(
-        body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: failure == null
-                  ? const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text('Daily Coffee', style: TextStyle(fontSize: 28)),
-                        SizedBox(height: 24),
-                        CircularProgressIndicator(),
-                      ],
-                    )
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.error_outline, size: 48),
-                        const SizedBox(height: 16),
-                        const Text(
-                          'Aplikasi belum dapat disiapkan. Data Anda tidak dihapus.',
-                          textAlign: TextAlign.center,
-                        ),
-                        if (onRetry != null) ...[
-                          const SizedBox(height: 16),
-                          FilledButton(
-                            onPressed: onRetry,
-                            child: const Text('Coba lagi'),
-                          ),
-                        ],
-                      ],
-                    ),
-            ),
-          ),
+        body: DailyPageBody(
+          child: failure == null
+              ? const DailyLoadingState(label: 'Menyiapkan Daily Coffee')
+              : DailyErrorState(
+                  message: 'Aplikasi belum dapat disiapkan. Data Anda tidak dihapus.',
+                  onRetry: onRetry,
+                ),
         ),
       ),
     );

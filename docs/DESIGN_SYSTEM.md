@@ -731,3 +731,20 @@ Sebelum menyetujui sebuah layar, tanyakan:
 8. Apakah ada gaya baru yang diciptakan tanpa alasan produk yang jelas?
 
 Jika jawaban terakhir adalah “ya”, kembali gunakan sistem yang ada atau dokumentasikan alasan pengecualiannya.
+
+## 24. Pemetaan implementasi Phase 3
+
+Implementasi dan cara preview dijelaskan di `DESIGN_SYSTEM_IMPLEMENTATION.md`.
+Semua nilai yang sudah ditentukan di atas dipertahankan; penamaan konstanta Dart
+dapat berbeda dari notasi token tabel.
+
+- `layout.cardMinWidth`: 160 dp pada light/dark, dikalikan text scale. Dipakai untuk
+  menghitung jumlah kolom grid agar kartu tetap terbaca, bukan menetapkan jumlah
+  kolom per model perangkat. Tidak memengaruhi kontras warna.
+- `size.thumbnail`: 80 dp pada light/dark, titik tengah rentang thumbnail 72–88 dp.
+- `motion.fast/standard/complex`: 150/250/350 ms, masih dalam rentang dokumen.
+- Status badge memakai `textPrimary` untuk teks pada tint status 12%; ikon memakai
+  warna status. Penyesuaian ini menghindari teks warning yang kurang kontras.
+- Slot Material yang tidak disebut dalam type scale mengikuti role terdekat;
+  `caption` menjadi `TextTheme.bodySmall`. Warna tambahan disimpan dalam
+  `DailyThemeExtension` agar token tidak diduplikasi sebagai palet terpisah.

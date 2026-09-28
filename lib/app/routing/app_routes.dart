@@ -1,4 +1,7 @@
 import 'package:daily_coffee/app/routing/navigation_screens.dart';
+import 'package:daily_coffee/features/coffee/presentation/screens/coffee_detail_screen.dart';
+import 'package:daily_coffee/features/coffee/presentation/screens/coffee_form_screen.dart';
+import 'package:daily_coffee/features/coffee/presentation/screens/coffee_library_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -138,7 +141,7 @@ final appRoutes = <RouteBase>[
         routes: [
           GoRoute(
             path: '/library',
-            builder: (context, state) => const LibraryScreen(),
+            builder: (context, state) => const CoffeeLibraryScreen(),
             routes: [
               GoRoute(
                 path: 'search',
@@ -190,8 +193,9 @@ final appRoutes = <RouteBase>[
     builder: (context, state) => PlaceholderDetailScreen(
       title: 'Ambil foto',
       fallbackLocation: '/library',
-      editLabel: 'Gunakan foto',
-      onEdit: () => const ScanRoute().push<void>(context),
+      subtitle: 'Pengambilan foto akan tersedia pada tahap berikutnya. Anda tetap dapat mengisi kopi secara manual.',
+      editLabel: 'Isi manual',
+      onEdit: () => const NewCoffeeRoute().push<void>(context),
     ),
   ),
   GoRoute(
@@ -200,8 +204,9 @@ final appRoutes = <RouteBase>[
     builder: (context, state) => PlaceholderDetailScreen(
       title: 'Membaca label',
       fallbackLocation: '/library',
-      editLabel: 'Lanjut ke review',
-      onEdit: () => const ReviewRoute().push<void>(context),
+      subtitle: 'Pembacaan label akan tersedia pada tahap berikutnya.',
+      editLabel: 'Isi manual',
+      onEdit: () => const NewCoffeeRoute().push<void>(context),
     ),
   ),
   GoRoute(
@@ -213,28 +218,19 @@ final appRoutes = <RouteBase>[
   GoRoute(
     path: '/coffee/new',
     parentNavigatorKey: rootNavigatorKey,
-    builder: (context, state) =>
-        const PlaceholderFormScreen(title: 'Tambah kopi'),
+    builder: (context, state) => const CoffeeFormScreen(),
   ),
   GoRoute(
     path: '/coffee/:coffeeId',
     parentNavigatorKey: rootNavigatorKey,
-    builder: (context, state) {
-      final id = state.pathParameters['coffeeId']!;
-      return PlaceholderDetailScreen(
-        title: 'Detail kopi',
-        subtitle: 'ID: $id',
-        fallbackLocation: '/library',
-        editLabel: 'Edit kopi',
-        onEdit: () => EditCoffeeRoute(coffeeId: id).push<void>(context),
-      );
-    },
+    builder: (context, state) =>
+        CoffeeDetailScreen(coffeeId: state.pathParameters['coffeeId']!),
     routes: [
       GoRoute(
         path: 'edit',
         parentNavigatorKey: rootNavigatorKey,
         builder: (context, state) =>
-            const PlaceholderFormScreen(title: 'Edit kopi'),
+            CoffeeFormScreen(coffeeId: state.pathParameters['coffeeId']!),
       ),
     ],
   ),

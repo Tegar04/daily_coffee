@@ -312,6 +312,7 @@ Merepresentasikan satu coffee bag/purchase/lot yang disimpan pengguna.
 | `purchaseDate` | Date-only | Ya | Tanggal pembelian |
 | `packageWeightGrams` | Positive integer | Ya | Berat awal kemasan |
 | `personalNote` | Text | Ya | Catatan pribadi tentang coffee, bukan brew entry |
+| `isFavorite` | Boolean | Tidak | Default false; ditambahkan sesuai tracker Phase 4, bukan rating/pinned order |
 | `createdAt` | UTC timestamp | Tidak | Immutable setelah insert |
 | `updatedAt` | UTC timestamp | Tidak | Berubah pada update record/owned content yang relevan |
 
@@ -791,6 +792,11 @@ Jika undo diimplementasikan, seluruh graph dan file harus dapat dipulihkan secar
 ---
 
 ## 18. Normalization Rules
+
+Implementasi manual Phase 4 memakai NFC, trim, whitespace collapse, dan lowercase
+tanpa menghapus diakritik. Batas panjang input dan angka yang berlaku ditetapkan di
+`COFFEE_MANUAL_IMPLEMENTATION.md` bagian Batas validasi Phase 4. Batas yang sama
+harus dipakai oleh adapter persistence/import berikutnya.
 
 ### 18.1 General text normalization
 

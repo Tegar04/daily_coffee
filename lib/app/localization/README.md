@@ -1,5 +1,7 @@
 # Localization boundary
 
-Bahasa Indonesia adalah bahasa awal. Resource localization dan generated
-localizations akan ditambahkan bersama app shell; domain dan data layer tidak
-boleh mengembalikan pesan yang sudah dilokalkan.
+Copy produk MVP menggunakan Bahasa Indonesia. `DailyLocalizations` menyediakan
+Material localization delegates dan locale `id`/`en` mengikuti perangkat untuk
+format tanggal, kontrol, dan dialog bawaan. Resource ARB untuk copy produk dapat
+ditambahkan saat dibutuhkan; domain dan data layer tetap mengembalikan kontrak
+typed, bukan pesan yang sudah dilokalkan.
