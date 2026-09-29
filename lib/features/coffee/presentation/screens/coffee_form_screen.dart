@@ -1,10 +1,14 @@
+import 'package:daily_coffee/app/composition/image_providers.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
 import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:daily_coffee/core/errors/app_failure.dart';
 import 'package:daily_coffee/core/errors/result.dart';
+import 'package:daily_coffee/features/capture/application/capture_form_snapshot.dart';
+import 'package:daily_coffee/features/capture/presentation/coffee_photo_editor.dart';
 import 'package:daily_coffee/features/coffee/application/coffee_form_controller.dart';
 import 'package:daily_coffee/features/coffee/application/coffee_queries.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee.dart';
+import 'package:daily_coffee/features/coffee/domain/coffee_photo_edit.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_validation.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
 import 'package:daily_coffee/features/coffee/presentation/coffee_labels.dart';
@@ -75,6 +79,8 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
   final _tasting = TextEditingController();
   final _keys = {for (final field in CoffeeField.values) field: GlobalKey()};
   final _focus = {for (final field in CoffeeField.values) field: FocusNode()};
+  CoffeePhotoEdit? _photo;
+  var _photoBusy = false;
   var _expanded = false;
   var _allowLeave = false;
   var _confirming = false;
@@ -92,13 +98,14 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
   }
 
   bool _dirty(CoffeeFormState state) =>
+      _photo != null ||
       state.isDirty ||
       _variety.text.trim().isNotEmpty ||
       _tasting.text.trim().isNotEmpty;
 
   Future<void> _leave() async {
     final state = ref.read(_provider);
-    if (state.submitting || _confirming) return;
+    if (state.submitting || _photoBusy || _confirming) return;
     _confirming = true;
     final discard =
         !_dirty(state) ||
@@ -112,6 +119,16 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
         );
     _confirming = false;
     if (!discard || !mounted) return;
+    if (_photo?.replacement != null) {
+      try {
+        await (await ref.read(captureServiceProvider.future))
+            .discard(_photo!.replacement!.id);
+        if (mounted) ref.invalidate(recoveredCapturesProvider);
+      } catch (_) {
+        /* Retain recovery metadata if storage is unavailable. */
+      }
+    }
+    if (!mounted) return;
     setState(() => _allowLeave = true);
     await WidgetsBinding.instance.endOfFrame;
     if (!mounted) return;
@@ -123,7 +140,7 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
   }
 
   Future<void> _save() async {
-    if (ref.read(_provider).submitting) return;
+    if (ref.read(_provider).submitting || _photoBusy) return;
     FocusScope.of(context).unfocus();
     final controller = ref.read(_provider.notifier);
     final values = ref.read(_provider).values;
@@ -141,11 +158,14 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
     );
     _variety.clear();
     _tasting.clear();
-    final result = await controller.submit();
+    final result = await controller.submit(photo: _photo);
     if (!mounted) return;
     switch (result) {
       case Ok<Coffee>(:final value):
-        setState(() => _allowLeave = true);
+        setState(() {
+          _allowLeave = true;
+        });
+        ref.invalidate(recoveredCapturesProvider);
         await WidgetsBinding.instance.endOfFrame;
         if (!mounted) return;
         if (_initial != null && context.canPop()) {
@@ -254,6 +274,7 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
     return PopScope(
       canPop:
           !state.submitting &&
+          !_photoBusy &&
           (_allowLeave || !_dirty(state)) &&
           context.canPop(),
       onPopInvokedWithResult: (didPop, _) async {
@@ -265,7 +286,7 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
           leading: DailyIconButton(
             label: 'Kembali',
             icon: Icons.arrow_back,
-            onPressed: state.submitting ? null : _leave,
+            onPressed: state.submitting || _photoBusy ? null : _leave,
           ),
         ),
         body: DailyPageBody(
@@ -294,6 +315,56 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
                   children: [
                     _field(CoffeeField.name, state, required: true),
                     _field(CoffeeField.roastery, state, required: true),
+                    CoffeePhotoEditor(
+                      targetCoffeeId: _initial?.id.value,
+                      initialPath: _initial?.photos.firstOrNull?.localPath,
+                      initialPhotoId: _initial?.photos.firstOrNull?.id,
+                      edit: _photo,
+                      checkpoint: () {
+                        final current = ref.read(_provider);
+                        final values = current.values.withTags(
+                          varieties: CoffeeValidation.uniqueTags([
+                            ...current.values.varieties,
+                            if (_variety.text.trim().isNotEmpty) _variety.text,
+                          ]),
+                          tastingNotes: CoffeeValidation.uniqueTags([
+                            ...current.values.tastingNotes,
+                            if (_tasting.text.trim().isNotEmpty) _tasting.text,
+                          ]),
+                        );
+                        return {
+                          'values': encodeForm(values),
+                          'baseline': encodeForm(current.baseline),
+                          'expectedPhotoId': _photo == null
+                              ? _initial?.photos.firstOrNull?.id
+                              : _photo!.expectedPhotoId,
+                        };
+                      },
+                      onChanged: (photo) => setState(() => _photo = photo),
+                      onBusy: (busy) => setState(() => _photoBusy = busy),
+                      onRestore: (recovery) {
+                        final values = decodeForm(
+                          recovery.context['values'] as Map<String, dynamic>,
+                        );
+                        final baseline = decodeForm(
+                          recovery.context['baseline'] as Map<String, dynamic>,
+                        );
+                        controller.restore(values, baseline);
+                        for (final field in CoffeeField.values) {
+                          _text[field]!.text = values[field];
+                        }
+                        _variety.clear();
+                        _tasting.clear();
+                        setState(
+                          () => _photo = CoffeePhotoEdit(
+                            replacement: recovery.image,
+                            expectedPhotoId:
+                                recovery.context['expectedPhotoId'] as String?,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: DailySpacing.md),
                     _field(CoffeeField.originCountry, state),
                     ControlledValuePicker(
                       label: 'Proses',
@@ -410,7 +481,7 @@ class _CoffeeEditorState extends ConsumerState<_CoffeeEditor> {
               DailyPrimaryButton(
                 label: _initial == null ? 'Simpan kopi' : 'Simpan perubahan',
                 loading: state.submitting,
-                onPressed: _save,
+                onPressed: _photoBusy ? null : _save,
               ),
             ],
           ),

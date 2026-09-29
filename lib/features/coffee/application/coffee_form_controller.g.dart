@@ -59,7 +59,7 @@ final class CoffeeFormControllerProvider
 }
 
 String _$coffeeFormControllerHash() =>
-    r'8d3aebf2301c1bff4d49cae2ae116f8b99bfa0bd';
+    r'23f7016055d06aa16ab33c4f674476ac5fcda273';
 
 final class CoffeeFormControllerFamily extends $Family
     with

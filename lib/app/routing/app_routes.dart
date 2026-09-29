@@ -190,13 +190,7 @@ final appRoutes = <RouteBase>[
   GoRoute(
     path: '/coffee/capture',
     parentNavigatorKey: rootNavigatorKey,
-    builder: (context, state) => PlaceholderDetailScreen(
-      title: 'Ambil foto',
-      fallbackLocation: '/library',
-      subtitle: 'Pengambilan foto akan tersedia pada tahap berikutnya. Anda tetap dapat mengisi kopi secara manual.',
-      editLabel: 'Isi manual',
-      onEdit: () => const NewCoffeeRoute().push<void>(context),
-    ),
+    builder: (context, state) => const CoffeeFormScreen(),
   ),
   GoRoute(
     path: '/coffee/scan',

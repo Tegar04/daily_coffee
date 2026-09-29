@@ -7,11 +7,16 @@ import 'package:daily_coffee/core/database/daos/photo_dao.dart';
 import 'package:daily_coffee/core/errors/app_failure.dart';
 import 'package:daily_coffee/core/errors/result.dart';
 import 'package:daily_coffee/core/identifiers/app_id_generator.dart';
+import 'package:daily_coffee/core/images/image_maintenance.dart';
+import 'package:daily_coffee/core/images/image_storage.dart';
+import 'package:daily_coffee/core/images/managed_image.dart';
 import 'package:daily_coffee/core/time/app_clock.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee.dart';
+import 'package:daily_coffee/features/coffee/domain/coffee_photo_edit.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_repository.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_validation.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
+import 'package:drift/drift.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import 'coffee_aggregate_builder.dart';
@@ -22,6 +27,7 @@ final class DriftCoffeeRepository implements CoffeeRepository {
     required AppDatabase database,
     required AppClock clock,
     required AppIdGenerator ids,
+    this._imageStorage,
   }) : _db = database,
        _clock = clock,
        _ids = ids,
@@ -31,6 +37,7 @@ final class DriftCoffeeRepository implements CoffeeRepository {
        _builder = CoffeeAggregateBuilder(clock: clock, ids: ids);
   final AppDatabase _db;
   final AppClock _clock;
+  final Future<ImageStorage> Function()? _imageStorage;
   final AppIdGenerator _ids;
   final CoffeeDao _coffee;
   final JournalDao _journal;
@@ -107,25 +114,144 @@ final class DriftCoffeeRepository implements CoffeeRepository {
   }
 
   @override
-  Future<Result<Coffee>> create(CoffeeFormValues input) => _command(() async {
-    _validate(input);
-    return _write(
-      _builder.build(CoffeeId(_ids.generate()), input),
-      insert: true,
-    );
-  });
+  Future<Result<Coffee>> create(
+    CoffeeFormValues input, {
+    CoffeePhotoEdit? photo,
+  }) async {
+    try {
+      _validate(input);
+      return await _savePhoto(CoffeeId(_ids.generate()), photo, (id) async {
+        return _write(_builder.build(id, input), insert: true);
+      });
+    } catch (error) {
+      return Err(_failure(error));
+    }
+  }
 
   @override
   Future<Result<Coffee>> update(
     CoffeeId id,
     CoffeeFormValues input, {
     required CoffeeFormValues expected,
-  }) => _command(() async {
+    CoffeePhotoEdit? photo,
+  }) => _savePhoto(id, photo, (_) async {
     _validate(input);
     final previous = CoffeeMapper.fromRows(await _find(id));
     if (previous.toFormValues() != expected) throw const ConflictFailure();
     return _write(_builder.build(id, input, previous: previous));
   });
+
+  Future<Result<Coffee>> _savePhoto(
+    CoffeeId id,
+    CoffeePhotoEdit? edit,
+    Future<Coffee> Function(CoffeeId) write,
+  ) async {
+    ImageStorage? storage;
+    ManagedImage? candidate;
+    try {
+      if (edit?.replacement != null) {
+        storage = await _imageStorage?.call();
+        if (storage == null) throw const StorageFailure();
+        // Candidate is fully written before its database reference can commit.
+        candidate = await storage.promote(edit!.replacement!, id.value);
+      }
+      final result = await _command(() async {
+        final old = await _photo.forCoffee(id.value);
+        if (edit != null && old.firstOrNull?.id != edit.expectedPhotoId) {
+          throw const ConflictFailure();
+        }
+        await write(id);
+        if (edit != null) {
+          await _photo.queueCleanup(
+            old,
+            _clock.now().toUtc().microsecondsSinceEpoch,
+          );
+          await (_db.delete(
+            _db.coffeePhotos,
+          )..where((t) => t.coffeeId.equals(id.value))).go();
+          if (candidate case final image?) {
+            await _db
+                .into(_db.coffeePhotos)
+                .insert(
+                  CoffeePhotosCompanion.insert(
+                    id: image.id,
+                    coffeeId: id.value,
+                    localPath: image.localPath,
+                    role: 'cover',
+                    mimeType: 'image/jpeg',
+                    widthPixels: image.width,
+                    heightPixels: image.height,
+                    byteSize: image.byteSize,
+                    source: image.source,
+                    position: 0,
+                    createdAt: _clock.now().toUtc().microsecondsSinceEpoch,
+                  ),
+                );
+            await _db
+                .into(_db.fileCleanupTasks)
+                .insert(
+                  FileCleanupTasksCompanion.insert(
+                    id: _ids.generate(),
+                    localPath: edit.replacement!.localPath,
+                    createdAt: _clock.now().toUtc().microsecondsSinceEpoch,
+                  ),
+                  mode: InsertMode.insertOrIgnore,
+                );
+            await (_db.delete(
+              _db.coffeeDrafts,
+            )..where((t) => t.id.equals(image.id))).go();
+          }
+        }
+        return CoffeeMapper.fromRows(await _find(id));
+      });
+      if (result is Err<Coffee> && candidate != null) {
+        await _queueCandidate(candidate);
+      }
+      await _maintain();
+      return result;
+    } catch (error) {
+      // Also covers a copy interrupted between cover and thumbnail writes.
+      if (edit?.replacement case final image?) {
+        try {
+          await _db
+              .into(_db.fileCleanupTasks)
+              .insert(
+                FileCleanupTasksCompanion.insert(
+                  id: _ids.generate(),
+                  localPath: 'photos/${id.value}/${image.id}.jpg',
+                  createdAt: _clock.now().toUtc().microsecondsSinceEpoch,
+                ),
+                mode: InsertMode.insertOrIgnore,
+              );
+        } catch (_) {
+          /* Startup orphan scan is the final crash recovery layer. */
+        }
+      }
+      await _maintain();
+      return Err(_failure(error));
+    }
+  }
+
+  Future<void> _queueCandidate(ManagedImage image) => _db
+      .into(_db.fileCleanupTasks)
+      .insert(
+        FileCleanupTasksCompanion.insert(
+          id: _ids.generate(),
+          localPath: image.localPath,
+          createdAt: _clock.now().toUtc().microsecondsSinceEpoch,
+        ),
+        mode: InsertMode.insertOrIgnore,
+      )
+      .then((_) {});
+
+  Future<void> _maintain() async {
+    if (_imageStorage == null) return;
+    try {
+      await ImageMaintenance(_db, await _imageStorage()).runQueue();
+    } catch (_) {
+      /* Cleanup failure must not turn committed writes into failure. */
+    }
+  }
 
   @override
   Future<Result<Coffee>> setFavorite(CoffeeId id, bool favorite) =>
@@ -156,18 +282,21 @@ final class DriftCoffeeRepository implements CoffeeRepository {
       _command(() => _impact(id));
 
   @override
-  Future<Result<void>> delete(CoffeeDeleteImpact confirmedImpact) =>
-      _command(() async {
-        final current = await _impact(confirmedImpact.coffeeId);
-        if (current != confirmedImpact) throw const ConflictFailure();
-        await _photo.queueCleanup(
-          await _photo.forCoffee(current.coffeeId.value),
-          _clock.now().toUtc().microsecondsSinceEpoch,
-        );
-        await _photo.queueEditDraftCleanup(
-          current.coffeeId.value,
-          _clock.now().toUtc().microsecondsSinceEpoch,
-        );
-        await _coffee.delete(current.coffeeId.value);
-      });
+  Future<Result<void>> delete(CoffeeDeleteImpact confirmedImpact) async {
+    final result = await _command<void>(() async {
+      final current = await _impact(confirmedImpact.coffeeId);
+      if (current != confirmedImpact) throw const ConflictFailure();
+      await _photo.queueCleanup(
+        await _photo.forCoffee(current.coffeeId.value),
+        _clock.now().toUtc().microsecondsSinceEpoch,
+      );
+      await _photo.queueEditDraftCleanup(
+        current.coffeeId.value,
+        _clock.now().toUtc().microsecondsSinceEpoch,
+      );
+      await _coffee.delete(current.coffeeId.value);
+    });
+    await _maintain();
+    return result;
+  }
 }

@@ -1437,3 +1437,24 @@ Setelah data model disetujui, `TECHNICAL_ARCHITECTURE.md` dapat menetapkan:
 - Test pyramid dan fixtures.
 
 Arsitektur harus mengikuti model ini; tidak boleh mengubah domain hanya untuk menyesuaikan keterbatasan package tanpa keputusan yang terdokumentasi.
+
+
+## 35. Phase 6 Physical Image Policy - 29 September 2026
+
+Schema v1 tetap berlaku. `CoffeePhoto.localPath` menunjuk cover JPEG permanen di
+`photos/<coffee-id>/<photo-id>.jpg`. Thumbnail disposable memakai suffix
+`.thumb.jpg` pada path tersebut dan dapat diregenerasi; tidak memerlukan column
+baru. `DM-OPEN-006` menggunakan JPEG quality 90 dengan longest edge 2400 px;
+thumbnail quality 80 / 480 px. Original tidak diduplikasi permanen. Kualitas label
+untuk OCR tetap perlu dievaluasi pada Phase 7.
+
+`CoffeeDraft` dengan `failureCategory = photo_session` memiliki staging image dan
+sidecar checkpoint form sementara di `drafts/<operation-id>/`. Penanda ini internal
+untuk membedakan recovery acquisition dari workflow OCR. Pending native-picker ID
+berada pada maintenance sidecar; tidak menjadi permanent domain data. Draft dan
+reference staging dilepas dalam transaksi penyimpanan coffee/foto yang sama.
+`FileCleanupTask` kini dieksekusi setelah commit, memeriksa reference sebelum
+penghapusan cover, thumbnail, dan sidecar draft.
+
+Lihat [IMAGE_HANDLING_IMPLEMENTATION.md](IMAGE_HANDLING_IMPLEMENTATION.md) untuk
+lifecycle, recovery, batas checkpoint, dan test.

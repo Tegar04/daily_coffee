@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'app_providers.dart';
 import 'database_providers.dart';
+import 'image_providers.dart';
 
 part 'coffee_providers.g.dart';
 
@@ -13,5 +14,6 @@ CoffeeRepository coffeeRepository(Ref ref) {
     database: ref.watch(appDatabaseProvider),
     clock: ref.watch(appClockProvider),
     ids: ref.watch(appIdGeneratorProvider),
+    imageStorage: () => ref.read(imageStorageProvider.future),
   );
 }

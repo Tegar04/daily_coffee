@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:daily_coffee/app/composition/image_providers.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
 import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:daily_coffee/core/errors/result.dart';
@@ -38,6 +39,17 @@ class _CoffeeLibraryScreenState extends ConsumerState<CoffeeLibraryScreen> {
         Text('Tambah kopi', style: Theme.of(sheetContext).textTheme.titleLarge),
         const SizedBox(height: DailySpacing.sm),
         const Text('Isi informasi dari kemasan kopi Anda.'),
+        ListTile(
+          leading: const Icon(Icons.add_a_photo_outlined),
+          title: const Text('Tambah dengan foto'),
+          subtitle: const Text(
+            'Ambil atau pilih foto, lalu isi informasi kopi',
+          ),
+          onTap: () async {
+            Navigator.pop(sheetContext);
+            await const CaptureRoute().push<void>(context);
+          },
+        ),
         ListTile(
           leading: const Icon(Icons.edit_outlined),
           title: const Text('Isi manual'),
@@ -85,7 +97,30 @@ class _CoffeeLibraryScreenState extends ConsumerState<CoffeeLibraryScreen> {
       _ => _lastGood ?? <Coffee>[],
     };
     return Scaffold(
-      appBar: const DailyAppBar(title: 'Koleksi'),
+      appBar: DailyAppBar(
+        title: 'Koleksi',
+        actions: [
+          if (ref.watch(recoveredCapturesProvider).asData?.value.isNotEmpty ==
+              true)
+            DailyIconButton(
+              label: 'Pulihkan foto sebelumnya',
+              icon: Icons.restore,
+              onPressed: () {
+                final target = ref
+                    .read(recoveredCapturesProvider)
+                    .asData!
+                    .value
+                    .first
+                    .targetCoffeeId;
+                if (target == null) {
+                  const NewCoffeeRoute().go(context);
+                } else {
+                  EditCoffeeRoute(coffeeId: target).go(context);
+                }
+              },
+            ),
+        ],
+      ),
       body: query.when(
         data: (result) => switch (result) {
           Ok<List<Coffee>>(:final value) =>
@@ -185,12 +220,25 @@ class _CoffeeGrid extends StatelessWidget {
         (details.roastLevel == null
             ? null
             : details.roastLevelCustom ?? roastLevelLabel(details.roastLevel!));
-    return CoffeeLibraryCard(
-      name: details.name,
-      roastery: details.roastery,
-      metadata: [?metadata, if (coffee.isFavorite) 'Favorit'],
-      onTap: () =>
-          CoffeeDetailRoute(coffeeId: coffee.id.value).push<void>(context),
+    return Consumer(
+      builder: (context, ref, _) => CoffeeLibraryCard(
+        image: coffee.photos.isEmpty
+            ? null
+            : ref
+                  .watch(
+                    managedPhotoProvider(
+                      coffee.photos.first.localPath,
+                      thumbnail: true,
+                    ),
+                  )
+                  .asData
+                  ?.value,
+        name: details.name,
+        roastery: details.roastery,
+        metadata: [?metadata, if (coffee.isFavorite) 'Favorit'],
+        onTap: () =>
+            CoffeeDetailRoute(coffeeId: coffee.id.value).push<void>(context),
+      ),
     );
   }
 }

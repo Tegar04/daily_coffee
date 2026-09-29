@@ -5,6 +5,7 @@ import 'package:daily_coffee/core/errors/result.dart';
 import 'package:daily_coffee/core/identifiers/app_id_generator.dart';
 import 'package:daily_coffee/core/time/app_clock.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee.dart';
+import 'package:daily_coffee/features/coffee/domain/coffee_photo_edit.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_repository.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_validation.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
@@ -64,7 +65,11 @@ class InMemoryCoffeeRepository implements CoffeeRepository {
   }
 
   @override
-  Future<Result<Coffee>> create(CoffeeFormValues input) async {
+  Future<Result<Coffee>> create(
+    CoffeeFormValues input, {
+    CoffeePhotoEdit? photo,
+  }) async {
+    if (photo != null) return const Err(StorageFailure());
     if (!_valid(input)) return const Err(ValidationFailure());
     try {
       final id = CoffeeId(_ids.generate());
@@ -85,7 +90,9 @@ class InMemoryCoffeeRepository implements CoffeeRepository {
     CoffeeId id,
     CoffeeFormValues input, {
     required CoffeeFormValues expected,
+    CoffeePhotoEdit? photo,
   }) async {
+    if (photo != null) return const Err(StorageFailure());
     if (!_valid(input)) return const Err(ValidationFailure());
     final previous = _coffees[id];
     if (previous == null) return const Err(NotFoundFailure());

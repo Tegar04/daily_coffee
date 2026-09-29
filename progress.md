@@ -268,20 +268,50 @@ APK normal: `build/app/outputs/flutter-apk/app-debug.apk`.
 
 ## Phase 6 — Image Handling
 
-- [ ] Pasang dependency camera/gallery, path provider, dan image processing yang dipilih.
-- [ ] Implementasikan pengambilan foto dari kamera dan Android Photo Picker.
-- [ ] Minta permission hanya saat fitur digunakan dan sediakan fallback manual.
-- [ ] Tambahkan preview, retake/reselect, crop/rotate bila diperlukan, serta kompresi terukur.
-- [ ] Simpan original/processed image ke app-managed storage dengan nama/path terkelola.
-- [ ] Simpan hanya metadata/path yang diperlukan di database.
-- [ ] Buat thumbnail untuk collection tanpa memuat image resolusi penuh.
-- [ ] Tangani pembatalan picker, app interruption, file hilang, dan permission denied.
-- [ ] Implementasikan cleanup untuk temporary/orphan files dan penghapusan coffee.
+- [x] Pasang dependency camera/gallery, path provider, dan image processing yang dipilih.
+- [x] Implementasikan pengambilan foto dari kamera dan Android Photo Picker.
+- [x] Minta permission hanya saat fitur digunakan dan sediakan fallback manual.
+- [x] Tambahkan preview, retake/reselect, crop/rotate bila diperlukan, serta kompresi terukur.
+- [x] Simpan original/processed image ke app-managed storage dengan nama/path terkelola.
+- [x] Simpan hanya metadata/path yang diperlukan di database.
+- [x] Buat thumbnail untuk collection tanpa memuat image resolusi penuh.
+- [x] Tangani pembatalan picker, app interruption, file hilang, dan permission denied.
+- [x] Implementasikan cleanup untuk temporary/orphan files dan penghapusan coffee.
 
 **Definition of Done**
 
-- [ ] Coffee dapat memiliki foto yang tetap tersedia setelah restart.
-- [ ] Kegagalan kamera/file tidak merusak record database dan tidak memblokir input manual.
+- [x] Coffee dapat memiliki foto yang tetap tersedia setelah restart.
+- [x] Kegagalan kamera/file tidak merusak record database dan tidak memblokir input manual.
+
+**Verifikasi 29 September 2026:** `tool/quality_check.ps1` lulus seluruhnya:
+dependency resolution, code generation, format, `flutter analyze` tanpa issue,
+**90 test** (termasuk 5 golden), dan debug APK. `git diff --check` lulus.
+
+**QA Android:** tiga tahap integration test (`seed`, `verify`, `deleted`) lulus
+pada Android emulator dengan UI dan production Drift/filesystem. Force-stop
+antartahap membuktikan persistensi foto dan hasil delete; acquisition pada test
+ini memakai fixture adapter deterministik.
+
+**QA native Pixel 7:** kamera sistem berhasil capture ke preview dan dibatalkan;
+Android Photo Picker berhasil memilih label fixture. Force-stop saat preview
+belum disimpan diikuti pemulihan foto serta nama/roastery melalui konfirmasi
+pengguna. Coffee hasil recovery berhasil disimpan; cover/thumbnail tampil setelah
+restart. Delete via UI menghapus kedua file dan temporary sidecars. Fixture QA
+dibersihkan. Preview kamera, galeri, form golden, dan collection diperiksa visual.
+
+**Cakupan:** satu cover opsional; preview/retake/reselect/replace/remove; validasi
+JPEG/PNG/WebP, batas input dan header JPEG sebelum alokasi besar; normalisasi EXIF;
+processing di isolate; thumbnail; managed relative paths; transaksi metadata
+beserta compensation; checkpoint dan lost-result association; cleanup dengan
+reference check dan retry. Schema tetap v1.
+
+**Keputusan/batas:** kamera sistem memakai `image_picker`; custom camera,
+crop/rotate manual opsional, dan duplikasi original permanen tidak ditambahkan.
+Cover JPEG 2400 px / quality 90; thumbnail 480 px / quality 80. Checkpoint dibuat
+sebelum picker, bukan autosave setiap field. OCR tetap Phase 7-8. Hardware kamera
+fisik, TalkBack, low-storage nyata, dan seluruh variasi OEM belum diverifikasi.
+Panduan: [`docs/IMAGE_HANDLING_IMPLEMENTATION.md`](docs/IMAGE_HANDLING_IMPLEMENTATION.md).
+APK normal: `build/app/outputs/flutter-apk/app-debug.apk`.
 
 ## Phase 7 — OCR Scanning
 

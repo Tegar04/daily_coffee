@@ -1977,3 +1977,20 @@ Flutter Android
 ```
 
 Arsitektur ini harus berkembang melalui measured requirement, profiling, dan ADR—bukan melalui abstraction spekulatif.
+
+
+## 39. Phase 6 Image Handling Decision - 29 September 2026
+
+Still-photo MVP memakai kamera sistem melalui `image_picker`, bukan live preview
+custom dengan package `camera`. `PhotoPickerGateway` membungkus kamera dan Android
+Photo Picker serta lost-result recovery. Tidak ada permission storage luas atau
+mikrofon. Kebutuhan custom camera dapat mengganti adapter pada fase berikutnya.
+
+`core/images` menyediakan isolate processing, managed storage, dan cleanup.
+Draft foto ditempatkan di app-support agar tidak bergantung pada OS cache.
+Cover JPEG 2400 px / quality 90 dan thumbnail 480 px / quality 80 menjadi baseline
+awal; raw original tidak diduplikasi permanen. Crop/rotate manual opsional ditunda.
+`ARCH-OPEN-005` memakai baseline ini dan dievaluasi lagi dengan fixture OCR Phase 7.
+
+Kebijakan staged write, exact draft association, checkpoint form, failure recovery,
+dan verifikasi: [IMAGE_HANDLING_IMPLEMENTATION.md](IMAGE_HANDLING_IMPLEMENTATION.md).

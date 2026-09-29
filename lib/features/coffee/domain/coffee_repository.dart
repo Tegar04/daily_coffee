@@ -1,6 +1,7 @@
 import 'package:daily_coffee/core/errors/result.dart';
 
 import 'coffee.dart';
+import 'coffee_photo_edit.dart';
 import 'coffee_values.dart';
 
 final class CoffeeDeleteImpact {
@@ -30,11 +31,15 @@ final class CoffeeDeleteImpact {
 abstract interface class CoffeeRepository {
   Stream<Result<List<Coffee>>> watchLibrary();
   Stream<Result<Coffee?>> watchCoffee(CoffeeId id);
-  Future<Result<Coffee>> create(CoffeeFormValues input);
+  Future<Result<Coffee>> create(
+    CoffeeFormValues input, {
+    CoffeePhotoEdit? photo,
+  });
   Future<Result<Coffee>> update(
     CoffeeId id,
     CoffeeFormValues input, {
     required CoffeeFormValues expected,
+    CoffeePhotoEdit? photo,
   });
   Future<Result<Coffee>> setFavorite(CoffeeId id, bool favorite);
   Future<Result<CoffeeDeleteImpact>> inspectDeleteImpact(CoffeeId id);

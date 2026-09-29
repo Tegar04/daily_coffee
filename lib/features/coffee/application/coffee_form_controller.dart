@@ -2,6 +2,7 @@ import 'package:daily_coffee/app/composition/coffee_providers.dart';
 import 'package:daily_coffee/core/errors/app_failure.dart';
 import 'package:daily_coffee/core/errors/result.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee.dart';
+import 'package:daily_coffee/features/coffee/domain/coffee_photo_edit.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_validation.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -44,7 +45,13 @@ class CoffeeFormController extends _$CoffeeFormController {
   void setField(CoffeeField field, String value) =>
       change(state.values.set(field, value));
 
-  Future<Result<Coffee>> submit() async {
+  void restore(CoffeeFormValues values, CoffeeFormValues baseline) {
+    if (!state.submitting) {
+      state = CoffeeFormState(values: values, baseline: baseline);
+    }
+  }
+
+  Future<Result<Coffee>> submit({CoffeePhotoEdit? photo}) async {
     if (state.submitting) return const Err(ConflictFailure());
     final values = state.values;
     final errors = CoffeeValidation.validate(values);
@@ -70,11 +77,12 @@ class CoffeeFormController extends _$CoffeeFormController {
     try {
       final repository = ref.read(coffeeRepositoryProvider);
       result = initial == null
-          ? await repository.create(values)
+          ? await repository.create(values, photo: photo)
           : await repository.update(
               initial!.id,
               values,
               expected: state.baseline,
+              photo: photo,
             );
     } catch (_) {
       result = const Err(UnexpectedFailure());

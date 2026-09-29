@@ -6,6 +6,7 @@ import 'package:daily_coffee/core/errors/result.dart';
 import 'package:daily_coffee/core/identifiers/app_id_generator.dart';
 import 'package:daily_coffee/features/coffee/data/in_memory_coffee_repository.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee.dart';
+import 'package:daily_coffee/features/coffee/domain/coffee_photo_edit.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_repository.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
 
@@ -40,10 +41,15 @@ class TestCoffeeRepository extends InMemoryCoffeeRepository {
       ? Stream.value(const Err(StorageFailure()))
       : super.watchCoffee(id);
   @override
-  Future<Result<Coffee>> create(CoffeeFormValues input) async {
+  Future<Result<Coffee>> create(
+    CoffeeFormValues input, {
+    CoffeePhotoEdit? photo,
+  }) async {
     createCalls++;
     if (createGate != null) await createGate!.future;
-    return writeFailure == null ? super.create(input) : Err(writeFailure!);
+    return writeFailure == null
+        ? super.create(input, photo: photo)
+        : Err(writeFailure!);
   }
 
   @override
@@ -51,8 +57,9 @@ class TestCoffeeRepository extends InMemoryCoffeeRepository {
     CoffeeId id,
     CoffeeFormValues input, {
     required CoffeeFormValues expected,
+    CoffeePhotoEdit? photo,
   }) async => writeFailure == null
-      ? super.update(id, input, expected: expected)
+      ? super.update(id, input, expected: expected, photo: photo)
       : Err(writeFailure!);
   @override
   Future<Result<void>> delete(CoffeeDeleteImpact confirmedImpact) {

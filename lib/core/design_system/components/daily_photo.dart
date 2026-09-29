@@ -9,11 +9,13 @@ class DailyPhoto extends StatelessWidget {
     required this.label,
     this.image,
     this.aspectRatio = DailySizes.photoRatio,
+    this.fit = BoxFit.cover,
     super.key,
   });
   final String label;
   final ImageProvider<Object>? image;
   final double aspectRatio;
+  final BoxFit fit;
   @override
   Widget build(BuildContext context) => Semantics(
     image: true,
@@ -27,7 +29,7 @@ class DailyPhoto extends StatelessWidget {
               ? _fallback(context)
               : Image(
                   image: image!,
-                  fit: BoxFit.cover,
+                  fit: fit,
                   frameBuilder: (context, child, frame, synchronous) =>
                       synchronous || frame != null ? child : _fallback(context),
                   errorBuilder: (context, error, stack) => _fallback(context),

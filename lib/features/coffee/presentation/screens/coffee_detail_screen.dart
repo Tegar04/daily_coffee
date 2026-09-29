@@ -1,3 +1,4 @@
+import 'package:daily_coffee/app/composition/image_providers.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
 import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:daily_coffee/core/errors/app_failure.dart';
@@ -175,7 +176,16 @@ class _CoffeeDetailScreenState extends ConsumerState<CoffeeDetailScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        DailyPhoto(label: 'Kemasan ${d.name}', aspectRatio: 4 / 3),
+        DailyPhoto(
+          label: 'Kemasan ${d.name}',
+          aspectRatio: 4 / 3,
+          image: coffee.photos.isEmpty
+              ? null
+              : ref
+                    .watch(managedPhotoProvider(coffee.photos.first.localPath))
+                    .asData
+                    ?.value,
+        ),
         const SizedBox(height: DailySpacing.lg),
         Text(d.name, style: Theme.of(context).textTheme.headlineLarge),
         const SizedBox(height: DailySpacing.sm),
