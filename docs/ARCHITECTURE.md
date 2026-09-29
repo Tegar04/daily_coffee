@@ -637,8 +637,9 @@ Repository adalah source-of-truth boundary untuk satu domain area.
 
 ### 9.1 Coffee repository contract
 
-Implementasi Phase 4 dijelaskan di `COFFEE_MANUAL_IMPLEMENTATION.md`. Adapter
-sementara menggunakan in-memory storage, `CoffeeFormValues` untuk snapshot manual,
+Implementasi Phase 4 dijelaskan di `COFFEE_MANUAL_IMPLEMENTATION.md`; Phase 5
+mengganti adapter produksi dengan Drift (lihat `LOCAL_PERSISTENCE_IMPLEMENTATION.md`).
+Kontrak tetap menggunakan `CoffeeFormValues` untuk snapshot manual,
 typed `Result` pada stream query, dan explicit `setFavorite`. Update memeriksa
 snapshot awal; delete menerima `CoffeeDeleteImpact` terkonfirmasi dan memeriksa
 revision/dampak secara atomik. Contoh berikut menunjukkan semantics repository,

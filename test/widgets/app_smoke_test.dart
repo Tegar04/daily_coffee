@@ -1,9 +1,12 @@
 import 'package:daily_coffee/app/bootstrap/app_bootstrap.dart';
 import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
+import 'package:daily_coffee/app/composition/coffee_providers.dart';
+import 'package:daily_coffee/app/composition/database_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import '../helpers/coffee_fakes.dart';
 import '../helpers/test_doubles.dart';
 
 void main() {
@@ -18,6 +21,12 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          databaseInitializationProvider.overrideWith((ref) async {}),
+          coffeeRepositoryProvider.overrideWith((ref) {
+            final repository = TestCoffeeRepository();
+            ref.onDispose(repository.dispose);
+            return repository;
+          }),
           appPreferencesProvider.overrideWithValue(
             FakeAppPreferences(hasCompletedOnboarding: false),
           ),
@@ -45,6 +54,12 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          databaseInitializationProvider.overrideWith((ref) async {}),
+          coffeeRepositoryProvider.overrideWith((ref) {
+            final repository = TestCoffeeRepository();
+            ref.onDispose(repository.dispose);
+            return repository;
+          }),
           appPreferencesProvider.overrideWithValue(FakeAppPreferences()),
         ],
         child: const DailyCoffeeBootstrap(),
@@ -61,7 +76,15 @@ void main() {
     final preferences = FakeAppPreferences(hasCompletedOnboarding: false);
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [appPreferencesProvider.overrideWithValue(preferences)],
+        overrides: [
+          databaseInitializationProvider.overrideWith((ref) async {}),
+          coffeeRepositoryProvider.overrideWith((ref) {
+            final repository = TestCoffeeRepository();
+            ref.onDispose(repository.dispose);
+            return repository;
+          }),
+          appPreferencesProvider.overrideWithValue(preferences),
+        ],
         child: const DailyCoffeeBootstrap(),
       ),
     );
@@ -81,7 +104,15 @@ void main() {
     final preferences = FakeAppPreferences();
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [appPreferencesProvider.overrideWithValue(preferences)],
+        overrides: [
+          databaseInitializationProvider.overrideWith((ref) async {}),
+          coffeeRepositoryProvider.overrideWith((ref) {
+            final repository = TestCoffeeRepository();
+            ref.onDispose(repository.dispose);
+            return repository;
+          }),
+          appPreferencesProvider.overrideWithValue(preferences),
+        ],
         child: const DailyCoffeeBootstrap(),
       ),
     );
@@ -108,6 +139,12 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          databaseInitializationProvider.overrideWith((ref) async {}),
+          coffeeRepositoryProvider.overrideWith((ref) {
+            final repository = TestCoffeeRepository();
+            ref.onDispose(repository.dispose);
+            return repository;
+          }),
           appPreferencesProvider.overrideWithValue(FakeAppPreferences()),
         ],
         child: const DailyCoffeeBootstrap(),

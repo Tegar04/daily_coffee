@@ -227,21 +227,44 @@ Panduan implementasi dan QA:
 
 ## Phase 5 — Local Persistence: Drift/SQLite
 
-- [ ] Pasang dan konfigurasi Drift/SQLite beserta code generation.
-- [ ] Implementasikan schema sesuai `DATA_MODEL.md`, termasuk Coffee, Variety, Tasting Note, Photo, Draft, dan Journal.
-- [ ] Aktifkan foreign key dan definisikan aturan referential integrity/cascade secara eksplisit.
-- [ ] Buat DAO berdasarkan batas feature, bukan satu DAO besar.
-- [ ] Implementasikan mapper table ↔ domain dan Drift-backed repositories.
-- [ ] Gunakan transaction untuk operasi multi-table.
-- [ ] Tambahkan migration strategy, schema version, dan migration test.
-- [ ] Ganti fake repository dengan local repository melalui provider injection.
-- [ ] Uji data tetap ada setelah aplikasi ditutup dan dibuka kembali.
+- [x] Pasang dan konfigurasi Drift/SQLite beserta code generation.
+- [x] Implementasikan schema sesuai `DATA_MODEL.md`, termasuk Coffee, Variety, Tasting Note, Photo, Draft, dan Journal.
+- [x] Aktifkan foreign key dan definisikan aturan referential integrity/cascade secara eksplisit.
+- [x] Buat DAO berdasarkan batas feature, bukan satu DAO besar.
+- [x] Implementasikan mapper table ↔ domain dan Drift-backed repositories.
+- [x] Gunakan transaction untuk operasi multi-table.
+- [x] Tambahkan migration strategy, schema version, dan migration test.
+- [x] Ganti fake repository dengan local repository melalui provider injection.
+- [x] Uji data tetap ada setelah aplikasi ditutup dan dibuka kembali.
 
 **Definition of Done**
 
-- [ ] Drift menjadi source of truth untuk data persisten.
-- [ ] CRUD coffee tetap bekerja setelah restart aplikasi.
-- [ ] Database, repository, constraint, dan migration utama memiliki automated test.
+- [x] Drift menjadi source of truth untuk data persisten.
+- [x] CRUD coffee tetap bekerja setelah restart aplikasi.
+- [x] Database, repository, constraint, dan migration utama memiliki automated test.
+
+**Verifikasi 28 September 2026:** `tool/quality_check.ps1` lulus seluruhnya:
+dependency resolution, code generation, format, `flutter analyze` tanpa issue,
+**75 test** (termasuk 5 golden), dan debug APK. `git diff --check` lulus.
+
+**QA Android:** tiga tahap integration test (`seed`, `verify`, `deleted`) lulus
+pada Pixel 7 / `emulator-5554`, memakai UI dan background SQLite connection
+produksi. Proses di-force-stop antartahap; data create/edit/favorite tetap ada,
+lalu hasil delete tetap bertahan setelah restart berikutnya. Runner memakai
+`--no-uninstall` agar data tidak dihapus oleh teardown Flutter.
+
+**Cakupan:** schema v1, FK/constraint/index, DAO per feature, mapper Coffee,
+`DriftCoffeeRepository`, transaksi/rollback, konfirmasi delete berbasis revision,
+antrean cleanup file, bootstrap dengan retry aman, dan snapshot/migration tests.
+Schema v1 adalah versi persisten pertama; belum ada versi lama untuk di-upgrade.
+Versi database tak didukung ditolak tanpa reset atau kehilangan data.
+
+**Batas fase:** foto baru berupa metadata/path dan antrean cleanup; eksekusi
+pipeline file tetap Phase 6. Schema/DAO draft dan journal siap, tetapi workflow
+review/promotion dan UI journal tetap Phase 7-9. Preferences tetap memakai
+`AppPreferences`. Perangkat fisik/TalkBack belum diuji pada fase ini.
+Panduan: [`docs/LOCAL_PERSISTENCE_IMPLEMENTATION.md`](docs/LOCAL_PERSISTENCE_IMPLEMENTATION.md).
+APK normal: `build/app/outputs/flutter-apk/app-debug.apk`.
 
 ## Phase 6 — Image Handling
 

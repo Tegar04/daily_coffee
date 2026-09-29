@@ -53,4 +53,4 @@ final class CoffeeRepositoryProvider
   }
 }
 
-String _$coffeeRepositoryHash() => r'978d16fa4ed76e5eb2973002b6ff36d682df06e1';
+String _$coffeeRepositoryHash() => r'a165e0f8621c6e78fb27cf5670b3c2e50bcf7bbb';

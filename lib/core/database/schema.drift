@@ -1,0 +1,97 @@
+import 'tables/app_tables.dart';
+
+
+CREATE INDEX coffees_query_0 ON coffees (created_at DESC, id);
+
+CREATE INDEX coffees_query_1 ON coffees (updated_at DESC);
+
+CREATE INDEX coffees_query_2 ON coffees (name_normalized);
+
+CREATE INDEX coffees_query_3 ON coffees (roastery_normalized);
+
+CREATE INDEX coffees_query_4 ON coffees (origin_country_normalized);
+
+CREATE INDEX coffees_query_5 ON coffees (process_normalized);
+
+CREATE INDEX coffees_query_6 ON coffees (roast_level_key);
+
+CREATE INDEX coffees_query_7 ON coffees (roast_date);
+
+CREATE INDEX journal_entries_query_0 ON journal_entries (coffee_id, brewed_at DESC);
+
+CREATE INDEX journal_entries_query_1 ON journal_entries (brewed_at DESC);
+
+CREATE INDEX journal_entries_query_2 ON journal_entries (brew_method_key);
+
+CREATE INDEX journal_entries_query_3 ON journal_entries (rating);
+
+CREATE INDEX coffee_drafts_query_0 ON coffee_drafts (status, updated_at);
+
+CREATE INDEX coffee_drafts_query_1 ON coffee_drafts (target_coffee_id);
+
+CREATE INDEX scan_extracted_fields_query_0 ON scan_extracted_fields (coffee_draft_id, field_key);
+
+CREATE TRIGGER coffee_revision AFTER UPDATE ON coffees
+WHEN NEW.revision = OLD.revision BEGIN
+  UPDATE coffees SET revision = revision + 1 WHERE id = NEW.id;
+END;
+
+CREATE TRIGGER coffee_varieties_insert_revision AFTER INSERT ON coffee_varieties BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER coffee_varieties_update_revision AFTER UPDATE ON coffee_varieties BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER coffee_varieties_delete_revision AFTER DELETE ON coffee_varieties BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;
+END;
+
+CREATE TRIGGER coffee_tasting_notes_insert_revision AFTER INSERT ON coffee_tasting_notes BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER coffee_tasting_notes_update_revision AFTER UPDATE ON coffee_tasting_notes BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER coffee_tasting_notes_delete_revision AFTER DELETE ON coffee_tasting_notes BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;
+END;
+
+CREATE TRIGGER coffee_photos_insert_revision AFTER INSERT ON coffee_photos BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER coffee_photos_update_revision AFTER UPDATE ON coffee_photos BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER coffee_photos_delete_revision AFTER DELETE ON coffee_photos BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;
+END;
+
+CREATE TRIGGER journal_entries_insert_revision AFTER INSERT ON journal_entries BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER journal_entries_update_revision AFTER UPDATE ON journal_entries BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;
+END;
+
+CREATE TRIGGER journal_entries_delete_revision AFTER DELETE ON journal_entries BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;
+END;
+
+CREATE TRIGGER journal_notes_insert_revision AFTER INSERT ON journal_tasting_notes BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = NEW.journal_entry_id);
+END;
+
+CREATE TRIGGER journal_notes_update_revision AFTER UPDATE ON journal_tasting_notes BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = OLD.journal_entry_id OR id = NEW.journal_entry_id);
+END;
+
+CREATE TRIGGER journal_notes_delete_revision AFTER DELETE ON journal_tasting_notes BEGIN
+ UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = OLD.journal_entry_id);
+END;

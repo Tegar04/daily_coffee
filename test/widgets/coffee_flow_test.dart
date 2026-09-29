@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:daily_coffee/app/bootstrap/app_bootstrap.dart';
 import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
 import 'package:daily_coffee/app/composition/coffee_providers.dart';
+import 'package:daily_coffee/app/composition/database_providers.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
 import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:daily_coffee/core/errors/app_failure.dart';
@@ -24,6 +25,7 @@ Future<void> pumpApp(
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
+        databaseInitializationProvider.overrideWith((ref) async {}),
         appPreferencesProvider.overrideWithValue(FakeAppPreferences()),
         coffeeRepositoryProvider.overrideWithValue(repository),
       ],
@@ -180,6 +182,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          databaseInitializationProvider.overrideWith((ref) async {}),
           appPreferencesProvider.overrideWithValue(FakeAppPreferences()),
           coffeeLibraryProvider.overrideWith((ref) => stream.stream),
         ],

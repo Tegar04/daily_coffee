@@ -1,6 +1,7 @@
 import 'package:daily_coffee/app/bootstrap/app_bootstrap.dart';
 import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
 import 'package:daily_coffee/app/composition/coffee_providers.dart';
+import 'package:daily_coffee/app/composition/database_providers.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
 import 'package:daily_coffee/features/coffee/presentation/screens/coffee_library_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            databaseInitializationProvider.overrideWith((ref) async {}),
             appPreferencesProvider.overrideWithValue(FakeAppPreferences()),
             coffeeRepositoryProvider.overrideWithValue(repository),
           ],

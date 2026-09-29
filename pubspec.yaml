@@ -47,6 +47,8 @@ dependencies:
   unorm_dart: 0.3.2
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 

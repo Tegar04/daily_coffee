@@ -9,7 +9,9 @@ import 'package:daily_coffee/features/coffee/domain/coffee_repository.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_validation.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
 
-/// Phase 4 session store. Phase 5 replaces this adapter with Drift.
+import 'coffee_aggregate_builder.dart';
+
+/// Test/preview adapter. Production uses DriftCoffeeRepository.
 class InMemoryCoffeeRepository implements CoffeeRepository {
   InMemoryCoffeeRepository({
     required this._clock,
@@ -55,80 +57,6 @@ class InMemoryCoffeeRepository implements CoffeeRepository {
       CoffeeValidation.validateTags(input.varieties) == null &&
       CoffeeValidation.validateTags(input.tastingNotes) == null;
 
-  Coffee _build(
-    CoffeeId id,
-    CoffeeFormValues input, {
-    Coffee? previous,
-    bool? favorite,
-  }) {
-    final clockNow = _clock.now().toUtc();
-    final now = previous != null && clockNow.isBefore(previous.updatedAt)
-        ? previous.updatedAt
-        : clockNow;
-    final varieties = CoffeeValidation.uniqueTags(input.varieties);
-    final notes = CoffeeValidation.uniqueTags(input.tastingNotes);
-    CoffeeTag? existing(List<CoffeeTag> tags, String value) {
-      for (final tag in tags) {
-        if (tag.normalizedValue == normalizeCoffeeText(value)) return tag;
-      }
-      return null;
-    }
-
-    final details = CoffeeValidation.details(input);
-    return Coffee(
-      id: id,
-      details: details,
-      createdAt: previous?.createdAt ?? now,
-      updatedAt: now,
-      isFavorite: favorite ?? previous?.isFavorite ?? false,
-      // Invalidate derived provenance only when its source has changed.
-      originCountryCode:
-          previous?.details.originCountry == details.originCountry
-          ? previous?.originCountryCode
-          : null,
-      altitudeSourceText:
-          previous?.details.altitudeMinMeters == details.altitudeMinMeters &&
-              previous?.details.altitudeMaxMeters == details.altitudeMaxMeters
-          ? previous?.altitudeSourceText
-          : null,
-      photos: previous?.photos ?? const [],
-      varieties: [
-        for (var i = 0; i < varieties.length; i++)
-          CoffeeVariety(
-            id:
-                existing(previous?.varieties ?? const [], varieties[i])?.id ??
-                _ids.generate(),
-            coffeeId: id,
-            displayValue: varieties[i],
-            position: i,
-            createdAt:
-                existing(
-                  previous?.varieties ?? const [],
-                  varieties[i],
-                )?.createdAt ??
-                now,
-          ),
-      ],
-      tastingNotes: [
-        for (var i = 0; i < notes.length; i++)
-          CoffeeTastingNote(
-            id:
-                existing(previous?.tastingNotes ?? const [], notes[i])?.id ??
-                _ids.generate(),
-            coffeeId: id,
-            displayValue: notes[i],
-            position: i,
-            createdAt:
-                existing(
-                  previous?.tastingNotes ?? const [],
-                  notes[i],
-                )?.createdAt ??
-                now,
-          ),
-      ],
-    );
-  }
-
   void _commit(Coffee coffee) {
     _coffees[coffee.id] = coffee;
     _revisions.update(coffee.id, (value) => value + 1, ifAbsent: () => 1);
@@ -141,7 +69,10 @@ class InMemoryCoffeeRepository implements CoffeeRepository {
     try {
       final id = CoffeeId(_ids.generate());
       if (_coffees.containsKey(id)) return const Err(ConflictFailure());
-      final coffee = _build(id, input);
+      final coffee = CoffeeAggregateBuilder(
+        clock: _clock,
+        ids: _ids,
+      ).build(id, input);
       _commit(coffee);
       return Ok(coffee);
     } catch (_) {
@@ -162,7 +93,10 @@ class InMemoryCoffeeRepository implements CoffeeRepository {
       return const Err(ConflictFailure());
     }
     try {
-      final coffee = _build(id, input, previous: previous);
+      final coffee = CoffeeAggregateBuilder(
+        clock: _clock,
+        ids: _ids,
+      ).build(id, input, previous: previous);
       _commit(coffee);
       return Ok(coffee);
     } catch (_) {
@@ -175,7 +109,7 @@ class InMemoryCoffeeRepository implements CoffeeRepository {
     final previous = _coffees[id];
     if (previous == null) return const Err(NotFoundFailure());
     try {
-      final coffee = _build(
+      final coffee = CoffeeAggregateBuilder(clock: _clock, ids: _ids).build(
         id,
         previous.toFormValues(),
         previous: previous,

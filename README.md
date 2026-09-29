@@ -105,11 +105,18 @@ Preview menggunakan data contoh terpisah. Aplikasi utama dijalankan dengan
 
 Tambah, lihat, edit, favorite, dan hapus kopi tersedia melalui koleksi. Form manual
 dapat digunakan offline, dengan validasi dan konfirmasi perubahan/penghapusan.
-Saat ini repository masih **in-memory: data hilang setelah proses aplikasi ditutup
-atau hot restart**. Penyimpanan Drift/SQLite masuk Phase 5.
+Mulai Phase 5, repository produksi menggunakan **Drift/SQLite**. Data tersimpan
+lokal dan tetap tersedia setelah proses aplikasi ditutup atau hot restart.
 
 Panduan struktur, batas validasi, kontrak delete, dan manual QA tersedia di
 [`COFFEE_MANUAL_IMPLEMENTATION.md`](docs/COFFEE_MANUAL_IMPLEMENTATION.md).
+
+## Local persistence (Phase 5)
+
+Schema, constraint, transaksi, migration v1, provider lifecycle, dan instruksi
+pengujian restart Android dijelaskan di
+[`LOCAL_PERSISTENCE_IMPLEMENTATION.md`](docs/LOCAL_PERSISTENCE_IMPLEMENTATION.md).
+Foto disimpan sebagai metadata/path; pipeline file dan cleanup worker masuk Phase 6.
 
 ## Konvensi
 

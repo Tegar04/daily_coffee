@@ -1,5 +1,9 @@
 # Coffee MVP manual — Phase 4
 
+> Catatan lanjutan: mulai Phase 5, aplikasi produksi memakai Drift/SQLite dan data
+> bertahan setelah restart. Keterangan in-memory di bawah adalah baseline historis
+> Phase 4. Lihat [Local Persistence](LOCAL_PERSISTENCE_IMPLEMENTATION.md).
+
 Urutan fase mengacu pada `progress.md`. Implementasi ini menyelesaikan alur manual
 melalui repository in-memory. Data hanya hidup dalam sesi aplikasi; menutup proses
 atau hot restart mengosongkan koleksi. Persistence Drift/SQLite tetap Phase 5.

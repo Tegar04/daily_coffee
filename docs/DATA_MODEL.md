@@ -1408,7 +1408,21 @@ Jika kebutuhan baru tidak cocok dengan model ini, usulkan perubahan beserta card
 
 ---
 
-## 33. Recommended Next Step
+## 33. Physical mapping Phase 5
+
+Implementasi schema v1 dan mapping seluruh tabel didokumentasikan di
+[`LOCAL_PERSISTENCE_IMPLEMENTATION.md`](LOCAL_PERSISTENCE_IMPLEMENTATION.md).
+Tambahan metadata teknis: `Coffee.revision` untuk mendeteksi perubahan graph saat
+konfirmasi delete, `JournalEntry.brewedAtOffsetMinutes` untuk mempertahankan offset
+waktu, dan `FileCleanupTask` untuk antrean cleanup setelah commit. Metadata ini
+tidak menambah field input pengguna atau mengubah arti aggregate.
+
+Edit draft memiliki FK `targetCoffeeId` dan ikut cascade saat target dihapus;
+temporary image reference-nya diantrekan untuk cleanup dalam transaction yang
+sama. Draft create tidak ikut terhapus. Ini adalah keputusan ownership physical
+Phase 5, sedangkan retention/promotion workflow tetap Phase 7–8.
+
+## 34. Recommended Next Step
 
 Setelah data model disetujui, `TECHNICAL_ARCHITECTURE.md` dapat menetapkan:
 

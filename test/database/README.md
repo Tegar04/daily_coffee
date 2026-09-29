@@ -1,4 +1,6 @@
 # Database tests
 
-In-memory Drift constraint, transaction, query, dan migration tests ditempatkan
-di sini saat schema mulai dibuat.
+`app_database_test.dart` memverifikasi schema, foreign key, constraint Coffee,
+tag/foto/journal, serta persistence dan rollback draft dengan SQLite in-memory.
+Repository transaction/reopen tests berada di `test/repositories/` dan snapshot
+schema tests berada di `test/migrations/`.

@@ -2,6 +2,7 @@ import 'package:daily_coffee/app/app.dart';
 import 'package:daily_coffee/app/bootstrap/app_preferences.dart';
 import 'package:daily_coffee/app/bootstrap/bootstrap_state.dart';
 import 'package:daily_coffee/app/composition/app_providers.dart';
+import 'package:daily_coffee/app/composition/database_providers.dart';
 import 'package:daily_coffee/app/localization/app_localizations.dart';
 import 'package:daily_coffee/core/design_system/design_system.dart';
 import 'package:daily_coffee/core/errors/app_failure.dart';
@@ -24,23 +25,34 @@ class DailyCoffeeBootstrap extends ConsumerWidget {
       loading: () => const BootstrapScreen(state: BootstrapInitializing()),
       error: (error, stackTrace) => BootstrapScreen(
         state: BootstrapRecoverableFailure(
-          StorageFailure(
-            cause: error,
-            diagnosticContext: const {'operation': 'bootstrap_preferences'},
-          ),
+          error is AppFailure
+              ? error
+              : StorageFailure(
+                  cause: error,
+                  diagnosticContext: const {'operation': 'bootstrap'},
+                ),
         ),
-        onRetry: () => ref.invalidate(appBootstrapProvider),
+        onRetry: () {
+          ref.invalidate(appDatabaseProvider);
+          ref.invalidate(databaseInitializationProvider);
+          ref.invalidate(appBootstrapProvider);
+        },
       ),
       data: (preferences) => DailyCoffeeApp(preferences: preferences),
     );
   }
 }
 
-final appBootstrapProvider = FutureProvider<AppPreferences>((ref) async {
-  final preferences = ref.watch(appPreferencesProvider);
-  await preferences.load();
-  return preferences;
-});
+final appBootstrapProvider = FutureProvider<AppPreferences>(
+  retry: (_, _) => null,
+  (ref) async {
+    final initialization = ref.watch(databaseInitializationProvider.future);
+    final preferences = ref.watch(appPreferencesProvider);
+    await initialization;
+    await preferences.load();
+    return preferences;
+  },
+);
 
 class BootstrapScreen extends StatelessWidget {
   const BootstrapScreen({required this.state, this.onRetry, super.key});
