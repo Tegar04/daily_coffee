@@ -53,4 +53,52 @@ final class CoffeeRepositoryProvider
   }
 }
 
-String _$coffeeRepositoryHash() => r'f16196c2d181ac77b662d0ba98cf56962df971ce';
+String _$coffeeRepositoryHash() => r'de54e8fbb38df2f589188515affc2a6c54854a77';
+
+@ProviderFor(driftCoffeeRepository)
+final driftCoffeeRepositoryProvider = DriftCoffeeRepositoryProvider._();
+
+final class DriftCoffeeRepositoryProvider
+    extends
+        $FunctionalProvider<
+          DriftCoffeeRepository,
+          DriftCoffeeRepository,
+          DriftCoffeeRepository
+        >
+    with $Provider<DriftCoffeeRepository> {
+  DriftCoffeeRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'driftCoffeeRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$driftCoffeeRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<DriftCoffeeRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DriftCoffeeRepository create(Ref ref) {
+    return driftCoffeeRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DriftCoffeeRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DriftCoffeeRepository>(value),
+    );
+  }
+}
+
+String _$driftCoffeeRepositoryHash() =>
+    r'685a6ae063c1b999e5cb77c071b418a0bb7b686a';

@@ -2490,6 +2490,63 @@ class $CoffeeDraftsTable extends CoffeeDrafts
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $CoffeeDraftsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _reviewJsonMeta = const VerificationMeta(
+    'reviewJson',
+  );
+  @override
+  late final GeneratedColumn<String> reviewJson = GeneratedColumn<String>(
+    'review_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _reviewRevisionMeta = const VerificationMeta(
+    'reviewRevision',
+  );
+  @override
+  late final GeneratedColumn<int> reviewRevision = GeneratedColumn<int>(
+    'review_revision',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _ocrRawTextMeta = const VerificationMeta(
+    'ocrRawText',
+  );
+  @override
+  late final GeneratedColumn<String> ocrRawText = GeneratedColumn<String>(
+    'ocr_raw_text',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _ocrLinesJsonMeta = const VerificationMeta(
+    'ocrLinesJson',
+  );
+  @override
+  late final GeneratedColumn<String> ocrLinesJson = GeneratedColumn<String>(
+    'ocr_lines_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _scanRevisionMeta = const VerificationMeta(
+    'scanRevision',
+  );
+  @override
+  late final GeneratedColumn<int> scanRevision = GeneratedColumn<int>(
+    'scan_revision',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -2773,6 +2830,11 @@ class $CoffeeDraftsTable extends CoffeeDrafts
   );
   @override
   List<GeneratedColumn> get $columns => [
+    reviewJson,
+    reviewRevision,
+    ocrRawText,
+    ocrLinesJson,
+    scanRevision,
     id,
     draftType,
     status,
@@ -2812,6 +2874,48 @@ class $CoffeeDraftsTable extends CoffeeDrafts
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('review_json')) {
+      context.handle(
+        _reviewJsonMeta,
+        reviewJson.isAcceptableOrUnknown(data['review_json']!, _reviewJsonMeta),
+      );
+    }
+    if (data.containsKey('review_revision')) {
+      context.handle(
+        _reviewRevisionMeta,
+        reviewRevision.isAcceptableOrUnknown(
+          data['review_revision']!,
+          _reviewRevisionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('ocr_raw_text')) {
+      context.handle(
+        _ocrRawTextMeta,
+        ocrRawText.isAcceptableOrUnknown(
+          data['ocr_raw_text']!,
+          _ocrRawTextMeta,
+        ),
+      );
+    }
+    if (data.containsKey('ocr_lines_json')) {
+      context.handle(
+        _ocrLinesJsonMeta,
+        ocrLinesJson.isAcceptableOrUnknown(
+          data['ocr_lines_json']!,
+          _ocrLinesJsonMeta,
+        ),
+      );
+    }
+    if (data.containsKey('scan_revision')) {
+      context.handle(
+        _scanRevisionMeta,
+        scanRevision.isAcceptableOrUnknown(
+          data['scan_revision']!,
+          _scanRevisionMeta,
+        ),
+      );
+    }
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     } else if (isInserting) {
@@ -3026,6 +3130,26 @@ class $CoffeeDraftsTable extends CoffeeDrafts
   DraftRecord map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DraftRecord(
+      reviewJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}review_json'],
+      ),
+      reviewRevision: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}review_revision'],
+      )!,
+      ocrRawText: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ocr_raw_text'],
+      ),
+      ocrLinesJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}ocr_lines_json'],
+      ),
+      scanRevision: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}scan_revision'],
+      )!,
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -3140,6 +3264,11 @@ class $CoffeeDraftsTable extends CoffeeDrafts
 }
 
 class DraftRecord extends DataClass implements Insertable<DraftRecord> {
+  final String? reviewJson;
+  final int reviewRevision;
+  final String? ocrRawText;
+  final String? ocrLinesJson;
+  final int scanRevision;
   final String id;
   final String draftType;
   final String status;
@@ -3167,6 +3296,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   final int updatedAt;
   final int? expiresAt;
   const DraftRecord({
+    this.reviewJson,
+    required this.reviewRevision,
+    this.ocrRawText,
+    this.ocrLinesJson,
+    required this.scanRevision,
     required this.id,
     required this.draftType,
     required this.status,
@@ -3197,6 +3331,17 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (!nullToAbsent || reviewJson != null) {
+      map['review_json'] = Variable<String>(reviewJson);
+    }
+    map['review_revision'] = Variable<int>(reviewRevision);
+    if (!nullToAbsent || ocrRawText != null) {
+      map['ocr_raw_text'] = Variable<String>(ocrRawText);
+    }
+    if (!nullToAbsent || ocrLinesJson != null) {
+      map['ocr_lines_json'] = Variable<String>(ocrLinesJson);
+    }
+    map['scan_revision'] = Variable<int>(scanRevision);
     map['id'] = Variable<String>(id);
     map['draft_type'] = Variable<String>(draftType);
     map['status'] = Variable<String>(status);
@@ -3270,6 +3415,17 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
 
   CoffeeDraftsCompanion toCompanion(bool nullToAbsent) {
     return CoffeeDraftsCompanion(
+      reviewJson: reviewJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reviewJson),
+      reviewRevision: Value(reviewRevision),
+      ocrRawText: ocrRawText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ocrRawText),
+      ocrLinesJson: ocrLinesJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(ocrLinesJson),
+      scanRevision: Value(scanRevision),
       id: Value(id),
       draftType: Value(draftType),
       status: Value(status),
@@ -3345,6 +3501,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DraftRecord(
+      reviewJson: serializer.fromJson<String?>(json['reviewJson']),
+      reviewRevision: serializer.fromJson<int>(json['reviewRevision']),
+      ocrRawText: serializer.fromJson<String?>(json['ocrRawText']),
+      ocrLinesJson: serializer.fromJson<String?>(json['ocrLinesJson']),
+      scanRevision: serializer.fromJson<int>(json['scanRevision']),
       id: serializer.fromJson<String>(json['id']),
       draftType: serializer.fromJson<String>(json['draftType']),
       status: serializer.fromJson<String>(json['status']),
@@ -3383,6 +3544,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'reviewJson': serializer.toJson<String?>(reviewJson),
+      'reviewRevision': serializer.toJson<int>(reviewRevision),
+      'ocrRawText': serializer.toJson<String?>(ocrRawText),
+      'ocrLinesJson': serializer.toJson<String?>(ocrLinesJson),
+      'scanRevision': serializer.toJson<int>(scanRevision),
       'id': serializer.toJson<String>(id),
       'draftType': serializer.toJson<String>(draftType),
       'status': serializer.toJson<String>(status),
@@ -3413,6 +3579,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   }
 
   DraftRecord copyWith({
+    Value<String?> reviewJson = const Value.absent(),
+    int? reviewRevision,
+    Value<String?> ocrRawText = const Value.absent(),
+    Value<String?> ocrLinesJson = const Value.absent(),
+    int? scanRevision,
     String? id,
     String? draftType,
     String? status,
@@ -3440,6 +3611,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
     int? updatedAt,
     Value<int?> expiresAt = const Value.absent(),
   }) => DraftRecord(
+    reviewJson: reviewJson.present ? reviewJson.value : this.reviewJson,
+    reviewRevision: reviewRevision ?? this.reviewRevision,
+    ocrRawText: ocrRawText.present ? ocrRawText.value : this.ocrRawText,
+    ocrLinesJson: ocrLinesJson.present ? ocrLinesJson.value : this.ocrLinesJson,
+    scanRevision: scanRevision ?? this.scanRevision,
     id: id ?? this.id,
     draftType: draftType ?? this.draftType,
     status: status ?? this.status,
@@ -3493,6 +3669,21 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   );
   DraftRecord copyWithCompanion(CoffeeDraftsCompanion data) {
     return DraftRecord(
+      reviewJson: data.reviewJson.present
+          ? data.reviewJson.value
+          : this.reviewJson,
+      reviewRevision: data.reviewRevision.present
+          ? data.reviewRevision.value
+          : this.reviewRevision,
+      ocrRawText: data.ocrRawText.present
+          ? data.ocrRawText.value
+          : this.ocrRawText,
+      ocrLinesJson: data.ocrLinesJson.present
+          ? data.ocrLinesJson.value
+          : this.ocrLinesJson,
+      scanRevision: data.scanRevision.present
+          ? data.scanRevision.value
+          : this.scanRevision,
       id: data.id.present ? data.id.value : this.id,
       draftType: data.draftType.present ? data.draftType.value : this.draftType,
       status: data.status.present ? data.status.value : this.status,
@@ -3553,6 +3744,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   @override
   String toString() {
     return (StringBuffer('DraftRecord(')
+          ..write('reviewJson: $reviewJson, ')
+          ..write('reviewRevision: $reviewRevision, ')
+          ..write('ocrRawText: $ocrRawText, ')
+          ..write('ocrLinesJson: $ocrLinesJson, ')
+          ..write('scanRevision: $scanRevision, ')
           ..write('id: $id, ')
           ..write('draftType: $draftType, ')
           ..write('status: $status, ')
@@ -3585,6 +3781,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
 
   @override
   int get hashCode => Object.hashAll([
+    reviewJson,
+    reviewRevision,
+    ocrRawText,
+    ocrLinesJson,
+    scanRevision,
     id,
     draftType,
     status,
@@ -3616,6 +3817,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DraftRecord &&
+          other.reviewJson == this.reviewJson &&
+          other.reviewRevision == this.reviewRevision &&
+          other.ocrRawText == this.ocrRawText &&
+          other.ocrLinesJson == this.ocrLinesJson &&
+          other.scanRevision == this.scanRevision &&
           other.id == this.id &&
           other.draftType == this.draftType &&
           other.status == this.status &&
@@ -3645,6 +3851,11 @@ class DraftRecord extends DataClass implements Insertable<DraftRecord> {
 }
 
 class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
+  final Value<String?> reviewJson;
+  final Value<int> reviewRevision;
+  final Value<String?> ocrRawText;
+  final Value<String?> ocrLinesJson;
+  final Value<int> scanRevision;
   final Value<String> id;
   final Value<String> draftType;
   final Value<String> status;
@@ -3673,6 +3884,11 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
   final Value<int?> expiresAt;
   final Value<int> rowid;
   const CoffeeDraftsCompanion({
+    this.reviewJson = const Value.absent(),
+    this.reviewRevision = const Value.absent(),
+    this.ocrRawText = const Value.absent(),
+    this.ocrLinesJson = const Value.absent(),
+    this.scanRevision = const Value.absent(),
     this.id = const Value.absent(),
     this.draftType = const Value.absent(),
     this.status = const Value.absent(),
@@ -3702,6 +3918,11 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
     this.rowid = const Value.absent(),
   });
   CoffeeDraftsCompanion.insert({
+    this.reviewJson = const Value.absent(),
+    this.reviewRevision = const Value.absent(),
+    this.ocrRawText = const Value.absent(),
+    this.ocrLinesJson = const Value.absent(),
+    this.scanRevision = const Value.absent(),
     required String id,
     required String draftType,
     required String status,
@@ -3735,6 +3956,11 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
        createdAt = Value(createdAt),
        updatedAt = Value(updatedAt);
   static Insertable<DraftRecord> custom({
+    Expression<String>? reviewJson,
+    Expression<int>? reviewRevision,
+    Expression<String>? ocrRawText,
+    Expression<String>? ocrLinesJson,
+    Expression<int>? scanRevision,
     Expression<String>? id,
     Expression<String>? draftType,
     Expression<String>? status,
@@ -3764,6 +3990,11 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
+      if (reviewJson != null) 'review_json': reviewJson,
+      if (reviewRevision != null) 'review_revision': reviewRevision,
+      if (ocrRawText != null) 'ocr_raw_text': ocrRawText,
+      if (ocrLinesJson != null) 'ocr_lines_json': ocrLinesJson,
+      if (scanRevision != null) 'scan_revision': scanRevision,
       if (id != null) 'id': id,
       if (draftType != null) 'draft_type': draftType,
       if (status != null) 'status': status,
@@ -3798,6 +4029,11 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
   }
 
   CoffeeDraftsCompanion copyWith({
+    Value<String?>? reviewJson,
+    Value<int>? reviewRevision,
+    Value<String?>? ocrRawText,
+    Value<String?>? ocrLinesJson,
+    Value<int>? scanRevision,
     Value<String>? id,
     Value<String>? draftType,
     Value<String>? status,
@@ -3827,6 +4063,11 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
     Value<int>? rowid,
   }) {
     return CoffeeDraftsCompanion(
+      reviewJson: reviewJson ?? this.reviewJson,
+      reviewRevision: reviewRevision ?? this.reviewRevision,
+      ocrRawText: ocrRawText ?? this.ocrRawText,
+      ocrLinesJson: ocrLinesJson ?? this.ocrLinesJson,
+      scanRevision: scanRevision ?? this.scanRevision,
       id: id ?? this.id,
       draftType: draftType ?? this.draftType,
       status: status ?? this.status,
@@ -3860,6 +4101,21 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (reviewJson.present) {
+      map['review_json'] = Variable<String>(reviewJson.value);
+    }
+    if (reviewRevision.present) {
+      map['review_revision'] = Variable<int>(reviewRevision.value);
+    }
+    if (ocrRawText.present) {
+      map['ocr_raw_text'] = Variable<String>(ocrRawText.value);
+    }
+    if (ocrLinesJson.present) {
+      map['ocr_lines_json'] = Variable<String>(ocrLinesJson.value);
+    }
+    if (scanRevision.present) {
+      map['scan_revision'] = Variable<int>(scanRevision.value);
+    }
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
@@ -3947,6 +4203,11 @@ class CoffeeDraftsCompanion extends UpdateCompanion<DraftRecord> {
   @override
   String toString() {
     return (StringBuffer('CoffeeDraftsCompanion(')
+          ..write('reviewJson: $reviewJson, ')
+          ..write('reviewRevision: $reviewRevision, ')
+          ..write('ocrRawText: $ocrRawText, ')
+          ..write('ocrLinesJson: $ocrLinesJson, ')
+          ..write('scanRevision: $scanRevision, ')
           ..write('id: $id, ')
           ..write('draftType: $draftType, ')
           ..write('status: $status, ')
@@ -9967,6 +10228,11 @@ typedef $$JournalEntriesTableProcessedTableManager =
     >;
 typedef $$CoffeeDraftsTableCreateCompanionBuilder =
     CoffeeDraftsCompanion Function({
+      Value<String?> reviewJson,
+      Value<int> reviewRevision,
+      Value<String?> ocrRawText,
+      Value<String?> ocrLinesJson,
+      Value<int> scanRevision,
       required String id,
       required String draftType,
       required String status,
@@ -9997,6 +10263,11 @@ typedef $$CoffeeDraftsTableCreateCompanionBuilder =
     });
 typedef $$CoffeeDraftsTableUpdateCompanionBuilder =
     CoffeeDraftsCompanion Function({
+      Value<String?> reviewJson,
+      Value<int> reviewRevision,
+      Value<String?> ocrRawText,
+      Value<String?> ocrLinesJson,
+      Value<int> scanRevision,
       Value<String> id,
       Value<String> draftType,
       Value<String> status,
@@ -10123,6 +10394,31 @@ class $$CoffeeDraftsTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnFilters<String> get reviewJson => $composableBuilder(
+    column: $table.reviewJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get reviewRevision => $composableBuilder(
+    column: $table.reviewRevision,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ocrRawText => $composableBuilder(
+    column: $table.ocrRawText,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get ocrLinesJson => $composableBuilder(
+    column: $table.ocrLinesJson,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get scanRevision => $composableBuilder(
+    column: $table.scanRevision,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get id => $composableBuilder(
     column: $table.id,
     builder: (column) => ColumnFilters(column),
@@ -10356,6 +10652,31 @@ class $$CoffeeDraftsTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnOrderings<String> get reviewJson => $composableBuilder(
+    column: $table.reviewJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get reviewRevision => $composableBuilder(
+    column: $table.reviewRevision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ocrRawText => $composableBuilder(
+    column: $table.ocrRawText,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get ocrLinesJson => $composableBuilder(
+    column: $table.ocrLinesJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get scanRevision => $composableBuilder(
+    column: $table.scanRevision,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get id => $composableBuilder(
     column: $table.id,
     builder: (column) => ColumnOrderings(column),
@@ -10514,6 +10835,31 @@ class $$CoffeeDraftsTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  GeneratedColumn<String> get reviewJson => $composableBuilder(
+    column: $table.reviewJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get reviewRevision => $composableBuilder(
+    column: $table.reviewRevision,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get ocrRawText => $composableBuilder(
+    column: $table.ocrRawText,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get ocrLinesJson => $composableBuilder(
+    column: $table.ocrLinesJson,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get scanRevision => $composableBuilder(
+    column: $table.scanRevision,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
@@ -10749,6 +11095,11 @@ class $$CoffeeDraftsTableTableManager
               $$CoffeeDraftsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
+                Value<String?> reviewJson = const Value.absent(),
+                Value<int> reviewRevision = const Value.absent(),
+                Value<String?> ocrRawText = const Value.absent(),
+                Value<String?> ocrLinesJson = const Value.absent(),
+                Value<int> scanRevision = const Value.absent(),
                 Value<String> id = const Value.absent(),
                 Value<String> draftType = const Value.absent(),
                 Value<String> status = const Value.absent(),
@@ -10777,6 +11128,11 @@ class $$CoffeeDraftsTableTableManager
                 Value<int?> expiresAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CoffeeDraftsCompanion(
+                reviewJson: reviewJson,
+                reviewRevision: reviewRevision,
+                ocrRawText: ocrRawText,
+                ocrLinesJson: ocrLinesJson,
+                scanRevision: scanRevision,
                 id: id,
                 draftType: draftType,
                 status: status,
@@ -10807,6 +11163,11 @@ class $$CoffeeDraftsTableTableManager
               ),
           createCompanionCallback:
               ({
+                Value<String?> reviewJson = const Value.absent(),
+                Value<int> reviewRevision = const Value.absent(),
+                Value<String?> ocrRawText = const Value.absent(),
+                Value<String?> ocrLinesJson = const Value.absent(),
+                Value<int> scanRevision = const Value.absent(),
                 required String id,
                 required String draftType,
                 required String status,
@@ -10835,6 +11196,11 @@ class $$CoffeeDraftsTableTableManager
                 Value<int?> expiresAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => CoffeeDraftsCompanion.insert(
+                reviewJson: reviewJson,
+                reviewRevision: reviewRevision,
+                ocrRawText: ocrRawText,
+                ocrLinesJson: ocrLinesJson,
+                scanRevision: scanRevision,
                 id: id,
                 draftType: draftType,
                 status: status,

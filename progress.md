@@ -315,36 +315,83 @@ APK normal: `build/app/outputs/flutter-apk/app-debug.apk`.
 
 ## Phase 7 — OCR Scanning
 
-- [ ] Pilih adapter OCR on-device terlebih dahulu dan bungkus SDK di infrastructure layer.
-- [ ] Implementasikan scan state: idle, acquiring, processing, success, failure, dan cancelled.
-- [ ] Normalisasi orientation, ukuran, dan kualitas image sebelum OCR.
-- [ ] Ekstrak raw text beserta informasi confidence yang tersedia.
-- [ ] Simpan hasil OCR hanya sebagai `CoffeeDraft`, bukan langsung sebagai `Coffee` permanen.
-- [ ] Implementasikan retry, cancel, timeout, dan fallback ke input manual.
-- [ ] Tambahkan fixture label kopi untuk menguji variasi layout dan kualitas foto.
+- [x] Pilih adapter OCR on-device terlebih dahulu dan bungkus SDK di infrastructure layer.
+- [x] Implementasikan scan state: idle, acquiring, processing, success, failure, dan cancelled.
+- [x] Normalisasi orientation, ukuran, dan kualitas image sebelum OCR.
+- [x] Ekstrak raw text beserta informasi confidence yang tersedia.
+- [x] Simpan hasil OCR hanya sebagai `CoffeeDraft`, bukan langsung sebagai `Coffee` permanen.
+- [x] Implementasikan retry, cancel, timeout, dan fallback ke input manual.
+- [x] Tambahkan fixture label kopi untuk menguji variasi layout dan kualitas foto.
 
 **Definition of Done**
 
-- [ ] Foto label dapat menghasilkan raw OCR text tanpa network jika adapter mendukungnya.
-- [ ] Scan gagal/dibatalkan secara aman dan pengguna tetap dapat melanjutkan manual.
+- [x] Foto label dapat menghasilkan raw OCR text tanpa network jika adapter mendukungnya.
+- [x] Scan gagal/dibatalkan secara aman dan pengguna tetap dapat melanjutkan manual.
+
+**Verifikasi — 29 September 2026**
+
+- `tool/quality_check.ps1` lulus: dependency resolution, code generation,
+  format check, analyzer tanpa issue, **98 tests** (termasuk 5 golden), dan APK debug.
+- OCR ML Kit native lulus pada emulator Pixel 7 dengan mode pesawat aktif dan
+  Wi-Fi mati: label satu kolom, dua kolom, kompresi/blur ringan, serta no-text
+  failure pada gambar kosong. Tiga draft berhasil dimuat setelah force-stop
+  melalui integration test `seed` → `verify`, tanpa Coffee permanen.
+- QA APK normal lulus: galeri native → foto → teks OCR → force-stop → buka draft
+  → hapus draft; fallback **Isi manual** membuka formulir. Data fixture QA
+  dibersihkan dan pengaturan jaringan emulator dipulihkan.
+- Database v2 menyimpan raw OCR, line bounds/confidence nullable, dan scan
+  revision. Migrasi v1 → v2 menjaga Coffee dan draft foto lama.
+- Cancel/timeout menggunakan logical cancellation dan menolak late result.
+  Akurasi label fisik, TalkBack, OEM lain, serta build iOS belum diverifikasi.
+- **Batas Phase 7:** teks mentah tersimpan sebagai draft; parsing nama kopi,
+  roastery, origin, dll. dan editable confirmation/promotion tetap **Phase 8**.
+
+Panduan: [OCR_SCANNING_IMPLEMENTATION.md](docs/OCR_SCANNING_IMPLEMENTATION.md).
+APK: `build/app/outputs/flutter-apk/app-debug.apk`.
 
 ## Phase 8 — Structured Extraction dan Editable Confirmation
 
-- [ ] Definisikan `CoffeeDraft` dan `ScanExtractedField` lengkap dengan source/confidence.
-- [ ] Buat parser untuk nama coffee, roaster, origin, process, variety, roast date, tasting notes, dan berat.
-- [ ] Gunakan aturan deterministik terlebih dahulu; tandai field ambigu atau low-confidence.
-- [ ] Implementasikan Review Scan Result dengan image, raw text, dan field editable.
-- [ ] Validasi semua field sebelum promotion.
-- [ ] Simpan perubahan draft saat berpindah field/terjadi interruption.
-- [ ] Promotion draft → Coffee harus atomik pada database.
-- [ ] Hapus atau pertahankan draft secara eksplisit setelah save/cancel.
-- [ ] Jika kelak memakai remote extraction, kirim melalui backend aman dan jangan tanam API key di aplikasi.
+- [x] Definisikan `CoffeeDraft` dan `ScanExtractedField` lengkap dengan source/confidence.
+- [x] Buat parser untuk nama coffee, roaster, origin, process, variety, roast date, tasting notes, dan berat.
+- [x] Gunakan aturan deterministik terlebih dahulu; tandai field ambigu atau low-confidence.
+- [x] Implementasikan Review Scan Result dengan image, raw text, dan field editable.
+- [x] Validasi semua field sebelum promotion.
+- [x] Simpan perubahan draft saat berpindah field/terjadi interruption.
+- [x] Promotion draft → Coffee harus atomik pada database.
+- [x] Hapus atau pertahankan draft secara eksplisit setelah save/cancel.
+- [x] Jika kelak memakai remote extraction, kirim melalui backend aman dan jangan tanam API key di aplikasi. Saat ini parser sepenuhnya lokal; remote extraction/API key tidak digunakan.
 
 **Definition of Done**
 
-- [ ] OCR tidak pernah membuat Coffee permanen tanpa review dan konfirmasi pengguna.
-- [ ] Semua hasil ekstraksi dapat diperbaiki sebelum disimpan.
-- [ ] Parser, draft persistence, dan promotion flow memiliki automated test.
+- [x] OCR tidak pernah membuat Coffee permanen tanpa review dan konfirmasi pengguna.
+- [x] Semua hasil ekstraksi dapat diperbaiki sebelum disimpan.
+- [x] Parser, draft persistence, dan promotion flow memiliki automated test.
+
+**Verifikasi — 29 September 2026**
+
+- `tool/quality_check.ps1` lulus: code generation, format, analyzer tanpa issue,
+  **113 tests** termasuk golden, dan build APK debug normal.
+- Parser diuji untuk alias Indonesia/Inggris, kandidat ambigu, tanggal/berat/
+  altitude, confidence nullable, dan raw provenance. Informasi yang tidak jelas
+  dibiarkan kosong dan ditampilkan untuk review; tidak ditebak dari heading.
+- Repository tests memverifikasi edit parsial setelah reopen, source user,
+  stale revision, photo opt-out, rollback aggregate saat insert foto gagal,
+  retry, serta penolakan promotion berulang. Autosave berurutan dan duplicate
+  confirmation diuji; widget review diuji dengan text scale 200%.
+- Integration Android `scan_review_test.dart` lulus pada tahap `seed` dan
+  `verify` dengan force-stop di antaranya: native OCR → form review → edit nama
+  dan tanggal parsial → restart → edit tetap ada → perbaiki tanggal → konfirmasi
+  → satu Coffee/foto permanen, draft/raw/candidate terhapus. Data QA terisolasi
+  dibersihkan setelah verifikasi.
+- Schema v3 menyimpan editable snapshot/revision; migrasi v1 dan v2 ke v3 diuji
+  tanpa menghapus data lama. Keluar dari review mempertahankan draft; hapus
+  draft meminta konfirmasi. Write yang masih berlangsung saat OS kill belum
+  dijamin durable; UI menunjukkan status penyimpanan draft.
+- Perangkat fisik, TalkBack, iOS, dan akurasi kumpulan label nyata belum
+  diverifikasi. Parser menggunakan aturan/vocabulary terbatas, bukan generative AI.
+
+Panduan: [SCAN_REVIEW_IMPLEMENTATION.md](docs/SCAN_REVIEW_IMPLEMENTATION.md).
+APK: `build/app/outputs/flutter-apk/app-debug.apk`.
 
 ## Phase 9 — Brewing Journal
 

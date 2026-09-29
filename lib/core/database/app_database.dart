@@ -25,7 +25,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase(super.executor);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -36,8 +36,23 @@ class AppDatabase extends _$AppDatabase {
         throw MigrationFailure(cause: error);
       }
     },
-    // v1 is the first persisted schema. Never reset an unknown/newer database.
     onUpgrade: (migrator, from, to) async {
+      if ((from == 1 || from == 2) && to == 3) {
+        try {
+          await transaction(() async {
+            if (from < 2) {
+              await migrator.addColumn(coffeeDrafts, coffeeDrafts.ocrRawText);
+              await migrator.addColumn(coffeeDrafts, coffeeDrafts.ocrLinesJson);
+              await migrator.addColumn(coffeeDrafts, coffeeDrafts.scanRevision);
+            }
+            await migrator.addColumn(coffeeDrafts, coffeeDrafts.reviewJson);
+            await migrator.addColumn(coffeeDrafts, coffeeDrafts.reviewRevision);
+          });
+        } catch (error) {
+          throw MigrationFailure(cause: error);
+        }
+        return;
+      }
       throw MigrationFailure(diagnosticContext: {'from': from, 'to': to});
     },
     beforeOpen: (_) async {

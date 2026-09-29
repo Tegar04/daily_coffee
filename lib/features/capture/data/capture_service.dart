@@ -29,6 +29,7 @@ class CaptureService {
     PhotoSource source, {
     required String? targetCoffeeId,
     required Map<String, Object?> context,
+    bool forScan = false,
   }) async {
     if (_busy) return const Err(ConflictFailure());
     _busy = true;
@@ -42,7 +43,7 @@ class CaptureService {
             CoffeeDraftsCompanion.insert(
               id: id,
               draftType: targetCoffeeId == null
-                  ? 'manual_create'
+                  ? (forScan ? 'scan_create' : 'manual_create')
                   : 'edit_existing',
               status: 'editing',
               targetCoffeeId: Value(targetCoffeeId),
@@ -126,6 +127,7 @@ class CaptureService {
           await (db.select(db.coffeeDrafts)..where(
                 (t) =>
                     t.failureCategory.equals('photo_session') &
+                    t.draftType.equals('scan_create').not() &
                     (t.status.equals('image_ready') |
                         t.status.equals('editing')),
               ))

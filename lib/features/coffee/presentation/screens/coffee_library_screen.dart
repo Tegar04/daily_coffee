@@ -51,6 +51,15 @@ class _CoffeeLibraryScreenState extends ConsumerState<CoffeeLibraryScreen> {
           },
         ),
         ListTile(
+          leading: const Icon(Icons.document_scanner_outlined),
+          title: const Text('Scan label kopi'),
+          subtitle: const Text('Baca teks label dan lanjutkan draft scan'),
+          onTap: () async {
+            Navigator.pop(sheetContext);
+            await const ScanRoute().push<void>(context);
+          },
+        ),
+        ListTile(
           leading: const Icon(Icons.edit_outlined),
           title: const Text('Isi manual'),
           subtitle: const Text('Tanpa kamera atau koneksi internet'),

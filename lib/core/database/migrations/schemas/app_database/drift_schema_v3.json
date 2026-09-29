@@ -1,0 +1,2653 @@
+{
+  "_meta": {
+    "description": "This file contains a serialized version of schema entities for drift.",
+    "version": "1.3.0"
+  },
+  "options": {
+    "store_date_time_values_as_text": false
+  },
+  "entities": [
+    {
+      "id": 0,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "coffees",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "name",
+            "getter_name": "name",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "name_normalized",
+            "getter_name": "nameNormalized",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roastery",
+            "getter_name": "roastery",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roastery_normalized",
+            "getter_name": "roasteryNormalized",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "origin_country",
+            "getter_name": "originCountry",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "origin_country_normalized",
+            "getter_name": "originCountryNormalized",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "region",
+            "getter_name": "region",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "region_normalized",
+            "getter_name": "regionNormalized",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "producer",
+            "getter_name": "producer",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "producer_normalized",
+            "getter_name": "producerNormalized",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "process",
+            "getter_name": "process",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "process_normalized",
+            "getter_name": "processNormalized",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "origin_country_code",
+            "getter_name": "originCountryCode",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roast_level_key",
+            "getter_name": "roastLevelKey",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roast_level_custom",
+            "getter_name": "roastLevelCustom",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "altitude_min_meters",
+            "getter_name": "altitudeMinMeters",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "altitude_max_meters",
+            "getter_name": "altitudeMaxMeters",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "altitude_source_text",
+            "getter_name": "altitudeSourceText",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roast_date",
+            "getter_name": "roastDate",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "purchase_date",
+            "getter_name": "purchaseDate",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "package_weight_grams",
+            "getter_name": "packageWeightGrams",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "personal_note",
+            "getter_name": "personalNote",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "is_favorite",
+            "getter_name": "isFavorite",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"is_favorite\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"is_favorite\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "revision",
+            "getter_name": "revision",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at",
+            "getter_name": "updatedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(trim(name)) > 0)",
+          "CHECK (length(trim(roastery)) > 0)",
+          "CHECK (length(trim(name_normalized)) > 0)",
+          "CHECK (length(trim(roastery_normalized)) > 0)",
+          "CHECK (roast_level_key IS NULL OR roast_level_key IN ('light','medium_light','medium','medium_dark','dark','other'))",
+          "CHECK ((roast_level_key = 'other' AND roast_level_custom IS NOT NULL AND length(trim(roast_level_custom)) > 0) OR ((roast_level_key IS NULL OR roast_level_key != 'other') AND roast_level_custom IS NULL))",
+          "CHECK (altitude_min_meters IS NULL OR altitude_min_meters > 0)",
+          "CHECK (altitude_max_meters IS NULL OR altitude_max_meters > 0)",
+          "CHECK (altitude_min_meters IS NULL OR altitude_max_meters IS NULL OR altitude_max_meters >= altitude_min_meters)",
+          "CHECK (package_weight_grams IS NULL OR package_weight_grams > 0)",
+          "CHECK (updated_at >= created_at)",
+          "CHECK (revision >= 0)",
+          "CHECK (roast_date IS NULL OR (length(roast_date) = 10 AND roast_date >= '0001-01-01' AND COALESCE(date(roast_date, '+0 days') = roast_date, 0)))",
+          "CHECK (purchase_date IS NULL OR (length(purchase_date) = 10 AND purchase_date >= '0001-01-01' AND COALESCE(date(purchase_date, '+0 days') = purchase_date, 0)))",
+          "CHECK (origin_country_code IS NULL OR origin_country_code GLOB '[A-Z][A-Z]')"
+        ],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_0",
+        "sql": "CREATE INDEX coffees_query_0 ON coffees (created_at DESC, id);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 2,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_1",
+        "sql": "CREATE INDEX coffees_query_1 ON coffees (updated_at DESC);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 3,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_2",
+        "sql": "CREATE INDEX coffees_query_2 ON coffees (name_normalized);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 4,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_3",
+        "sql": "CREATE INDEX coffees_query_3 ON coffees (roastery_normalized);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 5,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_4",
+        "sql": "CREATE INDEX coffees_query_4 ON coffees (origin_country_normalized);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 6,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_5",
+        "sql": "CREATE INDEX coffees_query_5 ON coffees (process_normalized);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 7,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_6",
+        "sql": "CREATE INDEX coffees_query_6 ON coffees (roast_level_key);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 8,
+      "references": [
+        0
+      ],
+      "type": "index",
+      "data": {
+        "on": 0,
+        "name": "coffees_query_7",
+        "sql": "CREATE INDEX coffees_query_7 ON coffees (roast_date);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 9,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "journal_entries",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coffee_id",
+            "getter_name": "coffeeId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffees (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffees (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffees",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "brewed_at",
+            "getter_name": "brewedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "brewed_at_offset_minutes",
+            "getter_name": "brewedAtOffsetMinutes",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "brew_method_key",
+            "getter_name": "brewMethodKey",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "brew_method_custom",
+            "getter_name": "brewMethodCustom",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "dose_milligrams",
+            "getter_name": "doseMilligrams",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "water_milligrams",
+            "getter_name": "waterMilligrams",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "water_temperature_deci_celsius",
+            "getter_name": "waterTemperatureDeciCelsius",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "grind_size",
+            "getter_name": "grindSize",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "brew_time_seconds",
+            "getter_name": "brewTimeSeconds",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "rating",
+            "getter_name": "rating",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "note",
+            "getter_name": "note",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at",
+            "getter_name": "updatedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (brew_method_key IN ('v60','kalita_wave','origami','aeropress','french_press','chemex','clever_dripper','espresso','moka_pot','cold_brew','cupping','other'))",
+          "CHECK ((brew_method_key = 'other' AND brew_method_custom IS NOT NULL AND length(trim(brew_method_custom)) > 0) OR (brew_method_key != 'other' AND brew_method_custom IS NULL))",
+          "CHECK (dose_milligrams IS NULL OR dose_milligrams > 0)",
+          "CHECK (water_milligrams IS NULL OR water_milligrams > 0)",
+          "CHECK (water_temperature_deci_celsius IS NULL OR water_temperature_deci_celsius > 0)",
+          "CHECK (brew_time_seconds IS NULL OR brew_time_seconds > 0)",
+          "CHECK (rating IS NULL OR rating BETWEEN 1 AND 5)",
+          "CHECK (updated_at >= created_at)",
+          "CHECK (brewed_at_offset_minutes BETWEEN -840 AND 840)"
+        ],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "references": [
+        9
+      ],
+      "type": "index",
+      "data": {
+        "on": 9,
+        "name": "journal_entries_query_0",
+        "sql": "CREATE INDEX journal_entries_query_0 ON journal_entries (coffee_id, brewed_at DESC);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 11,
+      "references": [
+        9
+      ],
+      "type": "index",
+      "data": {
+        "on": 9,
+        "name": "journal_entries_query_1",
+        "sql": "CREATE INDEX journal_entries_query_1 ON journal_entries (brewed_at DESC);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 12,
+      "references": [
+        9
+      ],
+      "type": "index",
+      "data": {
+        "on": 9,
+        "name": "journal_entries_query_2",
+        "sql": "CREATE INDEX journal_entries_query_2 ON journal_entries (brew_method_key);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 13,
+      "references": [
+        9
+      ],
+      "type": "index",
+      "data": {
+        "on": 9,
+        "name": "journal_entries_query_3",
+        "sql": "CREATE INDEX journal_entries_query_3 ON journal_entries (rating);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 14,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "coffee_drafts",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "review_json",
+            "getter_name": "reviewJson",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "review_revision",
+            "getter_name": "reviewRevision",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "ocr_raw_text",
+            "getter_name": "ocrRawText",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "ocr_lines_json",
+            "getter_name": "ocrLinesJson",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "scan_revision",
+            "getter_name": "scanRevision",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "draft_type",
+            "getter_name": "draftType",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "status",
+            "getter_name": "status",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "target_coffee_id",
+            "getter_name": "targetCoffeeId",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffees (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffees (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffees",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "temporary_image_path",
+            "getter_name": "temporaryImagePath",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "image_mime_type",
+            "getter_name": "imageMimeType",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "name",
+            "getter_name": "name",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roastery",
+            "getter_name": "roastery",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "origin_country",
+            "getter_name": "originCountry",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "region",
+            "getter_name": "region",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "producer",
+            "getter_name": "producer",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "process",
+            "getter_name": "process",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "origin_country_code",
+            "getter_name": "originCountryCode",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roast_level_key",
+            "getter_name": "roastLevelKey",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roast_level_custom",
+            "getter_name": "roastLevelCustom",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "altitude_min_meters",
+            "getter_name": "altitudeMinMeters",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "altitude_max_meters",
+            "getter_name": "altitudeMaxMeters",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "altitude_source_text",
+            "getter_name": "altitudeSourceText",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "roast_date",
+            "getter_name": "roastDate",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "purchase_date",
+            "getter_name": "purchaseDate",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "package_weight_grams",
+            "getter_name": "packageWeightGrams",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "personal_note",
+            "getter_name": "personalNote",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "failure_category",
+            "getter_name": "failureCategory",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at",
+            "getter_name": "updatedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "expires_at",
+            "getter_name": "expiresAt",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (draft_type IN ('manual_create','scan_create','edit_existing'))",
+          "CHECK (status IN ('editing','image_ready','processing','review_required','ready_to_save','failed_recoverable','completed','discarded','expired'))",
+          "CHECK ((draft_type = 'edit_existing' AND target_coffee_id IS NOT NULL) OR (draft_type != 'edit_existing' AND target_coffee_id IS NULL))",
+          "CHECK (temporary_image_path IS NULL OR (image_mime_type IS NOT NULL AND image_mime_type IN ('image/jpeg','image/png','image/webp')))",
+          "CHECK (temporary_image_path IS NULL OR (length(temporary_image_path) > 0 AND temporary_image_path NOT LIKE '/%' AND instr(temporary_image_path, ':') = 0 AND instr(temporary_image_path, char(92)) = 0 AND instr('/' || temporary_image_path || '/', '/../') = 0 AND instr('/' || temporary_image_path || '/', '/./') = 0 AND instr(temporary_image_path, '//') = 0 AND temporary_image_path NOT LIKE '%/'))",
+          "CHECK (updated_at >= created_at)"
+        ],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "references": [
+        14
+      ],
+      "type": "index",
+      "data": {
+        "on": 14,
+        "name": "coffee_drafts_query_0",
+        "sql": "CREATE INDEX coffee_drafts_query_0 ON coffee_drafts (status, updated_at);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 16,
+      "references": [
+        14
+      ],
+      "type": "index",
+      "data": {
+        "on": 14,
+        "name": "coffee_drafts_query_1",
+        "sql": "CREATE INDEX coffee_drafts_query_1 ON coffee_drafts (target_coffee_id);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 17,
+      "references": [
+        14
+      ],
+      "type": "table",
+      "data": {
+        "name": "scan_extracted_fields",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coffee_draft_id",
+            "getter_name": "coffeeDraftId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffee_drafts (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffee_drafts (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffee_drafts",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "field_key",
+            "getter_name": "fieldKey",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "raw_value",
+            "getter_name": "rawValue",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "normalized_value",
+            "getter_name": "normalizedValue",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "confidence_basis_points",
+            "getter_name": "confidenceBasisPoints",
+            "moor_type": "int",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "review_status",
+            "getter_name": "reviewStatus",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "source_region",
+            "getter_name": "sourceRegion",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at",
+            "getter_name": "updatedAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (field_key IN ('name','roastery','origin_country','region','producer','process','varieties','roast_level','tasting_notes','altitude','roast_date','package_weight'))",
+          "CHECK (confidence_basis_points IS NULL OR confidence_basis_points BETWEEN 0 AND 10000)",
+          "CHECK (review_status IN ('unreviewed','needs_review','accepted','edited','rejected','not_applicable'))",
+          "CHECK (updated_at >= created_at)"
+        ],
+        "explicit_pk": [
+          "id"
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "references": [
+        17
+      ],
+      "type": "index",
+      "data": {
+        "on": 17,
+        "name": "scan_extracted_fields_query_0",
+        "sql": "CREATE INDEX scan_extracted_fields_query_0 ON scan_extracted_fields (coffee_draft_id, field_key);",
+        "unique": false,
+        "columns": []
+      }
+    },
+    {
+      "id": 19,
+      "references": [
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 0,
+        "references_in_body": [
+          0
+        ],
+        "name": "coffee_revision",
+        "sql": "CREATE TRIGGER coffee_revision AFTER UPDATE ON coffees\r\nWHEN NEW.revision = OLD.revision BEGIN\r\n  UPDATE coffees SET revision = revision + 1 WHERE id = NEW.id;\r\nEND;"
+      }
+    },
+    {
+      "id": 20,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "coffee_varieties",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coffee_id",
+            "getter_name": "coffeeId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffees (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffees (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffees",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "display_value",
+            "getter_name": "displayValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "normalized_value",
+            "getter_name": "normalizedValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "position",
+            "getter_name": "position",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(trim(display_value)) > 0)",
+          "CHECK (length(trim(normalized_value)) > 0)",
+          "CHECK (position >= 0)"
+        ],
+        "explicit_pk": [
+          "id"
+        ],
+        "unique_keys": [
+          [
+            "coffee_id",
+            "normalized_value"
+          ],
+          [
+            "coffee_id",
+            "position"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "references": [
+        20,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 20,
+        "references_in_body": [
+          20,
+          0
+        ],
+        "name": "coffee_varieties_insert_revision",
+        "sql": "CREATE TRIGGER coffee_varieties_insert_revision AFTER INSERT ON coffee_varieties BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 22,
+      "references": [
+        20,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 20,
+        "references_in_body": [
+          20,
+          0
+        ],
+        "name": "coffee_varieties_update_revision",
+        "sql": "CREATE TRIGGER coffee_varieties_update_revision AFTER UPDATE ON coffee_varieties BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 23,
+      "references": [
+        20,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 20,
+        "references_in_body": [
+          20,
+          0
+        ],
+        "name": "coffee_varieties_delete_revision",
+        "sql": "CREATE TRIGGER coffee_varieties_delete_revision AFTER DELETE ON coffee_varieties BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 24,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "coffee_tasting_notes",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coffee_id",
+            "getter_name": "coffeeId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffees (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffees (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffees",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "display_value",
+            "getter_name": "displayValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "normalized_value",
+            "getter_name": "normalizedValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "position",
+            "getter_name": "position",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(trim(display_value)) > 0)",
+          "CHECK (length(trim(normalized_value)) > 0)",
+          "CHECK (position >= 0)"
+        ],
+        "explicit_pk": [
+          "id"
+        ],
+        "unique_keys": [
+          [
+            "coffee_id",
+            "normalized_value"
+          ],
+          [
+            "coffee_id",
+            "position"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "references": [
+        24,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 24,
+        "references_in_body": [
+          24,
+          0
+        ],
+        "name": "coffee_tasting_notes_insert_revision",
+        "sql": "CREATE TRIGGER coffee_tasting_notes_insert_revision AFTER INSERT ON coffee_tasting_notes BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 26,
+      "references": [
+        24,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 24,
+        "references_in_body": [
+          24,
+          0
+        ],
+        "name": "coffee_tasting_notes_update_revision",
+        "sql": "CREATE TRIGGER coffee_tasting_notes_update_revision AFTER UPDATE ON coffee_tasting_notes BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 27,
+      "references": [
+        24,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 24,
+        "references_in_body": [
+          24,
+          0
+        ],
+        "name": "coffee_tasting_notes_delete_revision",
+        "sql": "CREATE TRIGGER coffee_tasting_notes_delete_revision AFTER DELETE ON coffee_tasting_notes BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 28,
+      "references": [
+        0
+      ],
+      "type": "table",
+      "data": {
+        "name": "coffee_photos",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coffee_id",
+            "getter_name": "coffeeId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffees (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffees (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffees",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "local_path",
+            "getter_name": "localPath",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "role",
+            "getter_name": "role",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "mime_type",
+            "getter_name": "mimeType",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "width_pixels",
+            "getter_name": "widthPixels",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "height_pixels",
+            "getter_name": "heightPixels",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "byte_size",
+            "getter_name": "byteSize",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "content_hash",
+            "getter_name": "contentHash",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "source",
+            "getter_name": "source",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "position",
+            "getter_name": "position",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(local_path) > 0 AND local_path NOT LIKE '/%' AND instr(local_path, ':') = 0 AND instr(local_path, char(92)) = 0 AND instr('/' || local_path || '/', '/../') = 0 AND instr('/' || local_path || '/', '/./') = 0 AND instr(local_path, '//') = 0 AND local_path NOT LIKE '%/')",
+          "CHECK (role = 'cover')",
+          "CHECK (mime_type IN ('image/jpeg','image/png','image/webp'))",
+          "CHECK (width_pixels > 0)",
+          "CHECK (height_pixels > 0)",
+          "CHECK (byte_size >= 0)",
+          "CHECK (position >= 0)",
+          "CHECK (source IN ('camera','gallery','scan','import'))"
+        ],
+        "explicit_pk": [
+          "id"
+        ],
+        "unique_keys": [
+          [
+            "coffee_id",
+            "role"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "references": [
+        28,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 28,
+        "references_in_body": [
+          28,
+          0
+        ],
+        "name": "coffee_photos_insert_revision",
+        "sql": "CREATE TRIGGER coffee_photos_insert_revision AFTER INSERT ON coffee_photos BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 30,
+      "references": [
+        28,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 28,
+        "references_in_body": [
+          28,
+          0
+        ],
+        "name": "coffee_photos_update_revision",
+        "sql": "CREATE TRIGGER coffee_photos_update_revision AFTER UPDATE ON coffee_photos BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 31,
+      "references": [
+        28,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 28,
+        "references_in_body": [
+          28,
+          0
+        ],
+        "name": "coffee_photos_delete_revision",
+        "sql": "CREATE TRIGGER coffee_photos_delete_revision AFTER DELETE ON coffee_photos BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 32,
+      "references": [
+        9,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 9,
+        "references_in_body": [
+          9,
+          0
+        ],
+        "name": "journal_entries_insert_revision",
+        "sql": "CREATE TRIGGER journal_entries_insert_revision AFTER INSERT ON journal_entries BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 33,
+      "references": [
+        9,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 9,
+        "references_in_body": [
+          9,
+          0
+        ],
+        "name": "journal_entries_update_revision",
+        "sql": "CREATE TRIGGER journal_entries_update_revision AFTER UPDATE ON journal_entries BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 34,
+      "references": [
+        9,
+        0
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 9,
+        "references_in_body": [
+          9,
+          0
+        ],
+        "name": "journal_entries_delete_revision",
+        "sql": "CREATE TRIGGER journal_entries_delete_revision AFTER DELETE ON journal_entries BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;\r\nEND;"
+      }
+    },
+    {
+      "id": 35,
+      "references": [
+        9
+      ],
+      "type": "table",
+      "data": {
+        "name": "journal_tasting_notes",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "journal_entry_id",
+            "getter_name": "journalEntryId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES journal_entries (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES journal_entries (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "journal_entries",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "display_value",
+            "getter_name": "displayValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "normalized_value",
+            "getter_name": "normalizedValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "position",
+            "getter_name": "position",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(trim(display_value)) > 0)",
+          "CHECK (length(trim(normalized_value)) > 0)",
+          "CHECK (position >= 0)"
+        ],
+        "explicit_pk": [
+          "id"
+        ],
+        "unique_keys": [
+          [
+            "journal_entry_id",
+            "normalized_value"
+          ],
+          [
+            "journal_entry_id",
+            "position"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 36,
+      "references": [
+        35,
+        0,
+        9
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 35,
+        "references_in_body": [
+          35,
+          0,
+          9
+        ],
+        "name": "journal_notes_insert_revision",
+        "sql": "CREATE TRIGGER journal_notes_insert_revision AFTER INSERT ON journal_tasting_notes BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = NEW.journal_entry_id);\r\nEND;"
+      }
+    },
+    {
+      "id": 37,
+      "references": [
+        35,
+        0,
+        9
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 35,
+        "references_in_body": [
+          35,
+          0,
+          9
+        ],
+        "name": "journal_notes_update_revision",
+        "sql": "CREATE TRIGGER journal_notes_update_revision AFTER UPDATE ON journal_tasting_notes BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = OLD.journal_entry_id OR id = NEW.journal_entry_id);\r\nEND;"
+      }
+    },
+    {
+      "id": 38,
+      "references": [
+        35,
+        0,
+        9
+      ],
+      "type": "trigger",
+      "data": {
+        "on": 35,
+        "references_in_body": [
+          35,
+          0,
+          9
+        ],
+        "name": "journal_notes_delete_revision",
+        "sql": "CREATE TRIGGER journal_notes_delete_revision AFTER DELETE ON journal_tasting_notes BEGIN\r\n UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = OLD.journal_entry_id);\r\nEND;"
+      }
+    },
+    {
+      "id": 39,
+      "references": [
+        14
+      ],
+      "type": "table",
+      "data": {
+        "name": "draft_varieties",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coffee_draft_id",
+            "getter_name": "coffeeDraftId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffee_drafts (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffee_drafts (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffee_drafts",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "display_value",
+            "getter_name": "displayValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "normalized_value",
+            "getter_name": "normalizedValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "position",
+            "getter_name": "position",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "source",
+            "getter_name": "source",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(trim(display_value)) > 0)",
+          "CHECK (length(trim(normalized_value)) > 0)",
+          "CHECK (position >= 0)",
+          "CHECK (source IN ('user','ocr','suggestion_selected'))"
+        ],
+        "explicit_pk": [
+          "id"
+        ],
+        "unique_keys": [
+          [
+            "coffee_draft_id",
+            "normalized_value"
+          ],
+          [
+            "coffee_draft_id",
+            "position"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 40,
+      "references": [
+        14
+      ],
+      "type": "table",
+      "data": {
+        "name": "draft_tasting_notes",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "coffee_draft_id",
+            "getter_name": "coffeeDraftId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES coffee_drafts (id) ON DELETE CASCADE",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES coffee_drafts (id) ON DELETE CASCADE"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "coffee_drafts",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": "cascade"
+                }
+              }
+            ]
+          },
+          {
+            "name": "display_value",
+            "getter_name": "displayValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "normalized_value",
+            "getter_name": "normalizedValue",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "position",
+            "getter_name": "position",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "source",
+            "getter_name": "source",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(trim(display_value)) > 0)",
+          "CHECK (length(trim(normalized_value)) > 0)",
+          "CHECK (position >= 0)",
+          "CHECK (source IN ('user','ocr','suggestion_selected'))"
+        ],
+        "explicit_pk": [
+          "id"
+        ],
+        "unique_keys": [
+          [
+            "coffee_draft_id",
+            "normalized_value"
+          ],
+          [
+            "coffee_draft_id",
+            "position"
+          ]
+        ]
+      }
+    },
+    {
+      "id": 41,
+      "references": [],
+      "type": "table",
+      "data": {
+        "name": "file_cleanup_tasks",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "local_path",
+            "getter_name": "localPath",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": [
+          "CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]')",
+          "CHECK (length(local_path) > 0 AND local_path NOT LIKE '/%' AND instr(local_path, ':') = 0 AND instr(local_path, char(92)) = 0 AND instr('/' || local_path || '/', '/../') = 0 AND instr('/' || local_path || '/', '/./') = 0 AND instr(local_path, '//') = 0 AND local_path NOT LIKE '%/')"
+        ],
+        "explicit_pk": [
+          "id"
+        ],
+        "unique_keys": [
+          [
+            "local_path"
+          ]
+        ]
+      }
+    }
+  ],
+  "fixed_sql": [
+    {
+      "name": "coffees",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"coffees\" (\"id\" TEXT NOT NULL, \"name\" TEXT NOT NULL, \"name_normalized\" TEXT NOT NULL, \"roastery\" TEXT NOT NULL, \"roastery_normalized\" TEXT NOT NULL, \"origin_country\" TEXT NULL, \"origin_country_normalized\" TEXT NULL, \"region\" TEXT NULL, \"region_normalized\" TEXT NULL, \"producer\" TEXT NULL, \"producer_normalized\" TEXT NULL, \"process\" TEXT NULL, \"process_normalized\" TEXT NULL, \"origin_country_code\" TEXT NULL, \"roast_level_key\" TEXT NULL, \"roast_level_custom\" TEXT NULL, \"altitude_min_meters\" INTEGER NULL, \"altitude_max_meters\" INTEGER NULL, \"altitude_source_text\" TEXT NULL, \"roast_date\" TEXT NULL, \"purchase_date\" TEXT NULL, \"package_weight_grams\" INTEGER NULL, \"personal_note\" TEXT NULL, \"is_favorite\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_favorite\" IN (0, 1)), \"revision\" INTEGER NOT NULL DEFAULT 0, \"created_at\" INTEGER NOT NULL, \"updated_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(trim(name)) > 0), CHECK (length(trim(roastery)) > 0), CHECK (length(trim(name_normalized)) > 0), CHECK (length(trim(roastery_normalized)) > 0), CHECK (roast_level_key IS NULL OR roast_level_key IN ('light','medium_light','medium','medium_dark','dark','other')), CHECK ((roast_level_key = 'other' AND roast_level_custom IS NOT NULL AND length(trim(roast_level_custom)) > 0) OR ((roast_level_key IS NULL OR roast_level_key != 'other') AND roast_level_custom IS NULL)), CHECK (altitude_min_meters IS NULL OR altitude_min_meters > 0), CHECK (altitude_max_meters IS NULL OR altitude_max_meters > 0), CHECK (altitude_min_meters IS NULL OR altitude_max_meters IS NULL OR altitude_max_meters >= altitude_min_meters), CHECK (package_weight_grams IS NULL OR package_weight_grams > 0), CHECK (updated_at >= created_at), CHECK (revision >= 0), CHECK (roast_date IS NULL OR (length(roast_date) = 10 AND roast_date >= '0001-01-01' AND COALESCE(date(roast_date, '+0 days') = roast_date, 0))), CHECK (purchase_date IS NULL OR (length(purchase_date) = 10 AND purchase_date >= '0001-01-01' AND COALESCE(date(purchase_date, '+0 days') = purchase_date, 0))), CHECK (origin_country_code IS NULL OR origin_country_code GLOB '[A-Z][A-Z]'));"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_0",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_0 ON coffees (created_at DESC, id)"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_1",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_1 ON coffees (updated_at DESC)"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_2",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_2 ON coffees (name_normalized)"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_3",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_3 ON coffees (roastery_normalized)"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_4",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_4 ON coffees (origin_country_normalized)"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_5",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_5 ON coffees (process_normalized)"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_6",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_6 ON coffees (roast_level_key)"
+        }
+      ]
+    },
+    {
+      "name": "coffees_query_7",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffees_query_7 ON coffees (roast_date)"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"journal_entries\" (\"id\" TEXT NOT NULL, \"coffee_id\" TEXT NOT NULL REFERENCES coffees (id) ON DELETE CASCADE, \"brewed_at\" INTEGER NOT NULL, \"brewed_at_offset_minutes\" INTEGER NOT NULL, \"brew_method_key\" TEXT NOT NULL, \"brew_method_custom\" TEXT NULL, \"dose_milligrams\" INTEGER NULL, \"water_milligrams\" INTEGER NULL, \"water_temperature_deci_celsius\" INTEGER NULL, \"grind_size\" TEXT NULL, \"brew_time_seconds\" INTEGER NULL, \"rating\" INTEGER NULL, \"note\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"updated_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (brew_method_key IN ('v60','kalita_wave','origami','aeropress','french_press','chemex','clever_dripper','espresso','moka_pot','cold_brew','cupping','other')), CHECK ((brew_method_key = 'other' AND brew_method_custom IS NOT NULL AND length(trim(brew_method_custom)) > 0) OR (brew_method_key != 'other' AND brew_method_custom IS NULL)), CHECK (dose_milligrams IS NULL OR dose_milligrams > 0), CHECK (water_milligrams IS NULL OR water_milligrams > 0), CHECK (water_temperature_deci_celsius IS NULL OR water_temperature_deci_celsius > 0), CHECK (brew_time_seconds IS NULL OR brew_time_seconds > 0), CHECK (rating IS NULL OR rating BETWEEN 1 AND 5), CHECK (updated_at >= created_at), CHECK (brewed_at_offset_minutes BETWEEN -840 AND 840));"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries_query_0",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX journal_entries_query_0 ON journal_entries (coffee_id, brewed_at DESC)"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries_query_1",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX journal_entries_query_1 ON journal_entries (brewed_at DESC)"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries_query_2",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX journal_entries_query_2 ON journal_entries (brew_method_key)"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries_query_3",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX journal_entries_query_3 ON journal_entries (rating)"
+        }
+      ]
+    },
+    {
+      "name": "coffee_drafts",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"coffee_drafts\" (\"review_json\" TEXT NULL, \"review_revision\" INTEGER NOT NULL DEFAULT 0, \"ocr_raw_text\" TEXT NULL, \"ocr_lines_json\" TEXT NULL, \"scan_revision\" INTEGER NOT NULL DEFAULT 0, \"id\" TEXT NOT NULL, \"draft_type\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"target_coffee_id\" TEXT NULL REFERENCES coffees (id) ON DELETE CASCADE, \"temporary_image_path\" TEXT NULL, \"image_mime_type\" TEXT NULL, \"name\" TEXT NULL, \"roastery\" TEXT NULL, \"origin_country\" TEXT NULL, \"region\" TEXT NULL, \"producer\" TEXT NULL, \"process\" TEXT NULL, \"origin_country_code\" TEXT NULL, \"roast_level_key\" TEXT NULL, \"roast_level_custom\" TEXT NULL, \"altitude_min_meters\" INTEGER NULL, \"altitude_max_meters\" INTEGER NULL, \"altitude_source_text\" TEXT NULL, \"roast_date\" TEXT NULL, \"purchase_date\" TEXT NULL, \"package_weight_grams\" INTEGER NULL, \"personal_note\" TEXT NULL, \"failure_category\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"updated_at\" INTEGER NOT NULL, \"expires_at\" INTEGER NULL, PRIMARY KEY (\"id\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (draft_type IN ('manual_create','scan_create','edit_existing')), CHECK (status IN ('editing','image_ready','processing','review_required','ready_to_save','failed_recoverable','completed','discarded','expired')), CHECK ((draft_type = 'edit_existing' AND target_coffee_id IS NOT NULL) OR (draft_type != 'edit_existing' AND target_coffee_id IS NULL)), CHECK (temporary_image_path IS NULL OR (image_mime_type IS NOT NULL AND image_mime_type IN ('image/jpeg','image/png','image/webp'))), CHECK (temporary_image_path IS NULL OR (length(temporary_image_path) > 0 AND temporary_image_path NOT LIKE '/%' AND instr(temporary_image_path, ':') = 0 AND instr(temporary_image_path, char(92)) = 0 AND instr('/' || temporary_image_path || '/', '/../') = 0 AND instr('/' || temporary_image_path || '/', '/./') = 0 AND instr(temporary_image_path, '//') = 0 AND temporary_image_path NOT LIKE '%/')), CHECK (updated_at >= created_at));"
+        }
+      ]
+    },
+    {
+      "name": "coffee_drafts_query_0",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffee_drafts_query_0 ON coffee_drafts (status, updated_at)"
+        }
+      ]
+    },
+    {
+      "name": "coffee_drafts_query_1",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX coffee_drafts_query_1 ON coffee_drafts (target_coffee_id)"
+        }
+      ]
+    },
+    {
+      "name": "scan_extracted_fields",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"scan_extracted_fields\" (\"id\" TEXT NOT NULL, \"coffee_draft_id\" TEXT NOT NULL REFERENCES coffee_drafts (id) ON DELETE CASCADE, \"field_key\" TEXT NOT NULL, \"raw_value\" TEXT NULL, \"normalized_value\" TEXT NULL, \"confidence_basis_points\" INTEGER NULL, \"review_status\" TEXT NOT NULL, \"source_region\" TEXT NULL, \"created_at\" INTEGER NOT NULL, \"updated_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (field_key IN ('name','roastery','origin_country','region','producer','process','varieties','roast_level','tasting_notes','altitude','roast_date','package_weight')), CHECK (confidence_basis_points IS NULL OR confidence_basis_points BETWEEN 0 AND 10000), CHECK (review_status IN ('unreviewed','needs_review','accepted','edited','rejected','not_applicable')), CHECK (updated_at >= created_at));"
+        }
+      ]
+    },
+    {
+      "name": "scan_extracted_fields_query_0",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE INDEX scan_extracted_fields_query_0 ON scan_extracted_fields (coffee_draft_id, field_key)"
+        }
+      ]
+    },
+    {
+      "name": "coffee_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_revision AFTER UPDATE ON coffees WHEN NEW.revision = OLD.revision BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = NEW.id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_varieties",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"coffee_varieties\" (\"id\" TEXT NOT NULL, \"coffee_id\" TEXT NOT NULL REFERENCES coffees (id) ON DELETE CASCADE, \"display_value\" TEXT NOT NULL, \"normalized_value\" TEXT NOT NULL, \"position\" INTEGER NOT NULL, \"created_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), UNIQUE (\"coffee_id\", \"normalized_value\"), UNIQUE (\"coffee_id\", \"position\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(trim(display_value)) > 0), CHECK (length(trim(normalized_value)) > 0), CHECK (position >= 0));"
+        }
+      ]
+    },
+    {
+      "name": "coffee_varieties_insert_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_varieties_insert_revision AFTER INSERT ON coffee_varieties BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_varieties_update_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_varieties_update_revision AFTER UPDATE ON coffee_varieties BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_varieties_delete_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_varieties_delete_revision AFTER DELETE ON coffee_varieties BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_tasting_notes",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"coffee_tasting_notes\" (\"id\" TEXT NOT NULL, \"coffee_id\" TEXT NOT NULL REFERENCES coffees (id) ON DELETE CASCADE, \"display_value\" TEXT NOT NULL, \"normalized_value\" TEXT NOT NULL, \"position\" INTEGER NOT NULL, \"created_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), UNIQUE (\"coffee_id\", \"normalized_value\"), UNIQUE (\"coffee_id\", \"position\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(trim(display_value)) > 0), CHECK (length(trim(normalized_value)) > 0), CHECK (position >= 0));"
+        }
+      ]
+    },
+    {
+      "name": "coffee_tasting_notes_insert_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_tasting_notes_insert_revision AFTER INSERT ON coffee_tasting_notes BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_tasting_notes_update_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_tasting_notes_update_revision AFTER UPDATE ON coffee_tasting_notes BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_tasting_notes_delete_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_tasting_notes_delete_revision AFTER DELETE ON coffee_tasting_notes BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_photos",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"coffee_photos\" (\"id\" TEXT NOT NULL, \"coffee_id\" TEXT NOT NULL REFERENCES coffees (id) ON DELETE CASCADE, \"local_path\" TEXT NOT NULL, \"role\" TEXT NOT NULL, \"mime_type\" TEXT NOT NULL, \"width_pixels\" INTEGER NOT NULL, \"height_pixels\" INTEGER NOT NULL, \"byte_size\" INTEGER NOT NULL, \"content_hash\" TEXT NULL, \"source\" TEXT NOT NULL, \"position\" INTEGER NOT NULL, \"created_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), UNIQUE (\"coffee_id\", \"role\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(local_path) > 0 AND local_path NOT LIKE '/%' AND instr(local_path, ':') = 0 AND instr(local_path, char(92)) = 0 AND instr('/' || local_path || '/', '/../') = 0 AND instr('/' || local_path || '/', '/./') = 0 AND instr(local_path, '//') = 0 AND local_path NOT LIKE '%/'), CHECK (role = 'cover'), CHECK (mime_type IN ('image/jpeg','image/png','image/webp')), CHECK (width_pixels > 0), CHECK (height_pixels > 0), CHECK (byte_size >= 0), CHECK (position >= 0), CHECK (source IN ('camera','gallery','scan','import')));"
+        }
+      ]
+    },
+    {
+      "name": "coffee_photos_insert_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_photos_insert_revision AFTER INSERT ON coffee_photos BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_photos_update_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_photos_update_revision AFTER UPDATE ON coffee_photos BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "coffee_photos_delete_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER coffee_photos_delete_revision AFTER DELETE ON coffee_photos BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries_insert_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER journal_entries_insert_revision AFTER INSERT ON journal_entries BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries_update_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER journal_entries_update_revision AFTER UPDATE ON journal_entries BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id OR id = NEW.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "journal_entries_delete_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER journal_entries_delete_revision AFTER DELETE ON journal_entries BEGIN UPDATE coffees SET revision = revision + 1 WHERE id = OLD.coffee_id;END"
+        }
+      ]
+    },
+    {
+      "name": "journal_tasting_notes",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"journal_tasting_notes\" (\"id\" TEXT NOT NULL, \"journal_entry_id\" TEXT NOT NULL REFERENCES journal_entries (id) ON DELETE CASCADE, \"display_value\" TEXT NOT NULL, \"normalized_value\" TEXT NOT NULL, \"position\" INTEGER NOT NULL, \"created_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), UNIQUE (\"journal_entry_id\", \"normalized_value\"), UNIQUE (\"journal_entry_id\", \"position\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(trim(display_value)) > 0), CHECK (length(trim(normalized_value)) > 0), CHECK (position >= 0));"
+        }
+      ]
+    },
+    {
+      "name": "journal_notes_insert_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER journal_notes_insert_revision AFTER INSERT ON journal_tasting_notes BEGIN UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = NEW.journal_entry_id);END"
+        }
+      ]
+    },
+    {
+      "name": "journal_notes_update_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER journal_notes_update_revision AFTER UPDATE ON journal_tasting_notes BEGIN UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = OLD.journal_entry_id OR id = NEW.journal_entry_id);END"
+        }
+      ]
+    },
+    {
+      "name": "journal_notes_delete_revision",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TRIGGER journal_notes_delete_revision AFTER DELETE ON journal_tasting_notes BEGIN UPDATE coffees SET revision = revision + 1 WHERE id IN (SELECT coffee_id FROM journal_entries WHERE id = OLD.journal_entry_id);END"
+        }
+      ]
+    },
+    {
+      "name": "draft_varieties",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"draft_varieties\" (\"id\" TEXT NOT NULL, \"coffee_draft_id\" TEXT NOT NULL REFERENCES coffee_drafts (id) ON DELETE CASCADE, \"display_value\" TEXT NOT NULL, \"normalized_value\" TEXT NOT NULL, \"position\" INTEGER NOT NULL, \"source\" TEXT NOT NULL, PRIMARY KEY (\"id\"), UNIQUE (\"coffee_draft_id\", \"normalized_value\"), UNIQUE (\"coffee_draft_id\", \"position\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(trim(display_value)) > 0), CHECK (length(trim(normalized_value)) > 0), CHECK (position >= 0), CHECK (source IN ('user','ocr','suggestion_selected')));"
+        }
+      ]
+    },
+    {
+      "name": "draft_tasting_notes",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"draft_tasting_notes\" (\"id\" TEXT NOT NULL, \"coffee_draft_id\" TEXT NOT NULL REFERENCES coffee_drafts (id) ON DELETE CASCADE, \"display_value\" TEXT NOT NULL, \"normalized_value\" TEXT NOT NULL, \"position\" INTEGER NOT NULL, \"source\" TEXT NOT NULL, PRIMARY KEY (\"id\"), UNIQUE (\"coffee_draft_id\", \"normalized_value\"), UNIQUE (\"coffee_draft_id\", \"position\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(trim(display_value)) > 0), CHECK (length(trim(normalized_value)) > 0), CHECK (position >= 0), CHECK (source IN ('user','ocr','suggestion_selected')));"
+        }
+      ]
+    },
+    {
+      "name": "file_cleanup_tasks",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"file_cleanup_tasks\" (\"id\" TEXT NOT NULL, \"local_path\" TEXT NOT NULL, \"created_at\" INTEGER NOT NULL, PRIMARY KEY (\"id\"), UNIQUE (\"local_path\"), CHECK (id GLOB '[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]'), CHECK (length(local_path) > 0 AND local_path NOT LIKE '/%' AND instr(local_path, ':') = 0 AND instr(local_path, char(92)) = 0 AND instr('/' || local_path || '/', '/../') = 0 AND instr('/' || local_path || '/', '/./') = 0 AND instr(local_path, '//') = 0 AND local_path NOT LIKE '%/'));"
+        }
+      ]
+    }
+  ]
+}

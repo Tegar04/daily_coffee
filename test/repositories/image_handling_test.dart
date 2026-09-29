@@ -321,6 +321,27 @@ void main() {
     await interrupted;
   });
 
+  test('scan acquisition stays separate from manual photo recovery', () async {
+    final result = await service.acquire(
+      PhotoSource.gallery,
+      targetCoffeeId: null,
+      context: const {'purpose': 'scan'},
+      forScan: true,
+    );
+    final image = (result as Ok<ManagedImage?>).value!;
+    final row = await db.select(db.coffeeDrafts).getSingle();
+    expect(row.draftType, 'scan_create');
+    expect(
+      (await service.recover() as Ok<List<RecoveredCapture>>).value,
+      isEmpty,
+    );
+    expect(await storage.file(image.localPath).exists(), isTrue);
+    expect(await db.select(db.coffees).get(), isEmpty);
+    await service.discard(image.id);
+    expect(await storage.file(image.localPath).exists(), isFalse);
+    expect(await db.select(db.coffeeDrafts).get(), isEmpty);
+  });
+
   test(
     'unassociated lost result is never attached to a coffee or draft',
     () async {

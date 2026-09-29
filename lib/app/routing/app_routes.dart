@@ -2,6 +2,8 @@ import 'package:daily_coffee/app/routing/navigation_screens.dart';
 import 'package:daily_coffee/features/coffee/presentation/screens/coffee_detail_screen.dart';
 import 'package:daily_coffee/features/coffee/presentation/screens/coffee_form_screen.dart';
 import 'package:daily_coffee/features/coffee/presentation/screens/coffee_library_screen.dart';
+import 'package:daily_coffee/features/scan/presentation/scan_review_screen.dart';
+import 'package:daily_coffee/features/scan/presentation/scan_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -79,9 +81,12 @@ class ScanRoute extends AppRoute {
 }
 
 class ReviewRoute extends AppRoute {
-  const ReviewRoute();
+  const ReviewRoute({this.draftId});
+  final String? draftId;
   @override
-  String get location => '/coffee/review';
+  String get location => draftId == null
+      ? '/coffee/review'
+      : '/coffee/review?draftId=${Uri.encodeQueryComponent(draftId!)}';
 }
 
 class NewCoffeeRoute extends AppRoute {
@@ -195,19 +200,13 @@ final appRoutes = <RouteBase>[
   GoRoute(
     path: '/coffee/scan',
     parentNavigatorKey: rootNavigatorKey,
-    builder: (context, state) => PlaceholderDetailScreen(
-      title: 'Membaca label',
-      fallbackLocation: '/library',
-      subtitle: 'Pembacaan label akan tersedia pada tahap berikutnya.',
-      editLabel: 'Isi manual',
-      onEdit: () => const NewCoffeeRoute().push<void>(context),
-    ),
+    builder: (context, state) => const ScanScreen(),
   ),
   GoRoute(
     path: '/coffee/review',
     parentNavigatorKey: rootNavigatorKey,
     builder: (context, state) =>
-        const PlaceholderFormScreen(title: 'Periksa informasi'),
+        ScanReviewScreen(draftId: state.uri.queryParameters['draftId']),
   ),
   GoRoute(
     path: '/coffee/new',

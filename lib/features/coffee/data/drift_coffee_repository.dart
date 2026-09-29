@@ -141,6 +141,57 @@ final class DriftCoffeeRepository implements CoffeeRepository {
     return _write(_builder.build(id, input, previous: previous));
   });
 
+  /// Explicit reviewed-draft promotion. The revision check, Coffee aggregate,
+  /// photo metadata, cleanup queue and draft deletion share one transaction.
+  Future<Result<Coffee>> createFromDraft(
+    CoffeeFormValues input, {
+    required String draftId,
+    required int expectedRevision,
+    ManagedImage? image,
+  }) async {
+    try {
+      _validate(input);
+      return await _savePhoto(
+        CoffeeId(_ids.generate()),
+        image == null ? null : CoffeePhotoEdit(replacement: image),
+        (id) async {
+          final draft = await (_db.select(
+            _db.coffeeDrafts,
+          )..where((t) => t.id.equals(draftId))).getSingleOrNull();
+          if (draft == null) throw const NotFoundFailure();
+          if (draft.draftType != 'scan_create' ||
+              draft.status != 'review_required' ||
+              draft.reviewJson == null ||
+              draft.reviewRevision != expectedRevision ||
+              (image != null &&
+                  (image.id != draftId ||
+                      image.localPath != draft.temporaryImagePath))) {
+            throw const ConflictFailure();
+          }
+          final coffee = await _write(_builder.build(id, input), insert: true);
+          if (draft.temporaryImagePath case final path?) {
+            await _db
+                .into(_db.fileCleanupTasks)
+                .insert(
+                  FileCleanupTasksCompanion.insert(
+                    id: _ids.generate(),
+                    localPath: path,
+                    createdAt: _clock.now().toUtc().microsecondsSinceEpoch,
+                  ),
+                  mode: InsertMode.insertOrIgnore,
+                );
+          }
+          await (_db.delete(
+            _db.coffeeDrafts,
+          )..where((t) => t.id.equals(draftId))).go();
+          return coffee;
+        },
+      );
+    } catch (error) {
+      return Err(_failure(error));
+    }
+  }
+
   Future<Result<Coffee>> _savePhoto(
     CoffeeId id,
     CoffeePhotoEdit? edit,

@@ -10,6 +10,11 @@ part 'coffee_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 CoffeeRepository coffeeRepository(Ref ref) {
+  return ref.watch(driftCoffeeRepositoryProvider);
+}
+
+@Riverpod(keepAlive: true)
+DriftCoffeeRepository driftCoffeeRepository(Ref ref) {
   return DriftCoffeeRepository(
     database: ref.watch(appDatabaseProvider),
     clock: ref.watch(appClockProvider),

@@ -199,6 +199,11 @@ class JournalTastingNotes extends Table {
 
 @DataClassName('DraftRecord')
 class CoffeeDrafts extends Table {
+  TextColumn get reviewJson => text().nullable()();
+  IntColumn get reviewRevision => integer().withDefault(const Constant(0))();
+  TextColumn get ocrRawText => text().nullable()();
+  TextColumn get ocrLinesJson => text().nullable()();
+  IntColumn get scanRevision => integer().withDefault(const Constant(0))();
   TextColumn get id => text()();
   TextColumn get draftType => text()();
   TextColumn get status => text()();

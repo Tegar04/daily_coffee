@@ -1458,3 +1458,33 @@ penghapusan cover, thumbnail, dan sidecar draft.
 
 Lihat [IMAGE_HANDLING_IMPLEMENTATION.md](IMAGE_HANDLING_IMPLEMENTATION.md) untuk
 lifecycle, recovery, batas checkpoint, dan test.
+
+## 36. Phase 7 Raw OCR Persistence - 29 September 2026
+
+Schema **v2** menambah `ocrRawText` nullable, `ocrLinesJson` nullable, dan
+`scanRevision` default 0 pada CoffeeDraft. Lines JSON menyimpan kontrak internal
+text/bounds/confidence nullable, bukan payload SDK. Migrasi additive menjaga
+Coffee, draft, dan reference foto v1. Snapshot v1 tetap dipertahankan.
+
+Scan memakai `draftType = scan_create` sejak acquisition. Recovery foto manual
+mengecualikan draftType ini. OCR sukses mengubah status ke `review_required`,
+gagal ke `failed_recoverable`, dan cancel ke `image_ready` dengan revisi baru.
+Hasil hanya ditulis jika revisi dan status processing cocok. Raw OCR ikut
+dihapus saat draft dihapus; tidak pernah menulis Coffee atau ScanExtractedField
+sebelum semantic extraction/review Phase 8. Lihat
+[OCR_SCANNING_IMPLEMENTATION.md](OCR_SCANNING_IMPLEMENTATION.md).
+
+## 37. Phase 8 Editable Draft Policy - 29 September 2026
+
+Schema v3 menambah `reviewJson` nullable dan `reviewRevision` default 0.
+Editable CoffeeFormValues dan includePhoto disimpan lossless dalam review JSON
+version 1; input angka/tanggal parsial tidak dipaksa ke typed draft column lama.
+ScanExtractedField child rows mempertahankan candidate raw/normalized/confidence/
+region; review status menandai edit/rejection pengguna. Current values berada
+pada snapshot, source kandidat asli OCR dan source edited/rejected adalah user.
+
+Review pertama melakukan parse+persist atomik; reopen tidak menimpa edit.
+Promotion hanya melalui explicit user confirmation, memvalidasi semua values,
+memeriksa expected review revision, dan menghapus draft/raw/candidate pada commit
+Coffee/tags/photo metadata yang sama. Keluar dari review mempertahankan draft;
+hapus draft memerlukan konfirmasi. Lihat [SCAN_REVIEW_IMPLEMENTATION.md](SCAN_REVIEW_IMPLEMENTATION.md).

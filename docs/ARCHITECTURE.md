@@ -1994,3 +1994,29 @@ awal; raw original tidak diduplikasi permanen. Crop/rotate manual opsional ditun
 
 Kebijakan staged write, exact draft association, checkpoint form, failure recovery,
 dan verifikasi: [IMAGE_HANDLING_IMPLEMENTATION.md](IMAGE_HANDLING_IMPLEMENTATION.md).
+
+## 40. Phase 7 OCR Decision - 29 September 2026
+
+`LabelTextRecognizer` memakai adapter ML Kit Latin bundled melalui
+`google_mlkit_text_recognition` 0.17.1. Raw text, line bounds, dan confidence
+nullable memakai DTO netral provider. State machine dan operation ID berada
+di scan controller; revisi draft di database menolak completion lama.
+Cancellation bersifat logis, native recognizer ditutup setelah native work
+selesai. Timeout 30 detik, retry eksplisit, dan input manual tetap tersedia.
+
+Baseline gambar Phase 6 lolos fixture OCR satu/dua kolom dan kompresi ringan
+pada emulator offline. Akurasi label fisik belum disimpulkan dari fixture ini.
+Parser dan promotion tetap Phase 8. Lihat
+[OCR_SCANNING_IMPLEMENTATION.md](OCR_SCANNING_IMPLEMENTATION.md).
+
+## 41. Phase 8 Review Decision - 29 September 2026
+
+Parser pure Dart menghasilkan kandidat deterministik; confidence OCR tidak
+dianggap confidence kebenaran semantic. CoffeeDraft menyimpan editable snapshot
+termasuk input invalid sementara di SQLite v3. Riverpod controller menserialisasi
+autosave dan memeriksa revision. Review yang sudah dimulai tidak di-overwrite OCR.
+
+User confirmation wajib sebelum promotion. Candidate file disiapkan sebelum
+transaksi; Coffee/tags/photo metadata/cleanup task/draft deletion atomik dalam
+transaksi yang memeriksa revisi draft. Gagal menyimpan mempertahankan draft.
+Tidak ada remote extractor. Lihat [SCAN_REVIEW_IMPLEMENTATION.md](SCAN_REVIEW_IMPLEMENTATION.md).

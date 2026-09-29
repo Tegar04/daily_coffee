@@ -42,6 +42,7 @@ class _Service extends CaptureService {
     PhotoSource source, {
     required String? targetCoffeeId,
     required Map<String, Object?> context,
+    bool forScan = false,
   }) async => result;
   @override
   Future<void> discard(String id) async {
