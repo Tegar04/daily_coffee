@@ -2,6 +2,7 @@ import 'package:daily_coffee/app/routing/navigation_screens.dart';
 import 'package:daily_coffee/features/coffee/presentation/screens/coffee_detail_screen.dart';
 import 'package:daily_coffee/features/coffee/presentation/screens/coffee_form_screen.dart';
 import 'package:daily_coffee/features/coffee/presentation/screens/coffee_library_screen.dart';
+import 'package:daily_coffee/features/scan/presentation/ai_connection_screen.dart';
 import 'package:daily_coffee/features/scan/presentation/scan_review_screen.dart';
 import 'package:daily_coffee/features/scan/presentation/scan_screen.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,12 @@ class ReviewRoute extends AppRoute {
   String get location => draftId == null
       ? '/coffee/review'
       : '/coffee/review?draftId=${Uri.encodeQueryComponent(draftId!)}';
+}
+
+class AiConnectionRoute extends AppRoute {
+  const AiConnectionRoute();
+  @override
+  String get location => '/settings/ai';
 }
 
 class NewCoffeeRoute extends AppRoute {
@@ -185,6 +192,10 @@ final appRoutes = <RouteBase>[
                   title: 'Tentang',
                   fallbackLocation: '/settings',
                 ),
+              ),
+              GoRoute(
+                path: 'ai',
+                builder: (context, state) => const AiConnectionScreen(),
               ),
             ],
           ),

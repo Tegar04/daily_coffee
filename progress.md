@@ -351,6 +351,8 @@ APK: `build/app/outputs/flutter-apk/app-debug.apk`.
 
 ## Phase 8 — Structured Extraction dan Editable Confirmation
 
+**Status: SELESAI - implementasi dan uji penerimaan pengguna selesai pada 30 September 2026.**
+
 - [x] Definisikan `CoffeeDraft` dan `ScanExtractedField` lengkap dengan source/confidence.
 - [x] Buat parser untuk nama coffee, roaster, origin, process, variety, roast date, tasting notes, dan berat.
 - [x] Gunakan aturan deterministik terlebih dahulu; tandai field ambigu atau low-confidence.
@@ -359,7 +361,7 @@ APK: `build/app/outputs/flutter-apk/app-debug.apk`.
 - [x] Simpan perubahan draft saat berpindah field/terjadi interruption.
 - [x] Promotion draft → Coffee harus atomik pada database.
 - [x] Hapus atau pertahankan draft secara eksplisit setelah save/cancel.
-- [x] Jika kelak memakai remote extraction, kirim melalui backend aman dan jangan tanam API key di aplikasi. Saat ini parser sepenuhnya lokal; remote extraction/API key tidak digunakan.
+- [x] Kirim ekstraksi AI melalui backend Laravel; API key tetap di server dan tidak ditanam di aplikasi.
 
 **Definition of Done**
 
@@ -367,31 +369,64 @@ APK: `build/app/outputs/flutter-apk/app-debug.apk`.
 - [x] Semua hasil ekstraksi dapat diperbaiki sebelum disimpan.
 - [x] Parser, draft persistence, dan promotion flow memiliki automated test.
 
-**Verifikasi — 29 September 2026**
+### Alur akhir yang digunakan
 
-- `tool/quality_check.ps1` lulus: code generation, format, analyzer tanpa issue,
-  **113 tests** termasuk golden, dan build APK debug normal.
-- Parser diuji untuk alias Indonesia/Inggris, kandidat ambigu, tanggal/berat/
-  altitude, confidence nullable, dan raw provenance. Informasi yang tidak jelas
-  dibiarkan kosong dan ditampilkan untuk review; tidak ditebak dari heading.
-- Repository tests memverifikasi edit parsial setelah reopen, source user,
-  stale revision, photo opt-out, rollback aggregate saat insert foto gagal,
-  retry, serta penolakan promotion berulang. Autosave berurutan dan duplicate
-  confirmation diuji; widget review diuji dengan text scale 200%.
-- Integration Android `scan_review_test.dart` lulus pada tahap `seed` dan
-  `verify` dengan force-stop di antaranya: native OCR → form review → edit nama
-  dan tanggal parsial → restart → edit tetap ada → perbaiki tanggal → konfirmasi
-  → satu Coffee/foto permanen, draft/raw/candidate terhapus. Data QA terisolasi
-  dibersihkan setelah verifikasi.
-- Schema v3 menyimpan editable snapshot/revision; migrasi v1 dan v2 ke v3 diuji
-  tanpa menghapus data lama. Keluar dari review mempertahankan draft; hapus
-  draft meminta konfirmasi. Write yang masih berlangsung saat OS kill belum
-  dijamin durable; UI menunjukkan status penyimpanan draft.
-- Perangkat fisik, TalkBack, iOS, dan akurasi kumpulan label nyata belum
-  diverifikasi. Parser menggunakan aturan/vocabulary terbatas, bukan generative AI.
+- [x] OCR membaca teks foto di perangkat; AI otomatis mengisi form saat review
+  hasil scan baru dibuka melalui `POST /api/coffee-label/extract`.
+- [x] Hapus tombol **Isi dengan AI**, dialog pemicunya, dan pemilihan kandidat
+  per kolom. Hasil termasuk altitude tetap dapat dikoreksi manual.
+- [x] Autosave hasil sebagai draft; Coffee permanen hanya dibuat setelah review
+  dan konfirmasi pengguna.
+- [x] Pertahankan edit saat draft dibuka ulang tanpa menjalankan AI lagi.
+- [x] Sediakan fallback parser lokal/input manual jika backend atau AI gagal.
+- [x] Jelaskan pengiriman teks ke OpenAI sebelum scan; foto tidak dikirim.
+- [x] Pengguna mencoba versi akhir dan menyatakan hasilnya cukup memuaskan.
+
+### Verifikasi yang telah dilakukan
+
+- Quality gate terakhir lulus: code generation, format, `flutter analyze` tanpa
+  issue, **132 host tests**, dan build APK debug.
+- Live integration test pada ponsel Android 16 lulus: pengisian otomatis,
+  altitude 1500-1700 meter, berat 250 gram, roast date 2026-09-29, persistence
+  draft, dan tidak membuat Coffee otomatis. Test memakai label sintetis.
+- APK normal terbaru telah dipasang kembali tanpa uninstall setelah live test.
+- Backend sebelumnya lulus 13 tests / 73 assertions, Pint, Composer validation,
+  serta panggilan ekstraksi nyata.
+- Catatan ini merangkum verifikasi sesi implementasi sebelumnya; pengujian kode
+  tidak dijalankan ulang pada pembaruan dokumentasi ini.
+
+### Batasan dan pekerjaan lanjutan
+
+- Koneksi AI saat ini memakai Laravel lokal (`php artisan serve`) dan USB
+  `adb reverse`; keduanya harus aktif. Script koneksi: `tool/connect_backend.ps1`.
+- [x] Siapkan autentikasi satu token HP pribadi dan kuota per token/global.
+- [ ] Deploy backend dengan HTTPS dan database/cache persisten, aktifkan token,
+  lalu uji jaringan seluler tanpa komputer/USB. Dukungan banyak akun belum termasuk.
+- [ ] Evaluasi akurasi terukur pada kumpulan label kemasan nyata; uji penerimaan
+  pengguna belum menggantikan benchmark tersebut.
+- TalkBack, iOS, serta release hardening masih mengikuti fase lanjutan.
 
 Panduan: [SCAN_REVIEW_IMPLEMENTATION.md](docs/SCAN_REVIEW_IMPLEMENTATION.md).
-APK: `build/app/outputs/flutter-apk/app-debug.apk`.
+**Tahap berikutnya: Phase 9 - Brewing Journal (belum dimulai).**
+
+### Persiapan akses backend dari HP pribadi
+
+- [x] Tambahkan token acak perangkat, hash SHA-256 server, expiry, dan pencabutan
+  lewat rotasi konfigurasi. Token tidak ditanam dalam APK; API key tetap di backend.
+- [x] Lindungi endpoint dengan autentikasi dan HTTPS; hanya proxy terkonfigurasi
+  yang dapat melaporkan HTTPS. Loopback tanpa token hanya untuk development.
+- [x] Terapkan kuota 10 request/menit dan 100 request/24 jam per token serta global;
+  production menolak cache sementara file/array. Rotasi tidak mereset kuota global.
+- [x] Tambahkan Pengaturan > Koneksi AI untuk memeriksa lalu menyimpan alamat dan
+  token dalam secure storage. Pemeriksaan tidak memanggil OpenAI.
+- [x] Verifikasi backend: 22 tests / 107 assertions, Pint, dan Composer validation.
+- [x] Verifikasi Android fisik: simpan/baca kembali token pada key QA terisolasi,
+  pengiriman Bearer ke mock server, dan hapus koneksi; tidak ada biaya OpenAI.
+- [x] Quality gate Flutter lulus: code generation, format, analyzer tanpa issue,
+  137 host tests, dan build APK debug. APK normal terbaru dipasang tanpa uninstall.
+- [x] Dokumentasikan pembuatan token, konfigurasi hosting, HTTPS/proxy, database
+  persisten, dan pencabutan di `E:\My Career\daily_coffee_api\DEVICE_ACCESS.md`.
+- [ ] Buat token production secara pribadi, deploy server, dan uji HTTPS publik.
 
 ## Phase 9 — Brewing Journal
 

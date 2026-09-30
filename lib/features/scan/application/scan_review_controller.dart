@@ -35,10 +35,15 @@ class ScanReviewController extends _$ScanReviewController {
   bool _alive = true;
   bool _failed = false;
   bool _confirming = false;
+  bool _extracting = false;
+  int _aiRequest = 0;
 
   @override
   Future<ScanReviewState> build(String id) async {
-    ref.onDispose(() => _alive = false);
+    ref.onDispose(() {
+      _alive = false;
+      ++_aiRequest;
+    });
     _repository = await ref.watch(scanReviewRepositoryProvider.future);
     final result = await _repository.open(id);
     if (result case Err<CoffeeDraft>(:final failure)) throw failure;
@@ -117,9 +122,78 @@ class ScanReviewController extends _$ScanReviewController {
     return !_failed;
   }
 
+  void cancelAi() {
+    ++_aiRequest;
+    _extracting = false;
+  }
+
+  Future<Result<CoffeeFormValues>> fillWithAi({bool onlyIfNew = false}) async {
+    if (_extracting || _confirming || !_alive) {
+      return const Err(ConflictFailure());
+    }
+    final current = state.asData?.value.draft;
+    if (current == null || (onlyIfNew && current.revision != 1)) {
+      return const Err(ConflictFailure());
+    }
+    _extracting = true;
+    final ticket = ++_aiRequest;
+    if (onlyIfNew) {
+      // Revision 1 is the initial parser snapshot. Persist a new revision before
+      // sending so reopening a draft never repeats AI or overwrites saved edits.
+      change(current.values, current.includePhoto);
+    }
+    final edit = _edit;
+    try {
+      if (!await flush()) return const Err(StorageFailure());
+      if (!_alive || ticket != _aiRequest || edit != _edit) {
+        return const Err(ConflictFailure());
+      }
+      final original = state.asData!.value.draft;
+      final result = await ref
+          .read(labelExtractorProvider)
+          .extract(original.text.text);
+      if (!_alive || ticket != _aiRequest || edit != _edit || _confirming) {
+        return const Err(ConflictFailure());
+      }
+      if (result case Err<CoffeeFormValues>(:final failure)) {
+        return Err(failure);
+      }
+      final extracted = (result as Ok<CoffeeFormValues>).value;
+      var merged = original.values;
+      for (final field in CoffeeField.values) {
+        if (field == CoffeeField.purchaseDate ||
+            field == CoffeeField.personalNote ||
+            field == CoffeeField.roastLevelCustom) {
+          continue;
+        }
+        if (extracted[field].trim().isNotEmpty) {
+          merged = merged.set(field, extracted[field]);
+        }
+      }
+      if (extracted[CoffeeField.roastLevelKey].isNotEmpty) {
+        merged = merged.set(
+          CoffeeField.roastLevelCustom,
+          extracted[CoffeeField.roastLevelCustom],
+        );
+      }
+      merged = merged.withTags(
+        varieties: extracted.varieties.isEmpty ? null : extracted.varieties,
+        tastingNotes: extracted.tastingNotes.isEmpty
+            ? null
+            : extracted.tastingNotes,
+      );
+      change(merged, original.includePhoto);
+      return Ok(merged);
+    } catch (_) {
+      return const Err(NetworkFailure());
+    } finally {
+      if (ticket == _aiRequest) _extracting = false;
+    }
+  }
+
   Future<Result<Coffee>> confirm() async {
     final current = state.asData?.value;
-    if (current == null || current.submitting || _confirming) {
+    if (current == null || current.submitting || _confirming || _extracting) {
       return const Err(ConflictFailure());
     }
     _confirming = true;
@@ -150,7 +224,7 @@ class ScanReviewController extends _$ScanReviewController {
   }
 
   Future<bool> discard() async {
-    if (_confirming) return false;
+    if (_confirming || _extracting) return false;
     _confirming = true;
     await _pending;
     try {

@@ -13,6 +13,7 @@ import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
 import 'package:daily_coffee/features/scan/data/drift_scan_review_repository.dart';
 import 'package:daily_coffee/features/scan/data/scan_draft_store.dart';
 import 'package:daily_coffee/features/scan/domain/coffee_draft.dart';
+import 'package:daily_coffee/features/scan/domain/coffee_label_parser.dart';
 import 'package:drift/drift.dart' hide isNull, isNotNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -76,6 +77,43 @@ void main() {
   });
   Future<CoffeeDraft> open() async =>
       (await repository.open(dbId(1)) as Ok<CoffeeDraft>).value;
+  test(
+    'candidate selection from existing raw OCR survives database reconnect',
+    () async {
+      await (db.update(
+        db.coffeeDrafts,
+      )..where((t) => t.id.equals(dbId(1)))).write(
+        const CoffeeDraftsCompanion(
+          ocrRawText: Value('Name: Gayo\nName: Guji\nRoastery: Nusantara'),
+        ),
+      );
+      final draft = await open();
+      expect(draft.values[CoffeeField.name], isEmpty);
+      final choice = const CoffeeLabelParser()
+          .choices(draft.text, 'name')
+          .firstWhere((c) => c.value == 'Guji');
+      final result = await repository.save(
+        draft.id,
+        draft.revision,
+        draft.values.set(CoffeeField.name, choice.value),
+        false,
+      );
+      expect(result, isA<Ok<CoffeeDraft>>());
+      await db.close();
+      connect();
+      final restored = await open();
+      expect(restored.values[CoffeeField.name], 'Guji');
+      expect(restored.sourceFor('name'), DraftValueSource.user);
+      expect(restored.text.text, contains('Name: Gayo'));
+      expect(
+        const CoffeeLabelParser()
+            .choices(restored.text, 'name')
+            .map((c) => c.value),
+        ['Gayo', 'Guji'],
+      );
+      expect(await db.select(db.coffees).get(), isEmpty);
+    },
+  );
   test(
     'opening parses once; incomplete edits and source survive reopen',
     () async {

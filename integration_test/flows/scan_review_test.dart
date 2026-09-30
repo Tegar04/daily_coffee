@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:daily_coffee/app/composition/database_providers.dart';
 import 'package:daily_coffee/app/composition/image_providers.dart';
+import 'package:daily_coffee/app/composition/scan_providers.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
 import 'package:daily_coffee/app/routing/navigation_screens.dart';
 import 'package:daily_coffee/core/database/app_database.dart';
 import 'package:daily_coffee/core/design_system/design_system.dart';
+import 'package:daily_coffee/core/errors/app_failure.dart';
 import 'package:daily_coffee/core/errors/result.dart';
 import 'package:daily_coffee/core/images/image_processor.dart';
 import 'package:daily_coffee/core/images/image_storage.dart';
@@ -22,6 +24,7 @@ import 'package:integration_test/integration_test.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../test/fixtures/coffee_label_images.dart';
+import '../../test/helpers/scan_review_fakes.dart';
 import '../../test/helpers/test_doubles.dart';
 
 /// seed -> force-stop -> verify, on a device with --no-uninstall.
@@ -110,6 +113,12 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            // This flow verifies offline OCR/persistence; live AI is opt-in in
+            // ai_review_test.dart so regular QA never incurs API usage.
+            labelExtractorProvider.overrideWith(
+              (ref) =>
+                  FakeLabelExtractor()..result = const Err(NetworkFailure()),
+            ),
             appDatabaseProvider.overrideWithValue(db),
             imageStorageProvider.overrideWith((ref) async => storage),
           ],

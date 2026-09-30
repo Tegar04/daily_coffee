@@ -5,6 +5,7 @@ import 'package:daily_coffee/core/errors/result.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_values.dart';
 import 'package:daily_coffee/features/scan/domain/coffee_draft.dart';
+import 'package:daily_coffee/features/scan/domain/label_extractor.dart';
 import 'package:daily_coffee/features/scan/domain/recognized_label_text.dart';
 import 'package:daily_coffee/features/scan/domain/scan_review_repository.dart';
 
@@ -55,5 +56,26 @@ class FakeScanReviewRepository implements ScanReviewRepository {
     promotions++;
     if (promoteGate != null) await promoteGate!.future;
     return TestCoffeeRepository().create(draft.values);
+  }
+}
+
+class FakeLabelExtractor implements LabelExtractor {
+  int calls = 0;
+  Completer<Result<CoffeeFormValues>>? gate;
+  Result<CoffeeFormValues> result = Ok(
+    CoffeeFormValues(
+      fields: {
+        CoffeeField.name: 'Kopi AI',
+        CoffeeField.altitudeMinMeters: '1500',
+        CoffeeField.altitudeMaxMeters: '1700',
+        CoffeeField.packageWeightGrams: '250',
+        CoffeeField.roastLevelKey: 'light',
+      },
+    ),
+  );
+  @override
+  Future<Result<CoffeeFormValues>> extract(String rawText) async {
+    calls++;
+    return gate == null ? result : await gate!.future;
   }
 }

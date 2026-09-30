@@ -51,7 +51,7 @@ final class ScanReviewControllerProvider
 }
 
 String _$scanReviewControllerHash() =>
-    r'85b4eb2848f6aae1ac6887fc4ddb13216824a30c';
+    r'1c1e18e0e08dc8bfbf9b598a002710af0f87af4a';
 
 final class ScanReviewControllerFamily extends $Family
     with

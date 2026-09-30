@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:daily_coffee/app/composition/image_providers.dart';
 import 'package:daily_coffee/app/routing/app_routes.dart';
 import 'package:daily_coffee/core/design_system/design_system.dart';
+import 'package:daily_coffee/core/errors/app_failure.dart';
 import 'package:daily_coffee/core/errors/result.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee.dart';
 import 'package:daily_coffee/features/coffee/domain/coffee_validation.dart';
@@ -91,6 +94,17 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
   bool _leaving = false;
   late bool _photo = widget.initial.includePhoto;
   @override
+  void initState() {
+    super.initState();
+    if (widget.initial.revision == 1) {
+      _aiBusy = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) unawaited(_fillWithAi());
+      });
+    }
+  }
+
+  @override
   void dispose() {
     for (final c in _text.values) {
       c.dispose();
@@ -117,7 +131,13 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
 
   Future<void> _leave() async {
     if (_leaving || ref.read(_provider).asData!.value.submitting) return;
-    setState(() => _leaving = true);
+    ++_aiGeneration;
+    ref.read(_provider.notifier).cancelAi();
+    setState(() {
+      _leaving = true;
+      _aiBusy = false;
+      _aiSending = false;
+    });
     final saved = await ref.read(_provider.notifier).flush();
     if (!mounted) return;
     setState(() => _leaving = false);
@@ -156,29 +176,69 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
     }
   }
 
-  String? _key(CoffeeField f) => switch (f) {
-    CoffeeField.originCountry => 'origin_country',
-    CoffeeField.roastDate => 'roast_date',
-    CoffeeField.packageWeightGrams => 'package_weight',
-    CoffeeField.altitudeMinMeters ||
-    CoffeeField.altitudeMaxMeters => 'altitude',
-    CoffeeField.roastLevelKey || CoffeeField.roastLevelCustom => 'roast_level',
-    CoffeeField.purchaseDate || CoffeeField.personalNote => null,
-    _ => f.name,
-  };
-  String _hint(CoffeeDraft draft, String? key) {
-    final field = draft.fields.where((f) => f.key == key).firstOrNull;
-    if (field == null) {
-      return 'Isi jika diketahui; jangan menebak informasi yang tidak ada.';
+  int _aiGeneration = 0;
+  bool _aiBusy = false;
+  bool _aiSending = false;
+  String? _aiMessage;
+
+  String _aiError(AppFailure failure) {
+    if (failure is NetworkFailure) {
+      return 'Backend belum dapat dihubungi atau waktu tunggu habis. Isian tetap tersimpan; Anda bisa melanjutkan manual.';
     }
-    final confidence = field.confidence == null
-        ? ''
-        : ' Keyakinan pembacaan teks: ${(field.confidence! * 100).round()}%.';
-    return '${field.source == DraftValueSource.user
-        ? 'Diubah oleh Anda.'
-        : field.status == ScanReviewStatus.needsReview
-        ? 'Perlu diperiksa.'
-        : 'Dari label; periksa kembali.'} Label: ${field.rawValue}.$confidence';
+    if (failure is StorageFailure) {
+      return 'Simpan draft belum berhasil. Coba simpan draft lagi sebelum memakai AI.';
+    }
+    if (failure is ConflictFailure) {
+      return 'Isian berubah saat AI memproses. Hasil AI tidak diterapkan.';
+    }
+    if (failure is ValidationFailure) {
+      return 'Teks label kosong atau terlalu panjang untuk diproses.';
+    }
+    return switch (failure.diagnosticContext['status']) {
+      401 => 'Akses AI kedaluwarsa atau dicabut. Perbarui token di Pengaturan > Koneksi AI, lalu buat scan baru. Isian ini tetap bisa dilengkapi manual.',
+      429 => 'Batas penggunaan AI tercapai. Coba lagi nanti atau isi manual.',
+      403 => 'Akses backend ditolak. Periksa alamat HTTPS di Pengaturan > Koneksi AI atau koneksi USB untuk pengujian lokal.',
+      503 => 'Layanan AI belum siap. Periksa konfigurasi backend.',
+      _ =>
+        failure.diagnosticContext['reason'] == 'not_configured'
+            ? 'Layanan AI belum tersedia pada versi aplikasi ini. Anda tetap bisa mengisi manual.'
+            : 'Hasil AI belum dapat digunakan. Isian tetap tersedia untuk diperbaiki manual.',
+    };
+  }
+
+  Future<void> _fillWithAi() async {
+    final generation = ++_aiGeneration;
+    FocusScope.of(context).unfocus();
+    setState(() {
+      _aiBusy = true;
+      _aiMessage = null;
+    });
+    setState(() => _aiSending = true);
+    final result = await ref
+        .read(_provider.notifier)
+        .fillWithAi(onlyIfNew: true);
+    if (!mounted) return;
+    // Navigation/cancellation may have invalidated this request while awaiting.
+    if (!_aiBusy || generation != _aiGeneration) return;
+    if (result case Ok<CoffeeFormValues>(:final value)) {
+      for (final field in CoffeeField.values) {
+        _text[field]!.text = value[field];
+      }
+      _varieties.text = value.varieties.join('; ');
+      _notes.text = value.tastingNotes.join('; ');
+      setState(() {
+        _aiBusy = false;
+        _aiSending = false;
+        _confirmed = false;
+        _aiMessage = 'Hasil AI diterapkan ke draft. Periksa seluruh informasi sebelum menyimpan kopi.';
+      });
+    } else {
+      setState(() {
+        _aiBusy = false;
+        _aiSending = false;
+        _aiMessage = _aiError((result as Err<CoffeeFormValues>).failure);
+      });
+    }
   }
 
   @override
@@ -188,7 +248,7 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
     final errors = _showErrors
         ? CoffeeValidation.validate(_values)
         : <CoffeeField, CoffeeValidationIssue>{};
-    final busy = state.submitting || _leaving;
+    final busy = state.submitting || _leaving || _aiBusy;
     return PopScope(
       canPop: _allowLeave,
       onPopInvokedWithResult: (didPop, _) async {
@@ -200,7 +260,7 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
           leading: IconButton(
             tooltip: 'Simpan draft dan kembali',
             icon: const Icon(Icons.arrow_back),
-            onPressed: busy ? null : _leave,
+            onPressed: state.submitting || _leaving ? null : _leave,
           ),
         ),
         body: DailyPageBody(
@@ -210,6 +270,14 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
               const Text(
                 'Periksa hasil pembacaan label. Lengkapi atau koreksi informasi sebelum menyimpan kopi.',
               ),
+              const SizedBox(height: DailySpacing.md),
+              if (_aiBusy) const Text('Mengisi informasi dari label...'),
+              const Text(
+                'Informasi label diisi otomatis dengan AI. Periksa hasilnya dan edit bila diperlukan.',
+              ),
+              if (_aiSending) const LinearProgressIndicator(),
+              if (_aiMessage != null)
+                Text(_aiMessage!, semanticsLabel: _aiMessage),
               const SizedBox(height: DailySpacing.md),
               if (draft.image case final image?)
                 SizedBox(
@@ -249,69 +317,72 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
                 Padding(
                   key: _keys[field],
                   padding: const EdgeInsets.only(bottom: DailySpacing.md),
-                  child: field == CoffeeField.roastLevelKey
-                      ? DropdownButtonFormField<String>(
-                          initialValue: _text[field]!.text.isEmpty
-                              ? null
-                              : _text[field]!.text,
-                          decoration: InputDecoration(
-                            labelText: 'Roast level',
-                            helperText: _hint(draft, 'roast_level'),
-                            helperMaxLines: 5,
-                            errorText: coffeeIssueMessage(errors[field]),
-                          ),
-                          items: [
-                            const DropdownMenuItem(
-                              value: '',
-                              child: Text('Belum diketahui'),
-                            ),
-                            for (final level in RoastLevel.values)
-                              DropdownMenuItem(
-                                value: level.key,
-                                child: Text(roastLevelLabel(level)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      field == CoffeeField.roastLevelKey
+                          ? DropdownButtonFormField<String>(
+                              key: ValueKey(_text[field]!.text),
+                              initialValue: _text[field]!.text.isEmpty
+                                  ? null
+                                  : _text[field]!.text,
+                              decoration: InputDecoration(
+                                labelText: 'Roast level',
+
+                                helperMaxLines: 5,
+                                errorText: coffeeIssueMessage(errors[field]),
                               ),
-                          ],
-                          onChanged: busy
-                              ? null
-                              : (v) {
-                                  _text[field]!.text = v ?? '';
-                                  if (v != 'other') {
-                                    _text[CoffeeField.roastLevelCustom]!
-                                        .clear();
-                                  }
-                                  _change();
-                                },
-                        )
-                      : field == CoffeeField.roastLevelCustom &&
-                            _text[CoffeeField.roastLevelKey]!.text != 'other'
-                      ? const SizedBox.shrink()
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            DailyTextField(
-                              label: coffeeFieldLabel(field),
-                              controller: _text[field],
-                              requiredField:
-                                  field == CoffeeField.name ||
-                                  field == CoffeeField.roastery,
-                              enabled: !busy,
-                              errorText: coffeeIssueMessage(errors[field]),
-                              maxLines: field == CoffeeField.personalNote
-                                  ? 4
-                                  : 1,
-                              helperText:
-                                  field == CoffeeField.roastDate ||
-                                      field == CoffeeField.purchaseDate
-                                  ? 'Format YYYY-MM-DD, contoh 2026-09-29'
-                                  : null,
-                              onChanged: (_) => _change(),
+                              items: [
+                                const DropdownMenuItem(
+                                  value: '',
+                                  child: Text('Belum diketahui'),
+                                ),
+                                for (final level in RoastLevel.values)
+                                  DropdownMenuItem(
+                                    value: level.key,
+                                    child: Text(roastLevelLabel(level)),
+                                  ),
+                              ],
+                              onChanged: busy
+                                  ? null
+                                  : (v) {
+                                      _text[field]!.text = v ?? '';
+                                      if (v != 'other') {
+                                        _text[CoffeeField.roastLevelCustom]!
+                                            .clear();
+                                      }
+                                      _change();
+                                    },
+                            )
+                          : field == CoffeeField.roastLevelCustom &&
+                                _text[CoffeeField.roastLevelKey]!.text !=
+                                    'other'
+                          ? const SizedBox.shrink()
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                DailyTextField(
+                                  label: coffeeFieldLabel(field),
+                                  controller: _text[field],
+                                  requiredField:
+                                      field == CoffeeField.name ||
+                                      field == CoffeeField.roastery,
+                                  enabled: !busy,
+                                  errorText: coffeeIssueMessage(errors[field]),
+                                  maxLines: field == CoffeeField.personalNote
+                                      ? 4
+                                      : 1,
+                                  helperText:
+                                      field == CoffeeField.roastDate ||
+                                          field == CoffeeField.purchaseDate
+                                      ? 'Format YYYY-MM-DD, contoh 2026-09-29'
+                                      : null,
+                                  onChanged: (_) => _change(),
+                                ),
+                              ],
                             ),
-                            Text(
-                              _hint(draft, _key(field)),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
+                    ],
+                  ),
                 ),
               DailyTextField(
                 label: 'Varietas',
@@ -325,10 +396,7 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
                     : null,
                 onChanged: (_) => _change(),
               ),
-              Text(
-                _hint(draft, 'varieties'),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+
               const SizedBox(height: DailySpacing.md),
               DailyTextField(
                 label: 'Tasting notes',
@@ -342,10 +410,7 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
                     : null,
                 onChanged: (_) => _change(),
               ),
-              Text(
-                _hint(draft, 'tasting_notes'),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+
               const SizedBox(height: DailySpacing.md),
               if (state.failure case final failure?) ...[
                 Text(coffeeFailureMessage(failure)),
@@ -375,7 +440,7 @@ class _ReviewEditorState extends ConsumerState<_ReviewEditor> {
               ),
               DailyTextButton(
                 label: 'Simpan draft & kembali',
-                onPressed: busy ? null : _leave,
+                onPressed: state.submitting || _leaving ? null : _leave,
               ),
               DailyTextButton(
                 label: 'Hapus draft',

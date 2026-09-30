@@ -23,7 +23,7 @@ class ScanScreen extends ConsumerWidget {
           padding: const EdgeInsets.all(DailySpacing.md),
           children: [
             const Text(
-              'Ambil foto label yang terang dan tajam. Teks dibaca di perangkat, tanpa koneksi internet.',
+              'Ambil foto label yang terang dan tajam. Teks label akan diproses otomatis oleh OpenAI untuk mengisi informasi kopi. Memerlukan internet; foto tidak dikirim. Hasil tetap bisa diedit.',
             ),
             const SizedBox(height: DailySpacing.md),
             if (state.image case final image?) ...[

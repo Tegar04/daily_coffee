@@ -51,7 +51,7 @@ Net weight: 0.25 kg''');
     () {
       final parsed = parse('''Name: Gayo
 Name: Guji
-Origin: Guji, Ethiopia
+Origin: Kenya / Ethiopia
 Roast date: 03/04/2026
 Weight: 250.5g
 Altitude: 1800-1200m
@@ -97,6 +97,115 @@ Roast date: 29/09/2026''');
     expect(parsed.values[CoffeeField.roastDate], isEmpty);
     expect(parsed.values[CoffeeField.originCountry], isEmpty);
   });
+  test(
+    'combined origin, local month dates, typography and equivalent weights',
+    () {
+      final parsed = parse(
+        'Origin: Guji, Ethiopia\nRoasted: 29 September 2026\nNet wt.\uFF1A0,25 kg\nWeight: 250g',
+      );
+      expect(parsed.values[CoffeeField.originCountry], 'Ethiopia');
+      expect(parsed.values[CoffeeField.region], 'Guji');
+      expect(parsed.values[CoffeeField.roastDate], '2026-09-29');
+      expect(parsed.values[CoffeeField.packageWeightGrams], '250');
+      expect(
+        parse('Altitude: 1200\u20131500 mdpl')
+            .values[CoffeeField.altitudeMaxMeters],
+        '1500',
+      );
+      expect(parse('Name: Why not?').values[CoffeeField.name], 'Why not?');
+      expect(
+        parse('Roasted: 31 Februari 2026').values[CoffeeField.roastDate],
+        isEmpty,
+      );
+      expect(
+        parse('Roasted: 03/04/2026').values[CoffeeField.roastDate],
+        isEmpty,
+      );
+    },
+  );
+
+  test('two columns use geometry when OCR emits labels before values', () {
+    final result = const CoffeeLabelParser().extract(
+      const RecognizedLabelText('', [
+        RecognizedLine('Process:', [0, 0, 80, 20], null),
+        RecognizedLine('Variety:', [0, 40, 80, 60], null),
+        RecognizedLine('Bourbon', [100, 40, 180, 60], null),
+        RecognizedLine('Natural', [100, 0, 180, 20], null),
+      ]),
+    );
+    expect(result.values[CoffeeField.process], 'Natural');
+    expect(result.values.varieties, ['Bourbon']);
+    expect(result.fields.first.rawValue, contains('Process:'));
+  });
+
+  test('stacked spatial values respect label boundaries and distance', () {
+    final result = const CoffeeLabelParser().extract(
+      const RecognizedLabelText('', [
+        RecognizedLine('Process:', [0, 0, 80, 20], null),
+        RecognizedLine('Natural', [0, 25, 80, 45], null),
+        RecognizedLine('Variety:', [200, 0, 280, 20], null),
+        RecognizedLine('Bourbon', [200, 25, 280, 45], null),
+        RecognizedLine('Roastery:', [400, 0, 480, 20], null),
+        RecognizedLine('Distant brand', [400, 200, 480, 220], null),
+      ]),
+    );
+    expect(result.values[CoffeeField.process], 'Natural');
+    expect(result.values.varieties, ['Bourbon']);
+    expect(result.values[CoffeeField.roastery], isEmpty);
+  });
+
+  test(
+    'multiple candidates remain selectable without silently picking one',
+    () {
+      const text = RecognizedLabelText(
+        'Name: Gayo\nName: Guji\nOrigin: Kenya / Ethiopia',
+        [],
+      );
+      const parser = CoffeeLabelParser();
+      expect(parser.extract(text).values[CoffeeField.name], isEmpty);
+      expect(parser.choices(text, 'name').map((c) => c.value), [
+        'Gayo',
+        'Guji',
+      ]);
+      expect(parser.extract(text).values[CoffeeField.originCountry], isEmpty);
+      expect(parser.choices(text, 'origin_country').map((c) => c.value), [
+        'Kenya',
+        'Ethiopia',
+      ]);
+    },
+  );
+
+  test(
+    'unlabelled headings offered for manual assignment but never autofilled',
+    () {
+      const text = RecognizedLabelText(
+        'GAYO HIGHLANDS\nBrand Nusantara\n250g',
+        [],
+      );
+      const parser = CoffeeLabelParser();
+      expect(parser.extract(text).values[CoffeeField.name], isEmpty);
+      expect(
+        parser.choices(text, 'name').map((c) => c.value),
+        contains('GAYO HIGHLANDS'),
+      );
+      expect(parser.choices(text, 'package_weight').single.value, '250');
+      expect(
+        parse('Roasted in Indonesia').values[CoffeeField.originCountry],
+        isEmpty,
+      );
+    },
+  );
+
+  test('list continuation stops at the next labelled field', () {
+    final result = parse(
+      'Tasting notes: Peach,\nCitrus,\nFloral\nVariety: Bourbon /\nTypica\nWeight: 250g',
+    );
+    expect(result.values.tastingNotes, ['Peach', 'Citrus', 'Floral']);
+    expect(result.values.varieties, ['Bourbon', 'Typica']);
+    expect(result.values[CoffeeField.packageWeightGrams], '250');
+    expect(result.fields.first.rawValue, contains('Floral'));
+  });
+
   test(
     'native confidence and regions retained, low-confidence needs review',
     () {

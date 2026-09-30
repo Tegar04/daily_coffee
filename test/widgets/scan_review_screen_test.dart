@@ -11,9 +11,77 @@ import '../helpers/scan_review_fakes.dart';
 
 void main() {
   testWidgets(
+    'AI automatically fills a new review once and keeps it editable',
+    (tester) async {
+      final repository = FakeScanReviewRepository();
+      final ai = FakeLabelExtractor();
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            scanReviewRepositoryProvider.overrideWith(
+              (ref) async => repository,
+            ),
+            labelExtractorProvider.overrideWith((ref) => ai),
+          ],
+          child: MaterialApp(
+            theme: DailyTheme.light,
+            builder: (context, child) => MediaQuery(
+              data: MediaQuery.of(context)
+                  .copyWith(textScaler: const TextScaler.linear(2)),
+              child: child!,
+            ),
+            home: ScanReviewScreen(draftId: repository.draft.id),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Pilih dari label'), findsNothing);
+      expect(find.text('Isi dengan AI'), findsNothing);
+      expect(find.byType(AlertDialog), findsNothing);
+      expect(ai.calls, 1);
+      expect(repository.draft.values[CoffeeField.altitudeMinMeters], '1500');
+      expect(repository.draft.values[CoffeeField.altitudeMaxMeters], '1700');
+      expect(repository.draft.values[CoffeeField.name], 'Kopi AI');
+      expect(repository.draft.values[CoffeeField.roastery], 'Nusantara');
+      expect(
+        tester
+            .widget<DropdownButtonFormField<String>>(
+              find.byType(DropdownButtonFormField<String>),
+            )
+            .initialValue,
+        'light',
+      );
+      expect(
+        tester
+            .widget<CheckboxListTile>(
+              find.widgetWithText(
+                CheckboxListTile,
+                'Saya sudah memeriksa informasi kopi.',
+              ),
+            )
+            .value,
+        isFalse,
+      );
+      final name = find.descendant(
+        of: find.byWidgetPredicate(
+          (w) => w is DailyTextField && w.label == 'Nama kopi',
+        ),
+        matching: find.byType(TextField),
+      );
+      await tester.ensureVisible(name);
+      await tester.enterText(name, 'Koreksi manual');
+      await tester.pumpAndSettle();
+      expect(repository.draft.values[CoffeeField.name], 'Koreksi manual');
+      expect(ai.calls, 1);
+      expect(repository.promotions, 0);
+      expect(tester.takeException(), isNull);
+    },
+  );
+  testWidgets(
     'editable review requires confirmation, validates fields, then saves',
     (tester) async {
       final repository = FakeScanReviewRepository();
+      final ai = FakeLabelExtractor();
       final router = GoRouter(
         initialLocation: '/coffee/review',
         routes: [
@@ -31,6 +99,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            labelExtractorProvider.overrideWith((ref) => ai),
             scanReviewRepositoryProvider.overrideWith(
               (ref) async => repository,
             ),

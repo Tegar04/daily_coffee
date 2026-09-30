@@ -170,3 +170,139 @@ final class SavedScanDraftsProvider
 }
 
 String _$savedScanDraftsHash() => r'c70b7a3c5c8a7f7ef85534581af21c85b1735a9d';
+
+@ProviderFor(aiConnectionStore)
+final aiConnectionStoreProvider = AiConnectionStoreProvider._();
+
+final class AiConnectionStoreProvider
+    extends
+        $FunctionalProvider<
+          AiConnectionStore,
+          AiConnectionStore,
+          AiConnectionStore
+        >
+    with $Provider<AiConnectionStore> {
+  AiConnectionStoreProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'aiConnectionStoreProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$aiConnectionStoreHash();
+
+  @$internal
+  @override
+  $ProviderElement<AiConnectionStore> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AiConnectionStore create(Ref ref) {
+    return aiConnectionStore(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AiConnectionStore value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AiConnectionStore>(value),
+    );
+  }
+}
+
+String _$aiConnectionStoreHash() => r'44906ee0afbf551a13d7835519b57ac8a6cdb113';
+
+@ProviderFor(aiConnectionService)
+final aiConnectionServiceProvider = AiConnectionServiceProvider._();
+
+final class AiConnectionServiceProvider
+    extends
+        $FunctionalProvider<
+          AiConnectionService,
+          AiConnectionService,
+          AiConnectionService
+        >
+    with $Provider<AiConnectionService> {
+  AiConnectionServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'aiConnectionServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$aiConnectionServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<AiConnectionService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AiConnectionService create(Ref ref) {
+    return aiConnectionService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AiConnectionService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AiConnectionService>(value),
+    );
+  }
+}
+
+String _$aiConnectionServiceHash() =>
+    r'012fc74106d6125aeedcc2cf71d7d6e34d859eda';
+
+@ProviderFor(labelExtractor)
+final labelExtractorProvider = LabelExtractorProvider._();
+
+final class LabelExtractorProvider
+    extends $FunctionalProvider<LabelExtractor, LabelExtractor, LabelExtractor>
+    with $Provider<LabelExtractor> {
+  LabelExtractorProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'labelExtractorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$labelExtractorHash();
+
+  @$internal
+  @override
+  $ProviderElement<LabelExtractor> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  LabelExtractor create(Ref ref) {
+    return labelExtractor(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LabelExtractor value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LabelExtractor>(value),
+    );
+  }
+}
+
+String _$labelExtractorHash() => r'59e6758dd3f23bc34d3e6aabfd8cf045c6e9d2a7';

@@ -151,6 +151,12 @@ class SettingsScreen extends StatelessWidget {
     body: ListView(
       children: [
         ListTile(
+          leading: const Icon(Icons.cloud_outlined),
+          title: const Text('Koneksi AI'),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () => const AiConnectionRoute().push<void>(context),
+        ),
+        ListTile(
           leading: const Icon(Icons.storage_outlined),
           title: const Text('Data & penyimpanan'),
           trailing: const Icon(Icons.chevron_right),
